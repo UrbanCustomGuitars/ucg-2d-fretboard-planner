@@ -684,53 +684,11 @@ const STYLE = {
   'BRIDGE-POSTS':['#c70',0.4,null], SADDLES:['#c70',0.3,null],
   'CHECK-POINTS':['#c70',0.25,null],
   BINDING:['#a63',0.35,null], SECTION:['#333',0.35,null],
-  BRAND:['#111',0.35,null],
 };
 const DXFCOL = {BORDER:8,TITLE:7,BOARD:7,NUT:1,'SLOT-CENTRELINE':5,'SLOT-WIDTH':4,
   INLAYS:6,'INLAY-CENTRES':8,CENTRELINE:8,STRINGS:3,BRIDGE:2,EXTENSION:8,
-  'FRET-NUMBERS':8,'SCALE-BAR':7,'BRIDGE-POSTS':2,SADDLES:2,'CHECK-POINTS':4,BINDING:6,SECTION:7,BRAND:7};
+  'FRET-NUMBERS':8,'SCALE-BAR':7,'BRIDGE-POSTS':2,SADDLES:2,'CHECK-POINTS':4,BINDING:6,SECTION:7};
 
-/* THE MAKER'S MARK, DRAWN AS LINES. A plan goes to a machine as a DXF, and a
-   DXF holds geometry -- there is nowhere to put a picture. So the mark is
-   drawn the way the rest of the sheet is drawn: an outline, a nut, frets and
-   three dots. It comes out of every format the same, it scales with the
-   sheet, and a machinist can see whose drawing is on the bed.
-
-   The proportions are the mark's own, measured off the artwork: 232 by 45
-   with fully rounded ends, the nut at 9 per cent across, seven frets at even
-   steps from 18.6 to 82.3 per cent, and three dots at 32.5, 54.1 and 75.3
-   per cent, each 22 per cent of the height. */
-function brandMark(layer, x, y, w) {
-  const k = w / 232, h = 45 * k, r = h / 2;
-  const X = u => x + u * k, Y = v => y + v * k;
-  // the slab: two straight sides and a half circle at each end
-  const pts = [];
-  const N = 14;
-  for (let i = 0; i <= N; i++) {                 // right end, top to bottom
-    const a = -Math.PI / 2 + Math.PI * i / N;
-    pts.push([X(232 - 22.5) + r * Math.cos(a), Y(22.5) - r * Math.sin(a)]);
-  }
-  for (let i = 0; i <= N; i++) {                 // left end, bottom to top
-    const a = Math.PI / 2 + Math.PI * i / N;
-    pts.push([X(22.5) + r * Math.cos(a), Y(22.5) - r * Math.sin(a)]);
-  }
-  layer.add(pts, true);
-  const bar = (u, wide) => {                     // a nut or a fret
-    const half = wide / 2;
-    layer.add([[X(u - half), Y(2.5)], [X(u + half), Y(2.5)],
-               [X(u + half), Y(42.5)], [X(u - half), Y(42.5)]], true);
-  };
-  bar(23.6, 5.2);                                 // the nut
-  for (const u of [43.5, 67.5, 92.3, 116.5, 141.3, 166.3, 190.5]) bar(u, 1.9);
-  for (const u of [79.8, 128.8, 178.0]) {         // three pearl dots
-    const c = [], R = 5 * k;
-    for (let i = 0; i < 24; i++) {
-      const a = i * Math.PI / 12;
-      c.push([X(u) + R * Math.cos(a), Y(22.5) + R * Math.sin(a)]);
-    }
-    layer.add(c, true);
-  }
-}
 
 /* ---------------------------------------------------------------- RADIUS
 
@@ -1059,11 +1017,14 @@ function buildLayers(g, o) {
     titleBottom = top - step * o.info.length;
     L.push(t);
 
-    // The mark sits above the title block, the way it sits above the text
-    // on the page and on the manual's cover.
-    const bm = new Layer('BRAND');
-    brandMark(bm, x, top + 3.5, 46);
-    L.push(bm);
+    /* V4.553 -- THE MAKER'S MARK IS NOT DRAWN. His call: it is not supposed
+       to be on a 2D drawing. It used to go here, 3.5 mm above the title
+       block -- and this page's title block sits UNDER the board, so on a
+       fanned sheet the mark ran straight through the board behind the nut.
+       Measured before it was taken out: the mark's box was x -21.388 to
+       24.612, y -11.025 to -2.103, against a board whose rear end runs
+       y -9.525 to 0. The sheet still says whose drawing it is, in the title
+       block heading. */
   }
 
   /* THE CROSS SECTIONS, drawn true size. This is the part of a radiused
