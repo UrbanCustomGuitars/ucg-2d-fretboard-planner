@@ -27,22 +27,12 @@
 body{
   margin:0; color:var(--ink);
   background:linear-gradient(180deg,#ffffff 0,rgba(255,255,255,0) 340px) no-repeat,var(--bg);
-  font-family:Barlow,"Helvetica Neue",Arial,sans-serif; font-size:15px; line-height:1.5;
+  font-family:Barlow,"Helvetica Neue","DejaVu Sans",Arial,sans-serif; font-size:15px; line-height:1.5;
   -webkit-font-smoothing:antialiased;
 }
-.creator-banner{background:#16171a; color:#fff; padding:22px max(24px,calc((100vw - 1280px)/2));
-  font-family:Barlow,"Helvetica Neue",Arial,sans-serif}
-.creator-top{display:flex; align-items:flex-start; justify-content:space-between; gap:20px}
-.creator-logo{display:block; width:min(565px,100%); height:auto}
-.site-menu{display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;
-  min-height:38px; padding:8px 16px; border:1px solid rgba(255,255,255,.8); border-radius:999px;
-  color:#fff; font-family:"Barlow Condensed",Barlow,Arial,sans-serif; font-size:16px; font-weight:600;
-  letter-spacing:.12em; text-decoration:none; text-transform:uppercase}
-.site-menu:hover{background:#fff; color:#171c22}
-@media(max-width:600px){.creator-banner{padding:18px 16px}.creator-top{gap:12px}.creator-logo{width:calc(100% - 82px)}.site-menu{min-height:34px;padding:6px 10px;font-size:14px}}
 .wrap{max-width:1340px; margin:0 auto; padding:0 16px; padding-block:20px 28px}
-h1,h2,h3,.lab,.btn,th{font-family:"Barlow Condensed",Barlow,Arial,sans-serif}
-.num,input,select,td.n,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+h1,h2,h3,.lab,.btn,th{font-family:"Barlow Condensed",Barlow,"DejaVu Sans Condensed",Arial,sans-serif}
+.num,input,select,td.n,.mono{font-family:"IBM Plex Mono",ui-monospace,"DejaVu Sans Mono",Menlo,Consolas,monospace;
   font-variant-numeric:tabular-nums}
 
 header{display:flex; flex-wrap:wrap; gap:16px 24px; align-items:flex-end;
@@ -51,8 +41,11 @@ h1{margin:0; font-size:clamp(26px,3.6vw,40px); font-weight:700; letter-spacing:.
   text-transform:uppercase; line-height:.98; text-wrap:balance}
 h1 em{font-style:normal; color:var(--accent)}
 .sub{margin:6px 0 0; color:var(--muted); max-width:62ch; font-size:15px}
-.brand{font-family:"Barlow Condensed",Arial,sans-serif; font-size:13px; letter-spacing:.16em;
+.brand{display:flex; flex-direction:column; align-items:flex-end; gap:9px}
+.brand svg{display:block}
+.brandtext{font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; font-size:13px; letter-spacing:.16em;
   text-transform:uppercase; color:var(--muted); text-align:right; line-height:1.35}
+@media (max-width:560px){ .brand{align-items:flex-start} .brandtext{text-align:left} }
 
 .grid{display:grid; gap:22px; grid-template-columns:minmax(320px,382px) minmax(0,1fr);
   align-items:start; margin-top:24px}
@@ -70,7 +63,7 @@ h1 em{font-style:normal; color:var(--accent)}
 .rail{padding:4px 0}
 fieldset{border:0; border-top:1px solid var(--line); margin:0; padding:16px 18px 18px}
 fieldset:first-of-type{border-top:0}
-legend{font-family:"Barlow Condensed",Arial,sans-serif; font-size:12px; font-weight:700;
+legend{font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; font-size:12px; font-weight:700;
   letter-spacing:.17em; text-transform:uppercase; color:var(--accent-ink); padding:0}
 .row{display:grid; grid-template-columns:1fr auto; gap:6px 12px; align-items:center;
   margin-top:11px}
@@ -110,7 +103,7 @@ input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{
 .pill.ok{color:var(--good); background:var(--good-soft)}
 .pill.no{color:var(--bad); background:var(--bad-soft)}
 .stat{font-size:13px; color:var(--muted)}
-.stat b{font-family:"IBM Plex Mono",monospace; color:var(--ink); font-weight:600}
+.stat b{font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace; color:var(--ink); font-weight:600}
 
 .dl{display:flex; flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); padding:16px}
 .btn{display:inline-flex; gap:8px; align-items:center; cursor:pointer; border-radius:4px;
@@ -120,7 +113,7 @@ input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{
 .btn:hover{border-color:var(--accent); color:var(--accent-ink)}
 .btn.pri{background:var(--accent); border-color:var(--accent); color:#fff}
 .btn.pri:hover{filter:brightness(1.07); color:#fff}
-.btn small{font-family:"IBM Plex Mono",monospace; font-weight:400; letter-spacing:0;
+.btn small{font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace; font-weight:400; letter-spacing:0;
   text-transform:none; color:inherit; opacity:.72}
 
 .tablewrap{margin-top:22px}
@@ -144,19 +137,13 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
   justify-content:space-between}
 .num.wide{width:100%; text-align:left}
 #rowGaugesIn{grid-template-columns:1fr}
-.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+.mono{font-family:"IBM Plex Mono",ui-monospace,"DejaVu Sans Mono",Menlo,Consolas,monospace;
   font-variant-numeric:tabular-nums; font-size:14px; color:var(--muted);
   text-align:right; padding:6px 8px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
 </style>
 </head>
 <body>
-<section class="creator-banner" aria-label="Fretboard Creator">
-  <div class="creator-top">
-    <img class="creator-logo" src="fretboard-creator-logo.png" alt="Fretboard Creator">
-    <a class="site-menu" href="https://www.urbancustomguitars.com/" aria-label="Return to Urban Custom Guitars menu">Menu</a>
-  </div>
-</section>
 <div class="wrap">
 <header>
   <div>
@@ -165,7 +152,79 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
       from. Single scale or fanned. Every fret slot is one unbroken line, and every file is
       checked before you download it.</p>
   </div>
-  <div class="brand">Urban Custom Guitars<br>Drawn 1:1</div>
+  <div class="brand">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 232 45" width="188" height="36" role="img" aria-label="Urban Custom Guitars">
+  <title>Urban Custom Guitars</title>
+  <!-- His own mark, redrawn to scale cleanly. Every position is measured
+       off the artwork he supplied: the slab is 232 x 45 with fully rounded
+       ends, the nut sits at 9% across, seven frets run at even 10.6% steps
+       from 18.6% to 82.3%, and three pearl dots sit at 32.5%, 54.1% and
+       75.3%, each 22% of the slab height. -->
+  <defs>
+    <linearGradient id="hdr-ucg-ebony" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#3a332e"/>
+      <stop offset="0.30" stop-color="#241f1c"/>
+      <stop offset="0.72" stop-color="#1b1715"/>
+      <stop offset="1"    stop-color="#2c2622"/>
+    </linearGradient>
+    <linearGradient id="hdr-ucg-brass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#b98a5e"/>
+      <stop offset="0.38" stop-color="#f6d4ac"/>
+      <stop offset="0.62" stop-color="#e3b287"/>
+      <stop offset="1"    stop-color="#a87c53"/>
+    </linearGradient>
+    <linearGradient id="hdr-ucg-pearl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"   stop-color="#fbf7e8"/>
+      <stop offset="0.5" stop-color="#e6dfc6"/>
+      <stop offset="1"   stop-color="#cfc6a8"/>
+    </linearGradient>
+    <linearGradient id="hdr-ucg-bone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#f2ecd6"/>
+      <stop offset="0.5" stop-color="#ded8c0"/>
+      <stop offset="1"   stop-color="#c3bda4"/>
+    </linearGradient>
+    <clipPath id="hdr-ucg-slab">
+      <rect x="0" y="0" width="188" height="36" rx="22.5" ry="22.5"/>
+    </clipPath>
+  </defs>
+
+  <rect x="0" y="0" width="188" height="36" rx="22.5" ry="22.5" fill="url(#hdr-ucg-ebony)"/>
+
+  <g clip-path="url(#hdr-ucg-slab)">
+    <!-- grain -->
+    <g stroke="#4a423b" stroke-width="0.5" opacity="0.30">
+      <path d="M0 11 C 60 8, 150 14, 232 10"/>
+      <path d="M0 22 C 70 26, 140 18, 232 23"/>
+      <path d="M0 33 C 55 30, 160 36, 232 31"/>
+    </g>
+
+    <!-- the nut -->
+    <rect x="21" y="0" width="5.2" height="45" fill="url(#hdr-ucg-bone)"/>
+
+    <!-- seven frets, even steps, as drawn -->
+    <g fill="url(#hdr-ucg-brass)">
+      <rect x="42.6" y="0" width="1.9" height="45"/>
+      <rect x="66.6" y="0" width="1.9" height="45"/>
+      <rect x="91.4" y="0" width="1.9" height="45"/>
+      <rect x="115.6" y="0" width="1.9" height="45"/>
+      <rect x="140.4" y="0" width="1.9" height="45"/>
+      <rect x="165.4" y="0" width="1.9" height="45"/>
+      <rect x="189.6" y="0" width="1.9" height="45"/>
+    </g>
+
+    <!-- three pearl dots, centred between frets -->
+    <g fill="url(#hdr-ucg-pearl)">
+      <circle cx="79.8" cy="22.5" r="5"/>
+      <circle cx="128.8" cy="22.5" r="5"/>
+      <circle cx="178.0" cy="22.5" r="5"/>
+    </g>
+  </g>
+
+  <rect x="0.5" y="0.5" width="231" height="44" rx="22" ry="22"
+        fill="none" stroke="#0f0d0c" stroke-width="1" opacity="0.55"/>
+</svg>
+    <div class="brandtext">Urban Custom Guitars<br>Drawn 1:1</div>
+  </div>
 </header>
 
 <div class="grid">
@@ -174,7 +233,7 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
       <legend>Units</legend>
       <div class="row"><span class="lab">Work in</span>
         <span class="seg">
-          <button type="button" id="uMm" data-unit="mm" aria-pressed="true">mm</button><button type="button" id="uCm" data-unit="cm" aria-pressed="false">cm</button><button type="button" id="uIn" data-unit="in" aria-pressed="false">inches</button>
+          <button type="button" id="uMm" data-unit="mm" aria-pressed="true" title="Work in millimetres. Every box on the page, and every number in the files you download, is in this unit. Changing it converts what is already typed rather than reinterpreting it.">mm</button><button type="button" id="uCm" data-unit="cm" aria-pressed="false" title="Work in centimetres. Same board, different numbers.">cm</button><button type="button" id="uIn" data-unit="in" aria-pressed="false" title="Work in inches. Same board, different numbers. The PDF still prints at 1 to 1 either way.">inches</button>
         </span></div>
       <div class="hint">Every box below, the numbers on the drawing, and the DXF, SVG and CSV
         all change to match. The board itself is the same size either way, and the PDF still
@@ -184,41 +243,41 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
     <fieldset>
       <legend>Scale</legend>
       <div class="row"><span class="lab">Type</span>
-        <span class="seg"><button type="button" id="tSingle" aria-pressed="true">Single</button><button type="button" id="tFan" aria-pressed="false">Fanned</button></span></div>
+        <span class="seg"><button type="button" id="tSingle" aria-pressed="true" title="One scale length for the whole board. Every fret runs square across it.">Single</button><button type="button" id="tFan" aria-pressed="false" title="A fanned, or multiscale, board: a different scale length for the bass and treble sides, so the frets run at an angle. Setting both scale lengths the same gives a straight board again.">Fanned</button></span></div>
       <div class="row"><label class="lab" for="bassScale" id="lblBass">Scale length</label>
-        <input class="num len" type="number" id="bassScale" value="647.70" data-mm="647.70" data-min="100" data-max="1200" data-step="0.01"></div>
+        <input class="num len" type="number" id="bassScale" value="647.70" data-mm="647.70" data-min="100" data-max="1200" data-step="0.01" title="On a single scale board this is THE scale length, measured up the centre line square from the nut. On a fanned board it is the bass side, measured along the bass outer string."></div>
       <div class="row" id="rowTreble" hidden><label class="lab" for="trebleScale">Treble scale length</label>
-        <input class="num len" type="number" id="trebleScale" value="628.65" data-mm="628.65" data-min="100" data-max="1200" data-step="0.01"></div>
+        <input class="num len" type="number" id="trebleScale" value="628.65" data-mm="628.65" data-min="100" data-max="1200" data-step="0.01" title="The treble side scale length, measured along the treble outer string. Usually the shorter of the two."></div>
       <div class="row" id="rowPerp" hidden><label class="lab" for="perpFret">Fret square to the board</label>
-        <input class="num" type="number" id="perpFret" value="7" step="1" min="0" max="36"></div>
+        <input class="num" type="number" id="perpFret" value="7" step="1" min="0" max="36" title="Which fret runs square across a fanned board. Everything behind it leans one way and everything in front of it leans the other. 0 is the nut; put it at the bridge by choosing the fret past the last one."></div>
       <div class="hint" id="hintPerp" hidden>0 puts the nut square. The higher the number, the further back the fan leans.</div>
     </fieldset>
 
     <fieldset>
       <legend>Board</legend>
       <div class="row"><label class="lab" for="frets">Frets</label>
-        <input class="num" type="number" id="frets" value="22" step="1" min="1" max="36"></div>
+        <input class="num" type="number" id="frets" value="22" step="1" min="1" max="36" title="How many frets are laid out. The board itself carries on past the last one by the amount set under Past the last fret."></div>
       <div class="row"><label class="lab" for="strings">Strings</label>
-        <input class="num" type="number" id="strings" value="6" step="1" min="1" max="14"></div>
+        <input class="num" type="number" id="strings" value="6" step="1" min="1" max="14" title="How many strings. This sets how many string lines are drawn and how the spacing is divided up."></div>
       <div class="row"><label class="lab" for="nutWidth">Width at the nut</label>
-        <input class="num len" type="number" id="nutWidth" value="43.00" data-mm="43" data-min="10" data-max="120" data-step="0.05"></div>
+        <input class="num len" type="number" id="nutWidth" value="43.00" data-mm="43" data-min="10" data-max="120" data-step="0.05" title="The full width of the wood at the nut, edge to edge. Not the string span -- the strings sit inside this by the overhang."></div>
       <div class="row"><span class="lab">Width at the bridge</span>
         <span class="num mono" id="outBridgeWidth">&mdash;</span></div>
       <div class="hint">Worked out from the string span at the bridge plus both overhangs, so it
         is shown rather than typed.</div>
       <div class="row"><label class="lab" for="nutSeat">Nut seat, front to back</label>
-        <input class="num len" type="number" id="nutSeat" value="3.175" data-mm="3.175" data-min="0" data-max="30" data-step="0.005"></div>
+        <input class="num len" type="number" id="nutSeat" value="3.175" data-mm="3.175" data-min="0" data-max="30" data-step="0.005" title="How far back from the string contact edge the nut seat is cut. The board keeps its nut width across this part; it does not taper."></div>
       <div class="row"><label class="lab" for="extension">Board behind the nut</label>
-        <input class="num len" type="number" id="extension" value="6.35" data-mm="6.35" data-min="0" data-max="60" data-step="0.05"></div>
+        <input class="num len" type="number" id="extension" value="6.35" data-mm="6.35" data-min="0" data-max="60" data-step="0.05" title="How much board there is behind the back of the nut seat. Also at the nut width, and also not tapered."></div>
       <div class="row"><label class="lab" for="endExtension">Past the last fret</label>
-        <input class="num" type="number" id="endExtension" value="50" step="5" min="0" max="200"></div>
+        <input class="num" type="number" id="endExtension" value="50" step="5" min="0" max="200" title="How far the board runs past the last fret, as a percentage of the way to where the next fret would be. 50 is the traditional halfway point."></div>
       <div class="hint">Per cent of the way to where the next fret would have fallen. 50 is the usual halfway point.</div>
     </fieldset>
 
     <fieldset>
       <legend>Overhang</legend>
       <div class="row"><label class="lab" for="ohMode">Set it as</label>
-        <select id="ohMode">
+        <select id="ohMode" title="How the distance from the outer strings to the edge of the wood is set: one number used everywhere, one per end, or all four corners on their own.">
           <option value="equal" selected>One number everywhere</option>
           <option value="ends">Nut and bridge</option>
           <option value="sides">Bass and treble</option>
@@ -228,13 +287,13 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
         of the board. It is what stops that string sliding off. On a fanned board it is measured
         square across the neck, not along the slanted string.</div>
       <div class="row" id="rowOhNB"><label class="lab" id="labOhNB" for="ohNutBass">Overhang</label>
-        <input class="num len" type="number" id="ohNutBass" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05"></div>
+        <input class="num len" type="number" id="ohNutBass" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05" title="Bass side, at the nut: from the middle of the outer string to the edge of the wood."></div>
       <div class="row" id="rowOhNT"><label class="lab" id="labOhNT" for="ohNutTreble">Treble side, at the nut</label>
-        <input class="num len" type="number" id="ohNutTreble" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05"></div>
+        <input class="num len" type="number" id="ohNutTreble" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05" title="Treble side, at the nut: from the middle of the outer string to the edge of the wood."></div>
       <div class="row" id="rowOhBB"><label class="lab" id="labOhBB" for="ohBridgeBass">Bass side, at the bridge</label>
-        <input class="num len" type="number" id="ohBridgeBass" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05"></div>
+        <input class="num len" type="number" id="ohBridgeBass" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05" title="Bass side, at the bridge. Usually a little more than at the nut, because the hand moves further off the neck up there."></div>
       <div class="row" id="rowOhBT"><label class="lab" id="labOhBT" for="ohBridgeTreble">Treble side, at the bridge</label>
-        <input class="num len" type="number" id="ohBridgeTreble" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05"></div>
+        <input class="num len" type="number" id="ohBridgeTreble" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05" title="Treble side, at the bridge."></div>
       <div class="hint">Bass is the low E side. Treble is the high E side.
         Uneven numbers move the strings off the centre of the board, which is the point of them.</div>
     </fieldset>
@@ -242,27 +301,27 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
     <fieldset>
       <legend>String spacing</legend>
       <div class="row"><span class="lab">Space them</span>
-        <span class="seg"><button type="button" id="spEqual" aria-pressed="true">Equal</button><button type="button" id="spProp" aria-pressed="false">Proportional</button></span></div>
+        <span class="seg"><button type="button" id="spEqual" aria-pressed="true" title="Equal gaps between string CENTRES. Simple, and what most fret calculators do.">Equal</button><button type="button" id="spProp" aria-pressed="false" title="Equal gaps between the strings themselves, so a thick string gets more room than a thin one. The visible space between any two strings comes out the same all the way across, which is what the hand actually feels.">Proportional</button></span></div>
       <div class="hint" id="hintSpacing">&mdash;</div>
       <div class="row" id="rowSet" hidden><label class="lab" for="stringSet">String set</label>
-        <select id="stringSet"></select></div>
+        <select id="stringSet" title="A standard gauge set, thinnest first. Only used for proportional spacing, and only to work out how thick each string is."></select></div>
       <div class="row" id="rowGauges" hidden><label class="lab" for="gauges">Gauges, inches, thinnest first</label></div>
-      <div class="row" id="rowGaugesIn" hidden><input class="num wide" type="text" id="gauges" value=".010 .013 .017 .026 .036 .046"></div>
+      <div class="row" id="rowGaugesIn" hidden><input class="num wide" type="text" id="gauges" value=".010 .013 .017 .026 .036 .046" title="Your own gauges in inches, thinnest first, separated by commas -- for a set that is not in the list."></div>
       <div class="hint" id="hintGauges" hidden>&mdash;</div>
     </fieldset>
 
     <fieldset>
       <legend>Radius</legend>
       <div class="row"><span class="lab">Type</span>
-        <span class="seg"><button type="button" id="rSingle" aria-pressed="true">Single</button><button type="button" id="rComp" aria-pressed="false">Compound</button></span></div>
+        <span class="seg"><button type="button" id="rSingle" aria-pressed="true" title="One radius across the whole board.">Single</button><button type="button" id="rComp" aria-pressed="false" title="A compound radius: rounder at the nut, flatter at the far end. The surface between them is a straight blend of the two end arcs, which is how a compound board is really made -- blending two arcs does not give a third arc.">Compound</button></span></div>
       <div class="row"><label class="lab" for="radiusNut" id="lblRadNut">Radius</label>
-        <input class="num len" type="number" id="radiusNut" value="304.80" data-mm="304.8" data-min="40" data-max="5000" data-step="0.1"></div>
+        <input class="num len" type="number" id="radiusNut" value="304.80" data-mm="304.8" data-min="40" data-max="5000" data-step="0.1" title="The radius of the arc across the board at the nut. A smaller number is a rounder board."></div>
       <div class="row" id="rowRadEnd" hidden><label class="lab" for="radiusEnd">Radius at the far end</label>
-        <input class="num len" type="number" id="radiusEnd" value="406.40" data-mm="406.4" data-min="40" data-max="5000" data-step="0.1"></div>
+        <input class="num len" type="number" id="radiusEnd" value="406.40" data-mm="406.4" data-min="40" data-max="5000" data-step="0.1" title="The radius at the far end of the board. Normally a larger number -- flatter -- than the nut radius."></div>
       <div class="row"><label class="lab" for="thickness">Board thickness</label>
-        <input class="num len" type="number" id="thickness" value="6.35" data-mm="6.35" data-min="1" data-max="30" data-step="0.05"></div>
+        <input class="num len" type="number" id="thickness" value="6.35" data-mm="6.35" data-min="1" data-max="30" data-step="0.05" title="Board thickness at the middle, measured from the flat back up to the top of the arc. The edges sit lower by the drop."></div>
       <div class="row"><label class="lab" for="slotDepth">Fret slot depth</label>
-        <input class="num len" type="number" id="slotDepth" value="2.29" data-mm="2.29" data-min="0" data-max="20" data-step="0.01"></div>
+        <input class="num len" type="number" id="slotDepth" value="2.29" data-mm="2.29" data-min="0" data-max="20" data-step="0.01" title="How deep the fret slots are cut, measured down from the board surface. This is what the depth-carrying slot lines are worked out from."></div>
       <div class="hint" id="radNote">&mdash;</div>
       <div class="hint" id="radWarn" hidden></div>
     </fieldset>
@@ -270,18 +329,18 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
     <fieldset>
       <legend>Binding</legend>
       <div class="row"><span class="lab">Board is</span>
-        <span class="seg"><button type="button" id="bNone" aria-pressed="true">Unbound</button><button type="button" id="bBound" aria-pressed="false">Bound</button></span></div>
+        <span class="seg"><button type="button" id="bNone" aria-pressed="true" title="No binding. Fret slots run out to the edge of the wood.">Unbound</button><button type="button" id="bBound" aria-pressed="false" title="Bound board. Fret slots stop at the binding, because a slot run out through the binding shows as a line in it and the tang has to be nipped back anyway.">Bound</button></span></div>
       <div class="row" id="rowBindW" hidden><label class="lab" for="bindingWidth">Binding width</label>
-        <input class="num len" type="number" id="bindingWidth" value="1.50" data-mm="1.5" data-min="0" data-max="10" data-step="0.05"></div>
+        <input class="num len" type="number" id="bindingWidth" value="1.50" data-mm="1.5" data-min="0" data-max="10" data-step="0.05" title="How wide the binding strip is, measured in from each edge. It does not move a fret -- only how far each slot line runs."></div>
       <div class="hint" id="bindNote">&mdash;</div>
     </fieldset>
 
     <fieldset>
       <legend>Slots</legend>
       <div class="row"><label class="lab" for="slotWidth">Saw kerf</label>
-        <input class="num len" type="number" id="slotWidth" value="0.58" data-mm="0.58" data-min="0" data-max="4" data-step="0.01"></div>
+        <input class="num len" type="number" id="slotWidth" value="0.58" data-mm="0.58" data-min="0" data-max="4" data-step="0.01" title="The width of the cut your saw or cutter makes. Drawn as the slot's two real edges, either side of the centre line."></div>
       <div class="checks">
-        <label class="chk"><input type="checkbox" id="slotWidthOn"> Draw the kerf, not just the centreline</label>
+        <label class="chk"><input type="checkbox" id="slotWidthOn" title="Turn the slot-width layer on in the files. The centre line is always written either way."> Draw the kerf, not just the centreline</label>
       </div>
       <div class="hint">The centreline is always drawn, one unbroken line per slot. The kerf goes on its own layer.</div>
     </fieldset>
@@ -289,24 +348,24 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
     <fieldset>
       <legend>Inlays</legend>
       <div class="row"><label class="lab" for="inlayPattern">Pattern</label>
-        <select id="inlayPattern">
+        <select id="inlayPattern" title="Which frets get a face marker. Traditional is the usual set; the others are the common variations.">
           <option value="std" selected>3 5 7 9 12 15 17 19 21 24</option>
           <option value="odd">Every odd fret</option>
           <option value="twelve">12 and 24 only</option>
           <option value="none">None</option>
         </select></div>
       <div class="row"><label class="lab" for="inlayDia">Dot diameter</label>
-        <input class="num len" type="number" id="inlayDia" value="6.00" data-mm="6" data-min="0" data-max="40" data-step="0.05"></div>
+        <input class="num len" type="number" id="inlayDia" value="6.00" data-mm="6" data-min="0" data-max="40" data-step="0.05" title="The diameter of each face marker dot."></div>
       <div class="checks">
-        <label class="chk"><input type="checkbox" id="doubleTwelve" checked> Two dots at 12 and 24</label>
-        <label class="chk"><input type="checkbox" id="showInlayCentres" checked> Centre crosses</label>
+        <label class="chk"><input type="checkbox" id="doubleTwelve" checked title="Two dots at the twelfth and twenty fourth frets instead of one, set either side of the centre line."> Two dots at 12 and 24</label>
+        <label class="chk"><input type="checkbox" id="showInlayCentres" checked title="A small cross at the middle of each marker, for finding a drill centre or setting a laser up."> Centre crosses</label>
       </div>
     </fieldset>
 
     <fieldset>
       <legend>Bridge</legend>
       <div class="row"><label class="lab" for="bridgeModel">Bridge type</label>
-        <select id="bridgeModel">
+        <select id="bridgeModel" title="Which bridge. The offset and the post layout come from the same figures the Fusion add-in uses, so the two tools cannot disagree about where the hardware goes.">
           <option value="Bolt-On Single Cut" data-off="0.250" data-tol="0.030">Bolt-On Single Cut</option>
           <option value="Bolt-On Double Cut Non-Tremolo" data-off="-0.250" data-tol="0.030">Bolt-On Double Cut Non-Tremolo</option>
           <option value="Bolt-On Double Cut Vintage Tremolo" data-off="-0.250" data-tol="0.030">Bolt-On Double Cut Vintage Tremolo</option>
@@ -320,18 +379,18 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
         </select></div>
       <div class="hint" id="bridgeNote">&mdash;</div>
       <div class="row"><label class="lab" for="bridgeOffset">Bridge offset from the scale length</label>
-        <input class="num len" type="number" id="bridgeOffset" value="1.5875" data-mm="1.5875" data-min="-40" data-max="40" data-step="0.0001"></div>
+        <input class="num len" type="number" id="bridgeOffset" value="1.5875" data-mm="1.5875" data-min="-40" data-max="40" data-step="0.0001" title="How far past the scale length the bridge actually mounts. Comes from the bridge you picked; change it if your hardware measures differently."></div>
       <div class="hint">Picking a bridge type fills this in. Plus is further from the nut.
         The post sits at scale length plus this.</div>
       <div class="row"><label class="lab" for="bridgeSpan">Outer string to outer string, at the bridge</label>
-        <input class="num len" type="number" id="bridgeSpan" value="50.00" data-mm="50" data-min="5" data-max="140" data-step="0.01"></div>
+        <input class="num len" type="number" id="bridgeSpan" value="50.00" data-mm="50" data-min="5" data-max="140" data-step="0.01" title="Outer string to outer string at the bridge, centre to centre. The board width at the bridge is this plus the two overhangs."></div>
       <div class="hint" id="hintBridgeSpan">&mdash;</div>
       <div class="row"><label class="lab" for="postSpacing">Post spacing, across the board</label>
-        <input class="num len" type="number" id="postSpacing" value="73.66" data-mm="73.66" data-min="0" data-max="200" data-step="0.01"></div>
+        <input class="num len" type="number" id="postSpacing" value="73.66" data-mm="73.66" data-min="0" data-max="200" data-step="0.01" title="Across the board, centre to centre, between the two mounting posts. This does not change when the bass post moves back."></div>
       <div class="row"><label class="lab" for="postDia">Post or mount hole diameter</label>
-        <input class="num len" type="number" id="postDia" value="6.35" data-mm="6.35" data-min="0" data-max="40" data-step="0.05"></div>
+        <input class="num len" type="number" id="postDia" value="6.35" data-mm="6.35" data-min="0" data-max="40" data-step="0.05" title="The diameter of the post or mount hole, drawn as a circle with a cross through it."></div>
       <div class="row"><label class="lab" for="postSetbackBass">Bass post, further back than the treble</label>
-        <input class="num len" type="number" id="postSetbackBass" value="2.38125" data-mm="2.38125" data-min="-30" data-max="60" data-step="0.0001"></div>
+        <input class="num len" type="number" id="postSetbackBass" value="2.38125" data-mm="2.38125" data-min="-30" data-max="60" data-step="0.0001" title="How much further from the nut the bass post sits than the treble one. It moves straight back; the spacing across the board stays the same."></div>
       <div class="hint">1.59 to 3.18 mm (0.0625 to 0.125 in) is the usual range.
         Check the post spacing against the hardware in your hand before you drill.</div>
       <div class="hint" id="fanBridgeNote" hidden>On a fanned board the posts are set off the TREBLE
@@ -342,18 +401,19 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
     <fieldset>
       <legend>What to draw</legend>
       <div class="checks">
-        <label class="chk"><input type="checkbox" id="showEdges" checked> Board edges</label>
-        <label class="chk"><input type="checkbox" id="extendFrets" checked> Run the frets out to the edge</label>
-        <label class="chk"><input type="checkbox" id="showCentreline" checked> Centre line</label>
-        <label class="chk"><input type="checkbox" id="showFretNumbers" checked> Fret numbers</label>
-        <label class="chk"><input type="checkbox" id="showStrings"> Strings, out to the bridge</label>
-        <label class="chk"><input type="checkbox" id="showBridge"> Bridge line</label>
-        <label class="chk"><input type="checkbox" id="showSaddles"> Each string at the bridge</label>
-        <label class="chk"><input type="checkbox" id="showPosts"> Bridge post holes</label>
-        <label class="chk"><input type="checkbox" id="showSection" checked> Cross sections, true size</label>
-        <label class="chk"><input type="checkbox" id="slotDepthOn" checked> Slot lines carry depth (3D DXF)</label>
-        <label class="chk"><input type="checkbox" id="showBox"> Box round the whole drawing</label>
-        <label class="chk"><input type="checkbox" id="showTitleBlock" checked> Title block with the numbers</label>
+        <label class="chk"><input type="checkbox" id="showEdges" checked title="The outline of the board itself."> Board edges</label>
+        <label class="chk"><input type="checkbox" id="extendFrets" checked title="On, a fret slot runs the full width -- to the binding on a bound board, or to the edge of the wood on an unbound one. Off, it stops at the outer two strings, which is all a fret has to cover. Neither setting moves a fret."> Run the frets out to the edge</label>
+        <label class="chk"><input type="checkbox" id="showCentreline" checked title="The board's own centre line, for lining a blank up on a bed or a jig."> Centre line</label>
+        <label class="chk"><input type="checkbox" id="showFretNumbers" checked title="The number of each fret, written beside its slot off the treble edge."> Fret numbers</label>
+        <label class="chk"><input type="checkbox" id="showStrings" title="A line for each string, nut to bridge. Shows where the strings really sit over the board."> Strings, out to the bridge</label>
+        <label class="chk"><input type="checkbox" id="showBridge" title="The line across the board at the bridge. On a fanned board it is not square to the centre line, which is worth seeing."> Bridge line</label>
+        <label class="chk"><input type="checkbox" id="showSaddles" title="A small cross where each string crosses the bridge line. That crossing is the point the scale length is measured TO."> Each string at the bridge</label>
+        <label class="chk"><input type="checkbox" id="showCheckPoints" checked title="A small cross on each of the two outer strings at the nut, at every fret, and at the bridge -- the points a drawing is checked at. The centre of each cross is a real vertex, so it arrives in CAD as a point you can snap to. Measure between two of them and nut-to-12th and 12th-to-bridge come out equal, because they are. Measuring to the end of a fret slot instead lands at the edge of the wood, which on a fanned board is several millimetres along the fret from where the string crosses it."> Check points, on the two outer strings</label>
+        <label class="chk"><input type="checkbox" id="showPosts" title="The bridge mounting post positions, drawn as circles with a cross through them."> Bridge post holes</label>
+        <label class="chk"><input type="checkbox" id="showSection" checked title="The end of the board drawn at full size, with the arc, the flat back, the drop from the middle to the edge and the slot depth all written on. This is the one thing a flat plan cannot otherwise show, because from directly above the curve is edge on and invisible."> Cross sections, true size</label>
+        <label class="chk"><input type="checkbox" id="slotDepthOn" checked title="Break each slot line into steps and give every point the height of the slot bottom above the flat back, written into the DXF as a real 3D polyline. This is the cut line a CNC needs to follow the radius. It changes nothing in the plan view."> Slot lines carry depth (3D DXF)</label>
+        <label class="chk"><input type="checkbox" id="showBox" title="One rectangle round everything on the sheet, so a print has a known outer edge to register and trim to."> Box round the whole drawing</label>
+        <label class="chk"><input type="checkbox" id="showTitleBlock" checked title="The paperwork beside the drawing: what the board is, the fret positions as numbers, and a 100 mm and a 4 inch bar to measure so you can prove the print came out 1 to 1."> Title block with the numbers</label>
       </div>
       <div class="hint">These only change what gets drawn and what goes in the files.
         Not one of them moves a fret. Turning the frets off the edge shortens the lines to the
@@ -363,12 +423,12 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
     <fieldset>
       <legend>Printing</legend>
       <div class="row"><label class="lab" for="pageSize">Tile the PDF onto</label>
-        <select id="pageSize">
+        <select id="pageSize" title="Also write a second PDF broken across printer pages of this size, with an overlap and a cross in each corner to line the sheets up on. A long board will not fit one sheet, and a printer told to fit it will shrink it.">
           <option>A4</option><option>A3</option><option>Letter</option>
           <option>Legal</option><option>Tabloid</option>
           <option value="">Do not tile</option>
         </select></div>
-      <div class="checks"><label class="chk"><input type="checkbox" id="landscape"> Landscape</label></div>
+      <div class="checks"><label class="chk"><input type="checkbox" id="landscape" title="Turn the tiled pages on their side. A long board usually needs fewer sheets that way."> Landscape</label></div>
       <div class="hint">A long board will not fit one sheet, and a printer told to fit it will shrink it.
         The tiled file overlaps the sheets and puts a cross in each corner to line them up on.</div>
     </fieldset>
@@ -438,7 +498,9 @@ const unit = (dx, dy) => { const d = Math.hypot(dx, dy); return d > 1e-12 ? [dx 
 const fracAt = n => 1 - 1 / Math.pow(2, n / 12);
 
 /* WHERE EACH STRING SITS ACROSS THE BOARD, as a fraction of the span
-   between the two outer strings. 0 is the bass side, 1 is the treble.
+   between the two outer strings. 0 is the bass side, 1 is the treble --
+   as fractions of the span, not as x, so they follow the bass wherever
+   the solver puts it.
 
      EQUAL -- the centres are spaced evenly. Every string sits the same
      distance from its neighbour, centre to centre. Because a wound low E
@@ -485,12 +547,19 @@ function solve(o) {
      The nut end is typed as a board WIDTH, because that is the piece of
      wood you start with. The bridge end is typed as a string SPAN,
      because that number comes off the bridge hardware, and the board
-     width there is worked out from it. Same way round as the add-in. */
-  const bnx = -nw / 2 + o.ohNutBass;
-  const tnx = nw / 2 - o.ohNutTreble;
+     width there is worked out from it. Same way round as the add-in.
+
+     THE BASS SIDE IS +X, the same way round as the Fusion add-in, where
+     it was settled by measuring a generated model: the 0.046 in low E
+     string body sat at +22.206 mm. Until the add-in's V4.551 its solver
+     had this the other way round, so on a fanned board the long scale
+     ran under the thin strings. Both tools put the bass on +x now, and
+     they draw the same picture rather than mirror images of it. */
+  const bnx = nw / 2 - o.ohNutBass;
+  const tnx = -nw / 2 + o.ohNutTreble;
   const bw = o.bridgeSpan + o.ohBridgeBass + o.ohBridgeTreble;
-  const bbx = -bw / 2 + o.ohBridgeBass;
-  const tbx = bw / 2 - o.ohBridgeTreble;
+  const bbx = bw / 2 - o.ohBridgeBass;
+  const tbx = -bw / 2 + o.ohBridgeTreble;
 
   /* WHAT COUNTS AS A FAN. Fanned picked in the form with the SAME number
      in both scale boxes is not a fanned board at all -- every fret comes
@@ -613,11 +682,55 @@ const STYLE = {
   BRIDGE:['#c70',0.35,[6,2]], EXTENSION:['#888',0.2,[2,1]],
   'FRET-NUMBERS':['#555',0.2,null], 'SCALE-BAR':['#111',0.35,null],
   'BRIDGE-POSTS':['#c70',0.4,null], SADDLES:['#c70',0.3,null],
+  'CHECK-POINTS':['#c70',0.25,null],
   BINDING:['#a63',0.35,null], SECTION:['#333',0.35,null],
+  BRAND:['#111',0.35,null],
 };
 const DXFCOL = {BORDER:8,TITLE:7,BOARD:7,NUT:1,'SLOT-CENTRELINE':5,'SLOT-WIDTH':4,
   INLAYS:6,'INLAY-CENTRES':8,CENTRELINE:8,STRINGS:3,BRIDGE:2,EXTENSION:8,
-  'FRET-NUMBERS':8,'SCALE-BAR':7,'BRIDGE-POSTS':2,SADDLES:2,BINDING:6,SECTION:7};
+  'FRET-NUMBERS':8,'SCALE-BAR':7,'BRIDGE-POSTS':2,SADDLES:2,'CHECK-POINTS':4,BINDING:6,SECTION:7,BRAND:7};
+
+/* THE MAKER'S MARK, DRAWN AS LINES. A plan goes to a machine as a DXF, and a
+   DXF holds geometry -- there is nowhere to put a picture. So the mark is
+   drawn the way the rest of the sheet is drawn: an outline, a nut, frets and
+   three dots. It comes out of every format the same, it scales with the
+   sheet, and a machinist can see whose drawing is on the bed.
+
+   The proportions are the mark's own, measured off the artwork: 232 by 45
+   with fully rounded ends, the nut at 9 per cent across, seven frets at even
+   steps from 18.6 to 82.3 per cent, and three dots at 32.5, 54.1 and 75.3
+   per cent, each 22 per cent of the height. */
+function brandMark(layer, x, y, w) {
+  const k = w / 232, h = 45 * k, r = h / 2;
+  const X = u => x + u * k, Y = v => y + v * k;
+  // the slab: two straight sides and a half circle at each end
+  const pts = [];
+  const N = 14;
+  for (let i = 0; i <= N; i++) {                 // right end, top to bottom
+    const a = -Math.PI / 2 + Math.PI * i / N;
+    pts.push([X(232 - 22.5) + r * Math.cos(a), Y(22.5) - r * Math.sin(a)]);
+  }
+  for (let i = 0; i <= N; i++) {                 // left end, bottom to top
+    const a = Math.PI / 2 + Math.PI * i / N;
+    pts.push([X(22.5) + r * Math.cos(a), Y(22.5) - r * Math.sin(a)]);
+  }
+  layer.add(pts, true);
+  const bar = (u, wide) => {                     // a nut or a fret
+    const half = wide / 2;
+    layer.add([[X(u - half), Y(2.5)], [X(u + half), Y(2.5)],
+               [X(u + half), Y(42.5)], [X(u - half), Y(42.5)]], true);
+  };
+  bar(23.6, 5.2);                                 // the nut
+  for (const u of [43.5, 67.5, 92.3, 116.5, 141.3, 166.3, 190.5]) bar(u, 1.9);
+  for (const u of [79.8, 128.8, 178.0]) {         // three pearl dots
+    const c = [], R = 5 * k;
+    for (let i = 0; i < 24; i++) {
+      const a = i * Math.PI / 12;
+      c.push([X(u) + R * Math.cos(a), Y(22.5) + R * Math.sin(a)]);
+    }
+    layer.add(c, true);
+  }
+}
 
 /* ---------------------------------------------------------------- RADIUS
 
@@ -645,7 +758,7 @@ const sagOf = (R, w) => R - Math.sqrt(Math.max(0, R*R - (w/2)*(w/2)));
 const radiusForSag = (sag, w) => sag > 1e-9 ? (sag*sag + (w/2)*(w/2)) / (2*sag) : Infinity;
 
 /* The surface height above the flat back at any point on the board, with
-   u the fraction across (0 at the bass edge, 1 at the treble) and t the
+   u the fraction across (0 at the -x edge, 1 at the +x edge) and t the
    fraction along (0 at the nut line, 1 at the far end). */
 function surfaceZ(rad, u, t) {
   const wA = rad.wNut, wB = rad.wEnd;
@@ -855,11 +968,50 @@ function buildLayers(g, o) {
     L.push(s);
   }
 
+  /* THE POINTS A DRAWING IS CHECKED AT.
+
+     A beta tester measured nut to 12th against 12th to bridge and got two
+     different numbers. Measured on the drawing itself, the two halves are
+     317.5000 and 317.5000 on the treble string and 323.8500 and 323.8500 on
+     the bass, equal to a millionth of a millimetre. What the calliper was on
+     was the END of the fret slot at the edge of the wood -- several
+     millimetres along the slanted fret from where the string actually
+     crosses it, and up in z as well, because that slot line carries the
+     cutting depth.
+
+     Nothing was wrong with the drawing. There was nothing ON it to measure
+     to. So the three points a check needs are marked, on the two outer
+     strings: the nut, every fret, and the bridge. They are the solver's own
+     points, so a mark cannot land anywhere the geometry does not already say
+     it should.
+
+     EACH MARK IS TWO STROKES DRAWN END - CENTRE - END. That is the whole
+     point of it: the centre is a real vertex on both strokes, so it arrives
+     in CAD as a point to snap to rather than a crossing to judge by eye.
+
+     THE STRING LINES ARE LEFT ALONE. Putting the vertex on the string itself
+     is the obvious way to do this, and it would arrive in Fusion as one
+     sketch line per fret instead of one line -- so the whole string could no
+     longer be clicked and read as 635.0000. The vertex goes inside the mark,
+     where it costs nothing. */
+  if (o.showCheckPoints) {
+    const c = new Layer('CHECK-POINTS');
+    const arm = 1.6;
+    const mark = ([x, y]) => {
+      c.add([[x - arm, y], [x, y], [x + arm, y]]);
+      c.add([[x, y - arm], [x, y], [x, y + arm]]);
+    };
+    mark(g.bassNut); mark(g.trebleNut);
+    mark(g.bassBridge); mark(g.trebleBridge);
+    for (const f of g.frets) { mark(f.bass); mark(f.treble); }
+    L.push(c);
+  }
+
   /* The bridge mounting posts, laid out exactly the way the Fusion add-in
      lays them out, so the two tools cannot disagree:
         treble post  =  scale length + bridge offset, measured from the nut
-                        straight up the board, at +half the post spacing
-        bass post    =  the same, plus its own setback, at -half the spacing
+                        straight up the board, at -half the post spacing
+        bass post    =  the same, plus its own setback, at +half the spacing
      The bass post moves straight back. The across spacing does not change,
      which is what the hardware needs. */
   if (o.showPosts && o.postFromNut > 0) {
@@ -879,8 +1031,8 @@ function buildLayers(g, o) {
       p.add([[cx-t, cy], [cx+t, cy]]);
       p.add([[cx, cy-t], [cx, cy+t]]);
     };
-    put( o.postSpacing/2, baseY);                       // treble side
-    put(-o.postSpacing/2, baseY + o.postSetbackBass);   // bass side
+    put(-o.postSpacing/2, baseY);                       // treble side, -x
+    put( o.postSpacing/2, baseY + o.postSetbackBass);   // bass side, +x
     L.push(p);
   }
 
@@ -906,6 +1058,12 @@ function buildLayers(g, o) {
     o.info.forEach((line, i) => t.label(x, top - step*i, h, line, 'start'));
     titleBottom = top - step * o.info.length;
     L.push(t);
+
+    // The mark sits above the title block, the way it sits above the text
+    // on the page and on the manual's cover.
+    const bm = new Layer('BRAND');
+    brandMark(bm, x, top + 3.5, 46);
+    L.push(bm);
   }
 
   /* THE CROSS SECTIONS, drawn true size. This is the part of a radiused
@@ -1225,7 +1383,7 @@ const LEN_IDS = ['bassScale','trebleScale','nutWidth','nutSeat','extension',
   'radiusNut','radiusEnd','thickness','slotDepth','bindingWidth'];
 const PLAIN_IDS = ['perpFret','frets','strings','endExtension'];
 const CHK_IDS = ['slotWidthOn','doubleTwelve','showInlayCentres','showCentreline',
-  'showFretNumbers','showStrings','showBridge','showSaddles','showPosts',
+  'showFretNumbers','showStrings','showBridge','showSaddles','showCheckPoints','showPosts',
   'showEdges','extendFrets','showBox','showTitleBlock','landscape',
   'showSection','slotDepthOn'];
 
@@ -1462,7 +1620,8 @@ function build() {
     showFretNumbers:v.showFretNumbers, showStrings:v.showStrings,
     showBridge:v.showBridge, inlayFrets:v.inlayFrets, doubleAt:v.doubleAt,
     inlayDia:v.inlayDia, showInlayCentres:v.showInlayCentres,
-    showSaddles:v.showSaddles, showPosts:v.showPosts, postSpacing:v.postSpacing,
+    showSaddles:v.showSaddles, showCheckPoints:v.showCheckPoints,
+    showPosts:v.showPosts, postSpacing:v.postSpacing,
     postDia:v.postDia, postFromNut:v.postFromNut, postSetbackBass:v.postSetbackBass,
     showEdges:v.showEdges, extendFrets:v.extendFrets, showBox:v.showBox,
     bound:v.bound, bindingWidth:v.bindingWidth,
