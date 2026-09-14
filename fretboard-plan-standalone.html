@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Set out a fretboard, single scale or fanned, and download DXF, SVG, PDF and CSV ready to cut from. Urban Custom Guitars.">
+<title>Fretboard Plan Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  /* COMMITTED TO LIGHT, on purpose. This page sits on its own, apart
+     from the dark photography pages, and it is a workbench page: you
+     read numbers off it and print from it. So it is daylight, not a
+     dark room. Every colour is painted here rather than left to follow
+     whatever device opens it, so the page looks the same everywhere. */
+  --bg:#eef2f6; --panel:#ffffff; --sunk:#f5f8fa; --line:#dde4ea; --line-2:#bfc9d4;
+  --ink:#171c22; --muted:#5a6775; --accent:#e2721a; --accent-ink:#b0530c;
+  --accent-soft:#fdeedd; --good:#17835a; --bad:#c33a2d; --paper:#ffffff;
+  --good-soft:#e4f4ec; --bad-soft:#fdeceb;
+  --shadow:0 1px 2px rgba(20,28,38,.07),0 10px 26px rgba(20,28,38,.08);
+  --r:6px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0; color:var(--ink);
+  background:linear-gradient(180deg,#ffffff 0,rgba(255,255,255,0) 340px) no-repeat,var(--bg);
+  font-family:Barlow,"Helvetica Neue","DejaVu Sans",Arial,sans-serif; font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1340px; margin:0 auto; padding:0 16px; padding-block:20px 28px}
+h1,h2,h3,.lab,.btn,th{font-family:"Barlow Condensed",Barlow,"DejaVu Sans Condensed",Arial,sans-serif}
+.num,input,select,td.n,.mono{font-family:"IBM Plex Mono",ui-monospace,"DejaVu Sans Mono",Menlo,Consolas,monospace;
+  font-variant-numeric:tabular-nums}
+
+header{display:flex; flex-wrap:wrap; gap:16px 24px; align-items:flex-end;
+  justify-content:space-between; border-bottom:2px solid var(--ink); padding-bottom:14px}
+h1{margin:0; font-size:clamp(26px,3.6vw,40px); font-weight:700; letter-spacing:.005em;
+  text-transform:uppercase; line-height:.98; text-wrap:balance}
+h1 em{font-style:normal; color:var(--accent)}
+.sub{margin:6px 0 0; color:var(--muted); max-width:62ch; font-size:15px}
+.brand{display:flex; flex-direction:column; align-items:flex-end; gap:9px}
+.brand svg{display:block}
+.brandtext{font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; font-size:13px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted); text-align:right; line-height:1.35}
+@media (max-width:560px){ .brand{align-items:flex-start} .brandtext{text-align:left} }
+
+.grid{display:grid; gap:22px; grid-template-columns:minmax(320px,382px) minmax(0,1fr);
+  align-items:start; margin-top:24px}
+@media (max-width:940px){ .grid{grid-template-columns:1fr} }
+/* A grid item's default min-width is auto, so a wide child -- the fret
+   table with its five no-wrap columns -- pushes the whole column wider
+   than the screen and the page scrolls sideways. min-width:0 lets the
+   item be narrower than its content so the table scrolls in its own box
+   instead, which is where the scrolling belongs. */
+.grid > *{min-width:0}
+.scroll{overflow-x:auto}
+
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--shadow)}
+.rail{padding:4px 0}
+fieldset{border:0; border-top:1px solid var(--line); margin:0; padding:16px 18px 18px}
+fieldset:first-of-type{border-top:0}
+legend{font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; font-size:12px; font-weight:700;
+  letter-spacing:.17em; text-transform:uppercase; color:var(--accent-ink); padding:0}
+.row{display:grid; grid-template-columns:1fr auto; gap:6px 12px; align-items:center;
+  margin-top:11px}
+.row:first-of-type{margin-top:12px}
+.lab{font-size:14.5px; font-weight:500; color:var(--ink)}
+.hint{grid-column:1/-1; font-size:12.5px; color:var(--muted); margin-top:-3px}
+input[type=number],input[type=text],select{
+  width:112px; padding:6px 8px; font-size:14px; color:var(--ink);
+  background:var(--sunk); border:1px solid var(--line-2); border-radius:4px; text-align:right}
+select{width:auto; min-width:112px; text-align:left}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{
+  outline:2px solid var(--accent); outline-offset:2px}
+.checks{display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:12px}
+.chk{display:flex; gap:7px; align-items:center; font-size:14px}
+.chk input{width:auto; accent-color:var(--accent)}
+.seg{display:inline-flex; border:1px solid var(--line-2); border-radius:4px; overflow:hidden}
+.seg button{border:0; background:var(--sunk); color:var(--muted); padding:6px 13px;
+  font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--accent); color:#fff}
+
+.sheetwrap{padding:16px}
+.sheet{background:var(--paper); border:1px solid var(--line-2);
+  box-shadow:0 1px 3px rgba(20,28,38,.12); border-radius:3px;
+  display:block; overflow:auto; padding:14px 12px}
+.sheet svg{width:100%; height:auto; display:block}
+.sheetbar{display:flex; flex-wrap:wrap; gap:10px 18px; align-items:baseline;
+  justify-content:space-between; padding:0 2px 12px}
+.sheetbar h2{margin:0; font-size:17px; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase}
+.dims{font-size:13.5px; color:var(--muted)}
+
+.verdict{display:flex; flex-wrap:wrap; gap:10px 8px; align-items:center;
+  border-top:1px solid var(--line); padding:14px 16px}
+.pill{display:inline-flex; gap:7px; align-items:center; font-size:12.5px; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; padding:4px 10px; border-radius:100px;
+  border:1px solid currentColor}
+.pill.ok{color:var(--good); background:var(--good-soft)}
+.pill.no{color:var(--bad); background:var(--bad-soft)}
+.stat{font-size:13px; color:var(--muted)}
+.stat b{font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace; color:var(--ink); font-weight:600}
+
+.dl{display:flex; flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); padding:16px}
+.btn{display:inline-flex; gap:8px; align-items:center; cursor:pointer; border-radius:4px;
+  padding:9px 15px; font-size:14px; font-weight:600; letter-spacing:.07em;
+  text-transform:uppercase; border:1px solid var(--line-2); background:var(--sunk);
+  color:var(--ink)}
+.btn:hover{border-color:var(--accent); color:var(--accent-ink)}
+.btn.pri{background:var(--accent); border-color:var(--accent); color:#fff}
+.btn.pri:hover{filter:brightness(1.07); color:#fff}
+.btn small{font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace; font-weight:400; letter-spacing:0;
+  text-transform:none; color:inherit; opacity:.72}
+
+.tablewrap{margin-top:22px}
+.tablehead{display:flex; flex-wrap:wrap; gap:8px 16px; align-items:baseline;
+  justify-content:space-between; padding:14px 16px 10px}
+.tablehead h2{margin:0; font-size:17px; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase}
+.scroll{max-height:320px; overflow:auto; border-top:1px solid var(--line)}
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+th,td{padding:6px 16px; text-align:right; white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{position:sticky; top:0; background:var(--panel); color:var(--muted);
+  font-weight:600; font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+  border-bottom:1px solid var(--line-2)}
+tbody tr:nth-child(even){background:var(--sunk)}
+tbody td.n{color:var(--ink)}
+tr.mark td:first-child{color:var(--accent-ink); font-weight:600}
+
+footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
+  color:var(--muted); font-size:13px; display:flex; flex-wrap:wrap; gap:8px 20px;
+  justify-content:space-between}
+.num.wide{width:100%; text-align:left}
+#rowGaugesIn{grid-template-columns:1fr}
+.mono{font-family:"IBM Plex Mono",ui-monospace,"DejaVu Sans Mono",Menlo,Consolas,monospace;
+  font-variant-numeric:tabular-nums; font-size:14px; color:var(--muted);
+  text-align:right; padding:6px 8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Fretboard <em>Plan</em> Generator</h1>
+    <p class="sub">Set the board out, watch it draw, and take away files you can actually cut
+      from. Single scale or fanned. Every fret slot is one unbroken line, and every file is
+      checked before you download it.</p>
+  </div>
+  <div class="brand">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 232 45" width="188" height="36" role="img" aria-label="Urban Custom Guitars">
+  <title>Urban Custom Guitars</title>
+  <!-- His own mark, redrawn to scale cleanly. Every position is measured
+       off the artwork he supplied: the slab is 232 x 45 with fully rounded
+       ends, the nut sits at 9% across, seven frets run at even 10.6% steps
+       from 18.6% to 82.3%, and three pearl dots sit at 32.5%, 54.1% and
+       75.3%, each 22% of the slab height. -->
+  <defs>
+    <linearGradient id="hdr-ucg-ebony" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#3a332e"/>
+      <stop offset="0.30" stop-color="#241f1c"/>
+      <stop offset="0.72" stop-color="#1b1715"/>
+      <stop offset="1"    stop-color="#2c2622"/>
+    </linearGradient>
+    <linearGradient id="hdr-ucg-brass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#b98a5e"/>
+      <stop offset="0.38" stop-color="#f6d4ac"/>
+      <stop offset="0.62" stop-color="#e3b287"/>
+      <stop offset="1"    stop-color="#a87c53"/>
+    </linearGradient>
+    <linearGradient id="hdr-ucg-pearl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"   stop-color="#fbf7e8"/>
+      <stop offset="0.5" stop-color="#e6dfc6"/>
+      <stop offset="1"   stop-color="#cfc6a8"/>
+    </linearGradient>
+    <linearGradient id="hdr-ucg-bone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#f2ecd6"/>
+      <stop offset="0.5" stop-color="#ded8c0"/>
+      <stop offset="1"   stop-color="#c3bda4"/>
+    </linearGradient>
+    <clipPath id="hdr-ucg-slab">
+      <rect x="0" y="0" width="188" height="36" rx="22.5" ry="22.5"/>
+    </clipPath>
+  </defs>
+
+  <rect x="0" y="0" width="188" height="36" rx="22.5" ry="22.5" fill="url(#hdr-ucg-ebony)"/>
+
+  <g clip-path="url(#hdr-ucg-slab)">
+    <!-- grain -->
+    <g stroke="#4a423b" stroke-width="0.5" opacity="0.30">
+      <path d="M0 11 C 60 8, 150 14, 232 10"/>
+      <path d="M0 22 C 70 26, 140 18, 232 23"/>
+      <path d="M0 33 C 55 30, 160 36, 232 31"/>
+    </g>
+
+    <!-- the nut -->
+    <rect x="21" y="0" width="5.2" height="45" fill="url(#hdr-ucg-bone)"/>
+
+    <!-- seven frets, even steps, as drawn -->
+    <g fill="url(#hdr-ucg-brass)">
+      <rect x="42.6" y="0" width="1.9" height="45"/>
+      <rect x="66.6" y="0" width="1.9" height="45"/>
+      <rect x="91.4" y="0" width="1.9" height="45"/>
+      <rect x="115.6" y="0" width="1.9" height="45"/>
+      <rect x="140.4" y="0" width="1.9" height="45"/>
+      <rect x="165.4" y="0" width="1.9" height="45"/>
+      <rect x="189.6" y="0" width="1.9" height="45"/>
+    </g>
+
+    <!-- three pearl dots, centred between frets -->
+    <g fill="url(#hdr-ucg-pearl)">
+      <circle cx="79.8" cy="22.5" r="5"/>
+      <circle cx="128.8" cy="22.5" r="5"/>
+      <circle cx="178.0" cy="22.5" r="5"/>
+    </g>
+  </g>
+
+  <rect x="0.5" y="0.5" width="231" height="44" rx="22" ry="22"
+        fill="none" stroke="#0f0d0c" stroke-width="1" opacity="0.55"/>
+</svg>
+    <div class="brandtext">Urban Custom Guitars<br>Drawn 1:1</div>
+  </div>
+</header>
+
+<div class="grid">
+  <form class="card rail" id="controls">
+    <fieldset>
+      <legend>Units</legend>
+      <div class="row"><span class="lab">Work in</span>
+        <span class="seg">
+          <button type="button" id="uMm" data-unit="mm" aria-pressed="true" title="Work in millimetres. Every box on the page, and every number in the files you download, is in this unit. Changing it converts what is already typed rather than reinterpreting it.">mm</button><button type="button" id="uCm" data-unit="cm" aria-pressed="false" title="Work in centimetres. Same board, different numbers.">cm</button><button type="button" id="uIn" data-unit="in" aria-pressed="false" title="Work in inches. Same board, different numbers. The PDF still prints at 1 to 1 either way.">inches</button>
+        </span></div>
+      <div class="hint">Every box below, the numbers on the drawing, and the DXF, SVG and CSV
+        all change to match. The board itself is the same size either way, and the PDF still
+        prints 1:1. String gauges stay in inches, which is how they are sold.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Scale</legend>
+      <div class="row"><span class="lab">Type</span>
+        <span class="seg"><button type="button" id="tSingle" aria-pressed="true" title="One scale length for the whole board. Every fret runs square across it.">Single</button><button type="button" id="tFan" aria-pressed="false" title="A fanned, or multiscale, board: a different scale length for the bass and treble sides, so the frets run at an angle. Setting both scale lengths the same gives a straight board again.">Fanned</button></span></div>
+      <div class="row"><label class="lab" for="bassScale" id="lblBass">Scale length</label>
+        <input class="num len" type="number" id="bassScale" value="647.70" data-mm="647.70" data-min="100" data-max="1200" data-step="0.01" title="On a single scale board this is THE scale length, measured up the centre line square from the nut. On a fanned board it is the bass side, measured along the bass outer string."></div>
+      <div class="row" id="rowTreble" hidden><label class="lab" for="trebleScale">Treble scale length</label>
+        <input class="num len" type="number" id="trebleScale" value="628.65" data-mm="628.65" data-min="100" data-max="1200" data-step="0.01" title="The treble side scale length, measured along the treble outer string. Usually the shorter of the two."></div>
+      <div class="row" id="rowPerp" hidden><label class="lab" for="perpFret">Fret square to the board</label>
+        <input class="num" type="number" id="perpFret" value="7" step="1" min="0" max="36" title="Which fret runs square across a fanned board. Everything behind it leans one way and everything in front of it leans the other. 0 is the nut; put it at the bridge by choosing the fret past the last one."></div>
+      <div class="hint" id="hintPerp" hidden>0 puts the nut square. The higher the number, the further back the fan leans.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Board</legend>
+      <div class="row"><label class="lab" for="frets">Frets</label>
+        <input class="num" type="number" id="frets" value="22" step="1" min="1" max="36" title="How many frets are laid out. The board itself carries on past the last one by the amount set under Past the last fret."></div>
+      <div class="row"><label class="lab" for="strings">Strings</label>
+        <input class="num" type="number" id="strings" value="6" step="1" min="1" max="14" title="How many strings. This sets how many string lines are drawn and how the spacing is divided up."></div>
+      <div class="row"><label class="lab" for="nutWidth">Width at the nut</label>
+        <input class="num len" type="number" id="nutWidth" value="43.00" data-mm="43" data-min="10" data-max="120" data-step="0.05" title="The full width of the wood at the nut, edge to edge. Not the string span -- the strings sit inside this by the overhang."></div>
+      <div class="row"><span class="lab">Width at the bridge</span>
+        <span class="num mono" id="outBridgeWidth">&mdash;</span></div>
+      <div class="hint">Worked out from the string span at the bridge plus both overhangs, so it
+        is shown rather than typed.</div>
+      <div class="row"><label class="lab" for="nutSeat">Nut seat, front to back</label>
+        <input class="num len" type="number" id="nutSeat" value="3.175" data-mm="3.175" data-min="0" data-max="30" data-step="0.005" title="How far back from the string contact edge the nut seat is cut. The board keeps its nut width across this part; it does not taper."></div>
+      <div class="row"><label class="lab" for="extension">Board behind the nut</label>
+        <input class="num len" type="number" id="extension" value="6.35" data-mm="6.35" data-min="0" data-max="60" data-step="0.05" title="How much board there is behind the back of the nut seat. Also at the nut width, and also not tapered."></div>
+      <div class="row"><label class="lab" for="endExtension">Past the last fret</label>
+        <input class="num" type="number" id="endExtension" value="50" step="5" min="0" max="200" title="How far the board runs past the last fret, as a percentage of the way to where the next fret would be. 50 is the traditional halfway point."></div>
+      <div class="hint">Per cent of the way to where the next fret would have fallen. 50 is the usual halfway point.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Overhang</legend>
+      <div class="row"><label class="lab" for="ohMode">Set it as</label>
+        <select id="ohMode" title="How the distance from the outer strings to the edge of the wood is set: one number used everywhere, one per end, or all four corners on their own.">
+          <option value="equal" selected>One number everywhere</option>
+          <option value="ends">Nut and bridge</option>
+          <option value="sides">Bass and treble</option>
+          <option value="all">All four separately</option>
+        </select></div>
+      <div class="hint">Overhang is the distance from the CENTRE of an outer string to the edge
+        of the board. It is what stops that string sliding off. On a fanned board it is measured
+        square across the neck, not along the slanted string.</div>
+      <div class="row" id="rowOhNB"><label class="lab" id="labOhNB" for="ohNutBass">Overhang</label>
+        <input class="num len" type="number" id="ohNutBass" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05" title="Bass side, at the nut: from the middle of the outer string to the edge of the wood."></div>
+      <div class="row" id="rowOhNT"><label class="lab" id="labOhNT" for="ohNutTreble">Treble side, at the nut</label>
+        <input class="num len" type="number" id="ohNutTreble" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05" title="Treble side, at the nut: from the middle of the outer string to the edge of the wood."></div>
+      <div class="row" id="rowOhBB"><label class="lab" id="labOhBB" for="ohBridgeBass">Bass side, at the bridge</label>
+        <input class="num len" type="number" id="ohBridgeBass" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05" title="Bass side, at the bridge. Usually a little more than at the nut, because the hand moves further off the neck up there."></div>
+      <div class="row" id="rowOhBT"><label class="lab" id="labOhBT" for="ohBridgeTreble">Treble side, at the bridge</label>
+        <input class="num len" type="number" id="ohBridgeTreble" value="3.00" data-mm="3" data-min="0" data-max="20" data-step="0.05" title="Treble side, at the bridge."></div>
+      <div class="hint">Bass is the low E side. Treble is the high E side.
+        Uneven numbers move the strings off the centre of the board, which is the point of them.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>String spacing</legend>
+      <div class="row"><span class="lab">Space them</span>
+        <span class="seg"><button type="button" id="spEqual" aria-pressed="true" title="Equal gaps between string CENTRES. Simple, and what most fret calculators do.">Equal</button><button type="button" id="spProp" aria-pressed="false" title="Equal gaps between the strings themselves, so a thick string gets more room than a thin one. The visible space between any two strings comes out the same all the way across, which is what the hand actually feels.">Proportional</button></span></div>
+      <div class="hint" id="hintSpacing">&mdash;</div>
+      <div class="row" id="rowSet" hidden><label class="lab" for="stringSet">String set</label>
+        <select id="stringSet" title="A standard gauge set, thinnest first. Only used for proportional spacing, and only to work out how thick each string is."></select></div>
+      <div class="row" id="rowGauges" hidden><label class="lab" for="gauges">Gauges, inches, thinnest first</label></div>
+      <div class="row" id="rowGaugesIn" hidden><input class="num wide" type="text" id="gauges" value=".010 .013 .017 .026 .036 .046" title="Your own gauges in inches, thinnest first, separated by commas -- for a set that is not in the list."></div>
+      <div class="hint" id="hintGauges" hidden>&mdash;</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Radius</legend>
+      <div class="row"><span class="lab">Type</span>
+        <span class="seg"><button type="button" id="rSingle" aria-pressed="true" title="One radius across the whole board.">Single</button><button type="button" id="rComp" aria-pressed="false" title="A compound radius: rounder at the nut, flatter at the far end. The surface between them is a straight blend of the two end arcs, which is how a compound board is really made -- blending two arcs does not give a third arc.">Compound</button></span></div>
+      <div class="row"><label class="lab" for="radiusNut" id="lblRadNut">Radius</label>
+        <input class="num len" type="number" id="radiusNut" value="304.80" data-mm="304.8" data-min="40" data-max="5000" data-step="0.1" title="The radius of the arc across the board at the nut. A smaller number is a rounder board."></div>
+      <div class="row" id="rowRadEnd" hidden><label class="lab" for="radiusEnd">Radius at the far end</label>
+        <input class="num len" type="number" id="radiusEnd" value="406.40" data-mm="406.4" data-min="40" data-max="5000" data-step="0.1" title="The radius at the far end of the board. Normally a larger number -- flatter -- than the nut radius."></div>
+      <div class="row"><label class="lab" for="thickness">Board thickness</label>
+        <input class="num len" type="number" id="thickness" value="6.35" data-mm="6.35" data-min="1" data-max="30" data-step="0.05" title="Board thickness at the middle, measured from the flat back up to the top of the arc. The edges sit lower by the drop."></div>
+      <div class="row"><label class="lab" for="slotDepth">Fret slot depth</label>
+        <input class="num len" type="number" id="slotDepth" value="2.29" data-mm="2.29" data-min="0" data-max="20" data-step="0.01" title="How deep the fret slots are cut, measured down from the board surface. This is what the depth-carrying slot lines are worked out from."></div>
+      <div class="hint" id="radNote">&mdash;</div>
+      <div class="hint" id="radWarn" hidden></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Binding</legend>
+      <div class="row"><span class="lab">Board is</span>
+        <span class="seg"><button type="button" id="bNone" aria-pressed="true" title="No binding. Fret slots run out to the edge of the wood.">Unbound</button><button type="button" id="bBound" aria-pressed="false" title="Bound board. Fret slots stop at the binding, because a slot run out through the binding shows as a line in it and the tang has to be nipped back anyway.">Bound</button></span></div>
+      <div class="row" id="rowBindW" hidden><label class="lab" for="bindingWidth">Binding width</label>
+        <input class="num len" type="number" id="bindingWidth" value="1.50" data-mm="1.5" data-min="0" data-max="10" data-step="0.05" title="How wide the binding strip is, measured in from each edge. It does not move a fret -- only how far each slot line runs."></div>
+      <div class="hint" id="bindNote">&mdash;</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Slots</legend>
+      <div class="row"><label class="lab" for="slotWidth">Saw kerf</label>
+        <input class="num len" type="number" id="slotWidth" value="0.58" data-mm="0.58" data-min="0" data-max="4" data-step="0.01" title="The width of the cut your saw or cutter makes. Drawn as the slot's two real edges, either side of the centre line."></div>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" id="slotWidthOn" title="Turn the slot-width layer on in the files. The centre line is always written either way."> Draw the kerf, not just the centreline</label>
+      </div>
+      <div class="hint">The centreline is always drawn, one unbroken line per slot. The kerf goes on its own layer.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Inlays</legend>
+      <div class="row"><label class="lab" for="inlayPattern">Pattern</label>
+        <select id="inlayPattern" title="Which frets get a face marker. Traditional is the usual set; the others are the common variations.">
+          <option value="std" selected>3 5 7 9 12 15 17 19 21 24</option>
+          <option value="odd">Every odd fret</option>
+          <option value="twelve">12 and 24 only</option>
+          <option value="none">None</option>
+        </select></div>
+      <div class="row"><label class="lab" for="inlayDia">Dot diameter</label>
+        <input class="num len" type="number" id="inlayDia" value="6.00" data-mm="6" data-min="0" data-max="40" data-step="0.05" title="The diameter of each face marker dot."></div>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" id="doubleTwelve" checked title="Two dots at the twelfth and twenty fourth frets instead of one, set either side of the centre line."> Two dots at 12 and 24</label>
+        <label class="chk"><input type="checkbox" id="showInlayCentres" checked title="A small cross at the middle of each marker, for finding a drill centre or setting a laser up."> Centre crosses</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Bridge</legend>
+      <div class="row"><label class="lab" for="bridgeModel">Bridge type</label>
+        <select id="bridgeModel" title="Which bridge. The offset and the post layout come from the same figures the Fusion add-in uses, so the two tools cannot disagree about where the hardware goes.">
+          <option value="Bolt-On Single Cut" data-off="0.250" data-tol="0.030">Bolt-On Single Cut</option>
+          <option value="Bolt-On Double Cut Non-Tremolo" data-off="-0.250" data-tol="0.030">Bolt-On Double Cut Non-Tremolo</option>
+          <option value="Bolt-On Double Cut Vintage Tremolo" data-off="-0.250" data-tol="0.030">Bolt-On Double Cut Vintage Tremolo</option>
+          <option value="Floyd Rose Original" data-off="-0.500" data-tol="0">Floyd Rose Original</option>
+          <option value="Floyd Rose II / Schaller Floyd Rose" data-off="-0.563" data-tol="0">Floyd Rose II / Schaller Floyd Rose</option>
+          <option value="Two-Post Adjustable" data-off="0.0625" data-tol="0.030" selected>Two-Post Adjustable</option>
+          <option value="Combo bridge/tailpiece" data-off="0.0625" data-tol="0.030">Combo bridge/tailpiece</option>
+          <option value="Schaller non-tremolo roller" data-off="0.843" data-tol="0">Schaller non-tremolo roller</option>
+          <option value="Hipshot hardtail" data-off="0.625" data-tol="0">Hipshot hardtail</option>
+          <option value="Top-loading hardtail" data-off="0.750" data-tol="0">Top-loading hardtail</option>
+        </select></div>
+      <div class="hint" id="bridgeNote">&mdash;</div>
+      <div class="row"><label class="lab" for="bridgeOffset">Bridge offset from the scale length</label>
+        <input class="num len" type="number" id="bridgeOffset" value="1.5875" data-mm="1.5875" data-min="-40" data-max="40" data-step="0.0001" title="How far past the scale length the bridge actually mounts. Comes from the bridge you picked; change it if your hardware measures differently."></div>
+      <div class="hint">Picking a bridge type fills this in. Plus is further from the nut.
+        The post sits at scale length plus this.</div>
+      <div class="row"><label class="lab" for="bridgeSpan">Outer string to outer string, at the bridge</label>
+        <input class="num len" type="number" id="bridgeSpan" value="50.00" data-mm="50" data-min="5" data-max="140" data-step="0.01" title="Outer string to outer string at the bridge, centre to centre. The board width at the bridge is this plus the two overhangs."></div>
+      <div class="hint" id="hintBridgeSpan">&mdash;</div>
+      <div class="row"><label class="lab" for="postSpacing">Post spacing, across the board</label>
+        <input class="num len" type="number" id="postSpacing" value="73.66" data-mm="73.66" data-min="0" data-max="200" data-step="0.01" title="Across the board, centre to centre, between the two mounting posts. This does not change when the bass post moves back."></div>
+      <div class="row"><label class="lab" for="postDia">Post or mount hole diameter</label>
+        <input class="num len" type="number" id="postDia" value="6.35" data-mm="6.35" data-min="0" data-max="40" data-step="0.05" title="The diameter of the post or mount hole, drawn as a circle with a cross through it."></div>
+      <div class="row"><label class="lab" for="postSetbackBass">Bass post, further back than the treble</label>
+        <input class="num len" type="number" id="postSetbackBass" value="2.38125" data-mm="2.38125" data-min="-30" data-max="60" data-step="0.0001" title="How much further from the nut the bass post sits than the treble one. It moves straight back; the spacing across the board stays the same."></div>
+      <div class="hint">1.59 to 3.18 mm (0.0625 to 0.125 in) is the usual range.
+        Check the post spacing against the hardware in your hand before you drill.</div>
+      <div class="hint" id="fanBridgeNote" hidden>On a fanned board the posts are set off the TREBLE
+        scale. Unless your perpendicular point is at the bridge, no single line runs square across
+        for the bridge to sit flush on, so treat these holes as a starting point.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>What to draw</legend>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" id="showEdges" checked title="The outline of the board itself."> Board edges</label>
+        <label class="chk"><input type="checkbox" id="extendFrets" checked title="On, a fret slot runs the full width -- to the binding on a bound board, or to the edge of the wood on an unbound one. Off, it stops at the outer two strings, which is all a fret has to cover. Neither setting moves a fret."> Run the frets out to the edge</label>
+        <label class="chk"><input type="checkbox" id="showCentreline" checked title="The board's own centre line, for lining a blank up on a bed or a jig."> Centre line</label>
+        <label class="chk"><input type="checkbox" id="showFretNumbers" checked title="The number of each fret, written beside its slot off the treble edge."> Fret numbers</label>
+        <label class="chk"><input type="checkbox" id="showStrings" title="A line for each string, nut to bridge. Shows where the strings really sit over the board."> Strings, out to the bridge</label>
+        <label class="chk"><input type="checkbox" id="showBridge" title="The line across the board at the bridge. On a fanned board it is not square to the centre line, which is worth seeing."> Bridge line</label>
+        <label class="chk"><input type="checkbox" id="showSaddles" title="A small cross where each string crosses the bridge line. That crossing is the point the scale length is measured TO."> Each string at the bridge</label>
+        <label class="chk"><input type="checkbox" id="showCheckPoints" checked title="A small cross on each of the two outer strings at the nut, at every fret, and at the bridge -- the points a drawing is checked at. The centre of each cross is a real vertex, so it arrives in CAD as a point you can snap to. Measure between two of them and nut-to-12th and 12th-to-bridge come out equal, because they are. Measuring to the end of a fret slot instead lands at the edge of the wood, which on a fanned board is several millimetres along the fret from where the string crosses it."> Check points, on the two outer strings</label>
+        <label class="chk"><input type="checkbox" id="showPosts" title="The bridge mounting post positions, drawn as circles with a cross through them."> Bridge post holes</label>
+        <label class="chk"><input type="checkbox" id="showSection" checked title="The end of the board drawn at full size, with the arc, the flat back, the drop from the middle to the edge and the slot depth all written on. This is the one thing a flat plan cannot otherwise show, because from directly above the curve is edge on and invisible."> Cross sections, true size</label>
+        <label class="chk"><input type="checkbox" id="slotDepthOn" checked title="Break each slot line into steps and give every point the height of the slot bottom above the flat back, written into the DXF as a real 3D polyline. This is the cut line a CNC needs to follow the radius. It changes nothing in the plan view."> Slot lines carry depth (3D DXF)</label>
+        <label class="chk"><input type="checkbox" id="showBox" title="One rectangle round everything on the sheet, so a print has a known outer edge to register and trim to."> Box round the whole drawing</label>
+        <label class="chk"><input type="checkbox" id="showTitleBlock" checked title="The paperwork beside the drawing: what the board is, the fret positions as numbers, and a 100 mm and a 4 inch bar to measure so you can prove the print came out 1 to 1."> Title block with the numbers</label>
+      </div>
+      <div class="hint">These only change what gets drawn and what goes in the files.
+        Not one of them moves a fret. Turning the frets off the edge shortens the lines to the
+        outer strings; it does not move them.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Printing</legend>
+      <div class="row"><label class="lab" for="pageSize">Tile the PDF onto</label>
+        <select id="pageSize" title="Also write a second PDF broken across printer pages of this size, with an overlap and a cross in each corner to line the sheets up on. A long board will not fit one sheet, and a printer told to fit it will shrink it.">
+          <option>A4</option><option>A3</option><option>Letter</option>
+          <option>Legal</option><option>Tabloid</option>
+          <option value="">Do not tile</option>
+        </select></div>
+      <div class="checks"><label class="chk"><input type="checkbox" id="landscape" title="Turn the tiled pages on their side. A long board usually needs fewer sheets that way."> Landscape</label></div>
+      <div class="hint">A long board will not fit one sheet, and a printer told to fit it will shrink it.
+        The tiled file overlaps the sheets and puts a cross in each corner to line them up on.</div>
+    </fieldset>
+  </form>
+
+  <div>
+    <section class="card sheetwrap">
+      <div class="sheetbar">
+        <h2>The drawing</h2>
+        <span class="dims" id="dims">&mdash;</span>
+      </div>
+      <div class="sheet" id="sheet"></div>
+      <div class="verdict" id="verdict"></div>
+      <div class="dl">
+        <button class="btn pri" type="button" data-dl="dxf">DXF <small>for CAM</small></button>
+        <button class="btn" type="button" data-dl="svg">SVG</button>
+        <button class="btn" type="button" data-dl="pdf">PDF <small>one sheet</small></button>
+        <button class="btn" type="button" data-dl="tiled">PDF <small id="tileLabel">tiled</small></button>
+        <button class="btn" type="button" data-dl="csv">CSV <small>the numbers</small></button>
+      </div>
+    </section>
+
+    <section class="card tablewrap">
+      <div class="tablehead">
+        <h2>Fret positions</h2>
+        <span class="dims" id="tableNote">&mdash;</span>
+      </div>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Fret</th><th id="thBass">From nut</th><th id="thTreble">From nut</th><th id="thStepB">Step</th><th id="thStepT">Step</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+
+<footer>
+  <span>Urban Custom Guitars &middot; Fretboard Plan Generator</span>
+  <span>Nothing leaves your browser. The files are built on this page.</span>
+</footer>
+</div>
+
+<script>
+/* Urban Custom Guitars - fretboard plan core.
+   The same construction the Fusion add-in uses: each fret sits at the
+   same equal-tempered fraction of the layout, the line joining the two
+   outer points is the fret, and where it crosses the board's own side
+   edges is where that fret really starts and stops. Everything in here
+   works in MILLIMETRES. Inches and centimetres are a display and file
+   choice made at the edges, never in the geometry. */
+
+function lineIntersection(a1, a2, b1, b2) {
+  const [x1, y1] = a1, [x2, y2] = a2, [x3, y3] = b1, [x4, y4] = b2;
+  const den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+  if (Math.abs(den) < 1e-12) return null;
+  const px = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / den;
+  const py = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / den;
+  return [px, py];
+}
+function yAtX(p1, p2, x) {
+  const [x1, y1] = p1, [x2, y2] = p2;
+  if (Math.abs(x2 - x1) < 1e-12) return (y1 + y2) / 2;
+  return y1 + (x - x1) / (x2 - x1) * (y2 - y1);
+}
+const unit = (dx, dy) => { const d = Math.hypot(dx, dy); return d > 1e-12 ? [dx / d, dy / d] : [0, 1]; };
+const fracAt = n => 1 - 1 / Math.pow(2, n / 12);
+
+/* WHERE EACH STRING SITS ACROSS THE BOARD, as a fraction of the span
+   between the two outer strings. 0 is the bass side, 1 is the treble --
+   as fractions of the span, not as x, so they follow the bass wherever
+   the solver puts it.
+
+     EQUAL -- the centres are spaced evenly. Every string sits the same
+     distance from its neighbour, centre to centre. Because a wound low E
+     is much fatter than a plain high E, the GAP you can actually see
+     between the strings then comes out wider at the treble end.
+
+     PROPORTIONAL -- the gaps you can see are made equal instead, by
+     giving each string half its own thickness of room. The two outer
+     strings still sit exactly on the ends of the span, which is what
+     keeps the outer-string overhang the number you typed.
+
+   Diameters come in bass-first, in millimetres, one per string. If the
+   strings are so fat that no gap is left over, this gives up and spaces
+   them evenly rather than laying them across each other. */
+function stringFractions(span, dias) {
+  const n = dias.length;
+  if (n < 2) return [0.5];
+  const even = () => Array.from({ length: n }, (_, i) => i / (n - 1));
+  if (!(span > 0)) return even();
+  let sumHalf = 0;
+  for (let i = 0; i < n - 1; i++) sumHalf += (dias[i] + dias[i + 1]) / 2;
+  const gap = (span - sumHalf) / (n - 1);
+  if (!(gap > 0)) return even();
+  const out = [0];
+  let acc = 0;
+  for (let i = 0; i < n - 1; i++) {
+    acc += gap + (dias[i] + dias[i + 1]) / 2;
+    out.push(acc / span);
+  }
+  out[n - 1] = 1;
+  return out;
+}
+
+function solve(o) {
+  const bs = o.bassScale, ts = o.trebleScale;
+  const nw = o.nutWidth;
+
+  /* THE OVERHANG is the distance from the CENTRE of an outer string to
+     the edge of the board, and there are four of them: bass and treble,
+     at the nut and at the bridge. It is what stops a string sliding off
+     the edge, and the four are allowed to differ -- plenty of players
+     want a little more room under the low E than under the high E.
+
+     The nut end is typed as a board WIDTH, because that is the piece of
+     wood you start with. The bridge end is typed as a string SPAN,
+     because that number comes off the bridge hardware, and the board
+     width there is worked out from it. Same way round as the add-in.
+
+     THE BASS SIDE IS +X, the same way round as the Fusion add-in, where
+     it was settled by measuring a generated model: the 0.046 in low E
+     string body sat at +22.206 mm. Until the add-in's V4.551 its solver
+     had this the other way round, so on a fanned board the long scale
+     ran under the thin strings. Both tools put the bass on +x now, and
+     they draw the same picture rather than mirror images of it. */
+  const bnx = nw / 2 - o.ohNutBass;
+  const tnx = -nw / 2 + o.ohNutTreble;
+  const bw = o.bridgeSpan + o.ohBridgeBass + o.ohBridgeTreble;
+  const bbx = bw / 2 - o.ohBridgeBass;
+  const tbx = -bw / 2 + o.ohBridgeTreble;
+
+  /* WHAT COUNTS AS A FAN. Fanned picked in the form with the SAME number
+     in both scale boxes is not a fanned board at all -- every fret comes
+     out square across and it is a straight board. So it is measured the
+     single-scale way. Only a real difference between the two scale
+     lengths switches to the outer-string rule. The test is on the
+     numbers, not on the button, at a millionth of a millimetre.
+
+     WHERE THE SCALE LENGTH IS MEASURED FROM, which is why that test
+     has to exist at all:
+
+       SINGLE SCALE -- measured on the CENTRE LINE, square out from the
+       middle of the nut. The run up the board IS the scale length. The
+       outer strings still splay out toward the bridge, so each one ends
+       up a little longer than the scale length in real life, which is
+       part of why a guitar needs intonating at the saddle.
+
+       FANNED -- measured along the two OUTER STRINGS, each from its own
+       nut point to its own bridge point. Those slanted lines are what the
+       fan is built on, so the run up the board is shorter than the scale
+       length and has to be solved for. */
+  const isFan = !!o.fanned && Math.abs(bs - ts) > 1e-6;
+  const runFor = (scale, dx) => Math.sqrt(Math.max(0, scale * scale - dx * dx));
+  const yB = isFan ? runFor(bs, bbx - bnx) : bs;
+  const yT = isFan ? runFor(ts, tbx - tnx) : ts;
+
+  /* The chosen fret is square across the board when both of its ends sit
+     at the same height, so the treble nut is offset by the difference in
+     the two runs at that fret's own fraction. Fret 0 means the nut, and
+     on a straight board both runs are equal and the offset is zero, which
+     is the ordinary square-fret case falling out of the same expression
+     rather than being special-cased. */
+  const f = fracAt(Math.max(0, o.perpFret));
+  const bny = 0, bby = yB;
+  const tny = f * (yB - yT), tby = tny + yT;
+  const bassNut = [bnx, bny], trebleNut = [tnx, tny];
+  const bassBridge = [bbx, bby], trebleBridge = [tbx, tby];
+
+  // The board edges. The wood is centred on the middle of the drawing at
+  // both ends; the strings sit inside it by their own overhangs, which is
+  // why an uneven pair of overhangs moves the strings off centre without
+  // moving the board.
+  const nutLeft = [-nw / 2, yAtX(bassNut, trebleNut, -nw / 2)];
+  const nutRight = [nw / 2, yAtX(bassNut, trebleNut, nw / 2)];
+  const bridgeLeft = [-bw / 2, yAtX(bassBridge, trebleBridge, -bw / 2)];
+  const bridgeRight = [bw / 2, yAtX(bassBridge, trebleBridge, bw / 2)];
+  const leftEdge = [nutLeft, bridgeLeft], rightEdge = [nutRight, bridgeRight];
+
+  const nF = o.frets;
+  const endFrac = fracAt(nF) + (fracAt(nF + 1) - fracAt(nF)) * (o.endExtension / 100);
+  const ebf = [bnx + (bbx - bnx) * endFrac, bny + (bby - bny) * endFrac];
+  const etf = [tnx + (tbx - tnx) * endFrac, tny + (tby - tny) * endFrac];
+  const endLeft = lineIntersection(ebf, etf, leftEdge[0], leftEdge[1]) || ebf;
+  const endRight = lineIntersection(ebf, etf, rightEdge[0], rightEdge[1]) || etf;
+
+  /* The span the strings spread across is different at the two ends, so
+     proportional spacing is worked out at each end from that end's own
+     span. Both ends share the same diameters, which is what keeps each
+     string running straight from nut to bridge. */
+  const n = Math.max(1, o.strings);
+  const dias = (o.proportional && o.gauges && o.gauges.length === n)
+    ? o.gauges.slice() : null;
+  const fN = dias ? stringFractions(Math.abs(tnx - bnx), dias)
+                  : Array.from({ length: n }, (_, i) => n === 1 ? 0.5 : i / (n - 1));
+  const fB = dias ? stringFractions(Math.abs(tbx - bbx), dias) : fN;
+  const strings = [];
+  for (let i = 0; i < n; i++) {
+    const tN = n === 1 ? 0.5 : fN[i], tB = n === 1 ? 0.5 : fB[i];
+    const nx = bnx + (tnx - bnx) * tN, bx = bbx + (tbx - bbx) * tB;
+    strings.push({ nut: [nx, yAtX(bassNut, trebleNut, nx)],
+                   bridge: [bx, yAtX(bassBridge, trebleBridge, bx)],
+                   dia: dias ? dias[i] : 0 });
+  }
+
+  const frets = [];
+  for (let m = 1; m <= nF; m++) {
+    const fr = fracAt(m);
+    const bf = [bnx + (bbx - bnx) * fr, bny + (bby - bny) * fr];
+    const tf = [tnx + (tbx - tnx) * fr, tny + (tby - tny) * fr];
+    frets.push({ n: m, bass: bf, treble: tf,
+      left: lineIntersection(bf, tf, leftEdge[0], leftEdge[1]) || bf,
+      right: lineIntersection(bf, tf, rightEdge[0], rightEdge[1]) || tf });
+  }
+  return { nutLeft, nutRight, bridgeLeft, bridgeRight, leftEdge, rightEdge,
+           endLeft, endRight, strings, frets, bassNut, trebleNut,
+           bassBridge, trebleBridge, o, isFan, bridgeWidth: bw,
+           nutSpan: Math.abs(tnx - bnx), proportional: !!dias };
+}
+
+/* The numbers in the table are quoted the same way the scale length is.
+   On a straight board that is the distance up the centre line, which is
+   the number every fret table in the trade prints and the number you
+   would mark out. On a fanned board it is the distance along each outer
+   string, which is two different numbers and both matter at the bench.
+   Millimetres out; the caller converts if another unit was asked for. */
+function fretRows(g) {
+  const out = []; let pb = 0, pt = 0;
+  for (const f of g.frets) {
+    let db, dt;
+    if (g.isFan) {
+      db = Math.hypot(f.bass[0] - g.bassNut[0], f.bass[1] - g.bassNut[1]);
+      dt = Math.hypot(f.treble[0] - g.trebleNut[0], f.treble[1] - g.trebleNut[1]);
+    } else {
+      db = dt = f.bass[1] - g.bassNut[1];
+    }
+    out.push([f.n, db, dt, db - pb, dt - pt]); pb = db; pt = dt;
+  }
+  return out;
+}
+
+
+/* Layers, the check, and the five writers. Millimetres throughout. */
+
+const STYLE = {
+  BORDER:['#555',0.5,null], TITLE:['#333',0.35,null],
+  BOARD:['#111',0.6,null], NUT:['#b00',0.5,null],
+  'SLOT-CENTRELINE':['#06c',0.35,null], 'SLOT-WIDTH':['#7ab',0.25,null],
+  INLAYS:['#83b',0.35,null], 'INLAY-CENTRES':['#83b',0.2,[3,1,0.6,1]],
+  CENTRELINE:['#999',0.2,[8,1.5,1,1.5]], STRINGS:['#2a9',0.18,[6,2]],
+  BRIDGE:['#c70',0.35,[6,2]], EXTENSION:['#888',0.2,[2,1]],
+  'FRET-NUMBERS':['#555',0.2,null], 'SCALE-BAR':['#111',0.35,null],
+  'BRIDGE-POSTS':['#c70',0.4,null], SADDLES:['#c70',0.3,null],
+  'CHECK-POINTS':['#c70',0.25,null],
+  BINDING:['#a63',0.35,null], SECTION:['#333',0.35,null],
+  BRAND:['#111',0.35,null],
+};
+const DXFCOL = {BORDER:8,TITLE:7,BOARD:7,NUT:1,'SLOT-CENTRELINE':5,'SLOT-WIDTH':4,
+  INLAYS:6,'INLAY-CENTRES':8,CENTRELINE:8,STRINGS:3,BRIDGE:2,EXTENSION:8,
+  'FRET-NUMBERS':8,'SCALE-BAR':7,'BRIDGE-POSTS':2,SADDLES:2,'CHECK-POINTS':4,BINDING:6,SECTION:7,BRAND:7};
+
+/* THE MAKER'S MARK, DRAWN AS LINES. A plan goes to a machine as a DXF, and a
+   DXF holds geometry -- there is nowhere to put a picture. So the mark is
+   drawn the way the rest of the sheet is drawn: an outline, a nut, frets and
+   three dots. It comes out of every format the same, it scales with the
+   sheet, and a machinist can see whose drawing is on the bed.
+
+   The proportions are the mark's own, measured off the artwork: 232 by 45
+   with fully rounded ends, the nut at 9 per cent across, seven frets at even
+   steps from 18.6 to 82.3 per cent, and three dots at 32.5, 54.1 and 75.3
+   per cent, each 22 per cent of the height. */
+function brandMark(layer, x, y, w) {
+  const k = w / 232, h = 45 * k, r = h / 2;
+  const X = u => x + u * k, Y = v => y + v * k;
+  // the slab: two straight sides and a half circle at each end
+  const pts = [];
+  const N = 14;
+  for (let i = 0; i <= N; i++) {                 // right end, top to bottom
+    const a = -Math.PI / 2 + Math.PI * i / N;
+    pts.push([X(232 - 22.5) + r * Math.cos(a), Y(22.5) - r * Math.sin(a)]);
+  }
+  for (let i = 0; i <= N; i++) {                 // left end, bottom to top
+    const a = Math.PI / 2 + Math.PI * i / N;
+    pts.push([X(22.5) + r * Math.cos(a), Y(22.5) - r * Math.sin(a)]);
+  }
+  layer.add(pts, true);
+  const bar = (u, wide) => {                     // a nut or a fret
+    const half = wide / 2;
+    layer.add([[X(u - half), Y(2.5)], [X(u + half), Y(2.5)],
+               [X(u + half), Y(42.5)], [X(u - half), Y(42.5)]], true);
+  };
+  bar(23.6, 5.2);                                 // the nut
+  for (const u of [43.5, 67.5, 92.3, 116.5, 141.3, 166.3, 190.5]) bar(u, 1.9);
+  for (const u of [79.8, 128.8, 178.0]) {         // three pearl dots
+    const c = [], R = 5 * k;
+    for (let i = 0; i < 24; i++) {
+      const a = i * Math.PI / 12;
+      c.push([X(u) + R * Math.cos(a), Y(22.5) + R * Math.sin(a)]);
+    }
+    layer.add(c, true);
+  }
+}
+
+/* ---------------------------------------------------------------- RADIUS
+
+   A radiused board's top is an arc ACROSS the board. arcZ gives the height
+   of that surface above the flat back, at distance x from the centre.
+
+     sag = R - sqrt(R^2 - (w/2)^2)     the drop from the middle to the edge
+     height(x) = (T - sag) + (sqrt(R^2 - x^2) - sqrt(R^2 - (w/2)^2))
+
+   so the middle sits at the full thickness T and the edge sits sag lower.
+
+   A COMPOUND board is a straight ruled loft between the nut arc and the
+   end arc, which is how the Fusion add-in builds it, so a point part way
+   along is the straight blend of the two end sections rather than a third
+   circle. That is a real difference and it is worth being exact about:
+   blending two arcs does not give an arc. */
+function arcZ(R, w, x, T) {
+  const half = w / 2;
+  const edge = Math.sqrt(Math.max(0, R*R - half*half));
+  return (T - (R - edge)) + (Math.sqrt(Math.max(0, R*R - x*x)) - edge);
+}
+const sagOf = (R, w) => R - Math.sqrt(Math.max(0, R*R - (w/2)*(w/2)));
+// The radius that would give this drop across this width. Used to report a
+// single number for a station part way along a compound board.
+const radiusForSag = (sag, w) => sag > 1e-9 ? (sag*sag + (w/2)*(w/2)) / (2*sag) : Infinity;
+
+/* The surface height above the flat back at any point on the board, with
+   u the fraction across (0 at the -x edge, 1 at the +x edge) and t the
+   fraction along (0 at the nut line, 1 at the far end). */
+function surfaceZ(rad, u, t) {
+  const wA = rad.wNut, wB = rad.wEnd;
+  const zA = arcZ(rad.rNut, wA, (u - 0.5) * wA, rad.thickness);
+  const zB = arcZ(rad.rEnd, wB, (u - 0.5) * wB, rad.thickness);
+  return zA + (zB - zA) * t;
+}
+
+class Layer {
+  constructor(name, on = true) { this.name = name; this.polys = []; this.texts = []; this.on = on; }
+  add(pts, closed, z) { if (pts.length >= 2) this.polys.push({ pts, closed: !!closed, z: z || null }); }
+  label(x, y, h, text, anchor) { this.texts.push({ x, y, h, text, anchor: anchor || 'middle' }); }
+  get empty() { return !this.polys.length && !this.texts.length; }
+}
+const rect = (x0,y0,x1,y1) => [[x0,y0],[x1,y0],[x1,y1],[x0,y1]];
+
+function bounds(layers) {
+  let a = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const L of layers) {
+    for (const p of L.polys) for (const [x,y] of p.pts) {
+      a[0]=Math.min(a[0],x); a[1]=Math.min(a[1],y); a[2]=Math.max(a[2],x); a[3]=Math.max(a[3],y); }
+    /* Text takes up room too. Counting only its anchor point made the sheet
+       too small, so a long title block ran off the edge and was cut in half
+       by the tiled PDF's margin. Helvetica averages a bit over half its
+       height per character, which is close enough to size a sheet on. */
+    for (const t of L.texts) {
+      const w = t.text.length * t.h * 0.55;
+      const x0 = t.anchor === 'start' ? t.x : t.anchor === 'end' ? t.x - w : t.x - w/2;
+      a[0]=Math.min(a[0],x0); a[1]=Math.min(a[1],t.y);
+      a[2]=Math.max(a[2],x0 + w); a[3]=Math.max(a[3],t.y + t.h);
+    }
+  }
+  return isFinite(a[0]) ? a : [0,0,1,1];
+}
+
+function buildLayers(g, o) {
+  const shift = (p1,p2,d,al) => [[p1[0]+al[0]*d, p1[1]+al[1]*d],[p2[0]+al[0]*d, p2[1]+al[1]*d]];
+  const sl = g.leftEdge, sr = g.rightEdge;
+  const across = (p1,p2) => [ lineIntersection(p1,p2,sl[0],sl[1]) || p1,
+                              lineIntersection(p1,p2,sr[0],sr[1]) || p2 ];
+  const nm = [(g.nutLeft[0]+g.nutRight[0])/2, (g.nutLeft[1]+g.nutRight[1])/2];
+  const bm = [(g.bridgeLeft[0]+g.bridgeRight[0])/2, (g.bridgeLeft[1]+g.bridgeRight[1])/2];
+  const along = unit(bm[0]-nm[0], bm[1]-nm[1]);
+  const seat = o.nutSeat, ext = o.extension;
+  const [nbL,nbR] = across(...shift(g.nutLeft,g.nutRight,-seat,along));
+  const [bbL,bbR] = across(...shift(g.nutLeft,g.nutRight,-(seat+ext),along));
+  const L = [];
+
+  /* WHERE A FRET SLOT STARTS AND STOPS.
+
+       bound board   -- the slot stops at the binding, because a slot run
+                        out through the binding shows as a line in it and
+                        the fret tang has to be nipped back anyway.
+       unbound board -- the slot runs out to the edge of the wood.
+       frets not extended to the edge -- the slot stops at the outer
+                        strings, which is all the fret has to cover.
+
+     None of these move a fret. They only change how far each line runs. */
+  const bindW = o.bound ? Math.max(0, o.bindingWidth) : 0;
+  const inset = (edge, sign) => {
+    const [p1, p2] = edge;
+    const [dx, dy] = unit(p2[0]-p1[0], p2[1]-p1[1]);
+    const nx = -dy * sign, ny = dx * sign;     // sign picks the inward side
+    return [[p1[0]+nx*bindW, p1[1]+ny*bindW], [p2[0]+nx*bindW, p2[1]+ny*bindW]];
+  };
+  const bindL = bindW > 1e-9 ? inset(sl, -1) : sl;
+  const bindR = bindW > 1e-9 ? inset(sr, 1) : sr;
+  const toBinding = (p1, p2) => [ lineIntersection(p1,p2,bindL[0],bindL[1]) || p1,
+                                  lineIntersection(p1,p2,bindR[0],bindR[1]) || p2 ];
+  const reach = (bassPt, treblePt) => o.extendFrets === false
+    ? [bassPt.slice(), treblePt.slice()]
+    : (bindW > 1e-9 ? toBinding(bassPt, treblePt) : across(bassPt, treblePt));
+
+  /* A SLOT LINE THAT CARRIES DEPTH. Flat, a slot is two points. On a
+     radiused board the cutter has to ride the arc, so the line is broken
+     into steps and each one gets the height of the SLOT BOTTOM above the
+     flat back of the board -- surface height less the slot depth. That is
+     the cut line, which is what a machinist actually wants. The plan view
+     is unchanged by this: the extra points sit on the same straight line. */
+  const rad = o.radius;
+  const nutMidY = (g.nutLeft[1] + g.nutRight[1]) / 2;
+  const endMidY = (g.endLeft[1] + g.endRight[1]) / 2;
+  const alongT = py => (endMidY - nutMidY) === 0 ? 0
+                     : (py - nutMidY) / (endMidY - nutMidY);
+  function slotPath(a, b) {
+    if (!rad || !o.slotDepthOn) return { pts: [a, b], z: null };
+    const N = 24, pts = [], z = [];
+    const [eL, eR] = across(a, b);              // the full width, for the u fraction
+    const wFull = Math.hypot(eR[0]-eL[0], eR[1]-eL[1]);
+    for (let i = 0; i <= N; i++) {
+      const f = i / N;
+      const px = a[0] + (b[0]-a[0]) * f, py = a[1] + (b[1]-a[1]) * f;
+      const u = wFull > 1e-9 ? Math.hypot(px-eL[0], py-eL[1]) / wFull : 0.5;
+      pts.push([px, py]);
+      z.push(surfaceZ(rad, u, alongT(py)) - rad.slotDepth);
+    }
+    return { pts, z };
+  }
+
+  const board = new Layer('BOARD', o.showEdges !== false);
+  board.add([bbL, g.endLeft, g.endRight, bbR], true); L.push(board);
+
+  const nut = new Layer('NUT');
+  nut.add(across(g.nutLeft,g.nutRight)); nut.add([nbL,nbR]); L.push(nut);
+
+  if (ext > 1e-6) {
+    // The board outline already carries the line across the back. Drawing
+    // it again would be a duplicate, so the extension is MARKED the way a
+    // drawing marks a distance: a tick each end and the measurement.
+    const e = new Layer('EXTENSION');
+    const px = -along[1], py = along[0];
+    for (const p of [[(bbL[0]+bbR[0])/2,(bbL[1]+bbR[1])/2],[(nbL[0]+nbR[0])/2,(nbL[1]+nbR[1])/2]])
+      e.add([[p[0]-px*3,p[1]-py*3],[p[0]+px*3,p[1]+py*3]]);
+    const cx=(bbL[0]+bbR[0]+nbL[0]+nbR[0])/4, cy=(bbL[1]+bbR[1]+nbL[1]+nbR[1])/4;
+    e.label(cx+px*5, cy+py*5, 2.5, (o.fmt ? o.fmt(ext) : ext.toFixed(2)+' mm')+' behind nut', 'start');
+    L.push(e);
+  }
+
+  const slots = new Layer('SLOT-CENTRELINE');
+  for (const f of g.frets) {
+    const [a, b] = reach(f.bass, f.treble);
+    const sp = slotPath(a, b);
+    slots.add(sp.pts, false, sp.z);
+  }
+  L.push(slots);
+
+  /* The binding, drawn as the line the slots stop on. The edge lines it is
+     offset from run all the way out to the BRIDGE, because that is what
+     the fret maths needs, so the drawn binding has to be cut back to the
+     wood: from the back of the board to the end of the board. Drawing the
+     raw offset line instead ran the binding 180 mm past the end of the
+     fretboard and stretched the sheet with it. */
+  if (bindW > 1e-9) {
+    const bn = new Layer('BINDING');
+    const backLine = [bbL, bbR], endLine = [g.endLeft, g.endRight];
+    for (const bl of [bindL, bindR]) {
+      const a = lineIntersection(bl[0], bl[1], backLine[0], backLine[1]);
+      const b = lineIntersection(bl[0], bl[1], endLine[0], endLine[1]);
+      if (a && b) bn.add([a, b]);
+    }
+    L.push(bn);
+  }
+
+  if (o.slotWidth > 1e-6) {
+    const k = new Layer('SLOT-WIDTH', !!o.slotWidthOn);
+    for (const f of g.frets) for (const s of [-o.slotWidth/2, o.slotWidth/2])
+      k.add(reach(...shift(f.bass, f.treble, s, along)));
+    L.push(k);
+  }
+  if (o.showCentreline) {
+    const c = new Layer('CENTRELINE');
+    c.add([[(bbL[0]+bbR[0])/2,(bbL[1]+bbR[1])/2],
+           [(g.endLeft[0]+g.endRight[0])/2,(g.endLeft[1]+g.endRight[1])/2]]);
+    L.push(c);
+  }
+  if (o.showFretNumbers) {
+    const t = new Layer('FRET-NUMBERS');
+    for (const f of g.frets) {
+      const [a,b] = reach(f.bass,f.treble);
+      const [ox,oy] = unit(b[0]-a[0], b[1]-a[1]);
+      t.label(b[0]+ox*4, b[1]+oy*4, 3, String(f.n), 'start');
+    }
+    L.push(t);
+  }
+  if (o.showStrings) {
+    const s = new Layer('STRINGS');
+    for (const st of g.strings) s.add([st.nut, st.bridge]);
+    L.push(s);
+  }
+  if (o.showBridge) { const b = new Layer('BRIDGE'); b.add([g.bridgeLeft,g.bridgeRight]); L.push(b); }
+
+  if (o.inlayFrets && o.inlayFrets.length && o.inlayDia > 0) {
+    const inl = new Layer('INLAYS'), cen = new Layer('INLAY-CENTRES');
+    const byN = {}; for (const f of g.frets) byN[f.n] = f;
+    for (const n of o.inlayFrets) {
+      const a = byN[n], b = n === 1 ? {left:g.nutLeft, right:g.nutRight} : byN[n-1];
+      if (!a || !b) continue;
+      const mid = p => [(p.left[0]+p.right[0])/2, (p.left[1]+p.right[1])/2];
+      const ma = mid(a), mb = mid(b);
+      const c = [(ma[0]+mb[0])/2, (ma[1]+mb[1])/2];
+      const hw = Math.abs(a.right[0]-a.left[0]) / 2;
+      const offs = o.doubleAt.includes(n) ? [-hw*0.42, hw*0.42] : [0];
+      const wdir = unit(a.right[0]-a.left[0], a.right[1]-a.left[1]);
+      for (const off of offs) {
+        const cc = [c[0]+wdir[0]*off, c[1]+wdir[1]*off];
+        const pts = [];
+        for (let k = 0; k < 48; k++) {
+          const th = k * Math.PI / 24;
+          pts.push([cc[0] + o.inlayDia/2*Math.cos(th), cc[1] + o.inlayDia/2*Math.sin(th)]);
+        }
+        inl.add(pts, true);
+        cen.add([[cc[0]-2.5,cc[1]],[cc[0]+2.5,cc[1]]]);
+        cen.add([[cc[0],cc[1]-2.5],[cc[0],cc[1]+2.5]]);
+      }
+    }
+    L.push(inl); if (o.showInlayCentres) L.push(cen);
+  }
+
+  // Where each string crosses the bridge line. This is the point the
+  // scale length is measured TO, so it is worth being able to see it.
+  if (o.showSaddles) {
+    const s = new Layer('SADDLES');
+    for (const st of g.strings) {
+      s.add([[st.bridge[0]-2, st.bridge[1]], [st.bridge[0]+2, st.bridge[1]]]);
+      s.add([[st.bridge[0], st.bridge[1]-2], [st.bridge[0], st.bridge[1]+2]]);
+    }
+    L.push(s);
+  }
+
+  /* THE POINTS A DRAWING IS CHECKED AT.
+
+     A beta tester measured nut to 12th against 12th to bridge and got two
+     different numbers. Measured on the drawing itself, the two halves are
+     317.5000 and 317.5000 on the treble string and 323.8500 and 323.8500 on
+     the bass, equal to a millionth of a millimetre. What the calliper was on
+     was the END of the fret slot at the edge of the wood -- several
+     millimetres along the slanted fret from where the string actually
+     crosses it, and up in z as well, because that slot line carries the
+     cutting depth.
+
+     Nothing was wrong with the drawing. There was nothing ON it to measure
+     to. So the three points a check needs are marked, on the two outer
+     strings: the nut, every fret, and the bridge. They are the solver's own
+     points, so a mark cannot land anywhere the geometry does not already say
+     it should.
+
+     EACH MARK IS TWO STROKES DRAWN END - CENTRE - END. That is the whole
+     point of it: the centre is a real vertex on both strokes, so it arrives
+     in CAD as a point to snap to rather than a crossing to judge by eye.
+
+     THE STRING LINES ARE LEFT ALONE. Putting the vertex on the string itself
+     is the obvious way to do this, and it would arrive in Fusion as one
+     sketch line per fret instead of one line -- so the whole string could no
+     longer be clicked and read as 635.0000. The vertex goes inside the mark,
+     where it costs nothing. */
+  if (o.showCheckPoints) {
+    const c = new Layer('CHECK-POINTS');
+    const arm = 1.6;
+    const mark = ([x, y]) => {
+      c.add([[x - arm, y], [x, y], [x + arm, y]]);
+      c.add([[x, y - arm], [x, y], [x, y + arm]]);
+    };
+    mark(g.bassNut); mark(g.trebleNut);
+    mark(g.bassBridge); mark(g.trebleBridge);
+    for (const f of g.frets) { mark(f.bass); mark(f.treble); }
+    L.push(c);
+  }
+
+  /* The bridge mounting posts, laid out exactly the way the Fusion add-in
+     lays them out, so the two tools cannot disagree:
+        treble post  =  scale length + bridge offset, measured from the nut
+                        straight up the board, at -half the post spacing
+        bass post    =  the same, plus its own setback, at +half the spacing
+     The bass post moves straight back. The across spacing does not change,
+     which is what the hardware needs. */
+  if (o.showPosts && o.postFromNut > 0) {
+    const p = new Layer('BRIDGE-POSTS');
+    const r = Math.max(0, o.postDia) / 2;
+    const baseY = g.trebleNut[1] + o.postFromNut;
+    const put = (cx, cy) => {
+      if (r > 1e-6) {
+        const pts = [];
+        for (let k = 0; k < 48; k++) {
+          const th = k * Math.PI / 24;
+          pts.push([cx + r*Math.cos(th), cy + r*Math.sin(th)]);
+        }
+        p.add(pts, true);
+      }
+      const t = Math.max(r + 1.5, 3);
+      p.add([[cx-t, cy], [cx+t, cy]]);
+      p.add([[cx, cy-t], [cx, cy+t]]);
+    };
+    put(-o.postSpacing/2, baseY);                       // treble side, -x
+    put( o.postSpacing/2, baseY + o.postSetbackBass);   // bass side, +x
+    L.push(p);
+  }
+
+  /* THE BOUNDING BOX. One rectangle round everything already drawn, so a
+     sheet has a known outer edge to register against. It is worked out
+     LAST, from what is on the sheet at that moment, and the title block
+     is added after it so the box frames the drawing rather than the
+     paperwork. */
+  if (o.showBox) {
+    const [x0,y0,x1,y1] = bounds(L);
+    const bx = new Layer('BORDER');
+    bx.add(rect(x0 - 6, y0 - 6, x1 + 6, y1 + 6), true);
+    L.push(bx);
+  }
+
+  // The title block. Text only, so it adds nothing the check can trip on.
+  let titleBottom = Math.min(bbL[1], bbR[1]) - 5;
+  if (o.info && o.info.length) {
+    const t = new Layer('TITLE');
+    const x = Math.min(bbL[0], bbR[0]);
+    const top = titleBottom;
+    const h = 2.4, step = 3.7;
+    o.info.forEach((line, i) => t.label(x, top - step*i, h, line, 'start'));
+    titleBottom = top - step * o.info.length;
+    L.push(t);
+
+    // The mark sits above the title block, the way it sits above the text
+    // on the page and on the manual's cover.
+    const bm = new Layer('BRAND');
+    brandMark(bm, x, top + 3.5, 46);
+    L.push(bm);
+  }
+
+  /* THE CROSS SECTIONS, drawn true size. This is the part of a radiused
+     board a flat plan cannot otherwise show, because the curve runs
+     across the board and a fret line runs across the board too, so from
+     directly above the curve is edge on and invisible. The arc, the flat
+     back, the drop from the middle to the edge and the slot depth are all
+     drawn here at 1:1, so they can be measured straight off the sheet. */
+  if (rad && o.showSection) {
+    const sec = new Layer('SECTION');
+    /* Laid out in a ROW beside the nut end, not stacked under the title
+       block. Stacked, two sections added about 250 mm to a sheet that is
+       already over 500 mm long, and length is what costs paper when the
+       PDF is tiled. Beside it they cost width, which this drawing has to
+       spare -- the board is only about 60 mm across. */
+    const yTop = Math.max(bbL[1], bbR[1]) - 6;
+    let x = Math.max(g.nutRight[0], g.bridgeRight[0]) + 9;
+    const one = (label, R, w, T) => {
+      const half = w / 2, cx = x + half, N = 60, arc = [];
+      const y = yTop - T - 10;
+      for (let i = 0; i <= N; i++) {
+        const ax = -half + w * i / N;
+        arc.push([cx + ax, y + arcZ(R, w, ax, T)]);
+      }
+      sec.add(arc);                                                   // radiused top
+      sec.add([[cx-half, y], [cx+half, y]]);                          // flat back
+      sec.add([[cx-half, y], [cx-half, y + arcZ(R, w, -half, T)]]);   // the two sides
+      sec.add([[cx+half, y], [cx+half, y + arcZ(R, w, half, T)]]);
+      const sg = sagOf(R, w);
+      const F = v => (o.fmt ? o.fmt(v) : v.toFixed(3));
+      sec.label(cx - half, y + T + 5.5, 2.4, label, 'start');
+      sec.label(cx - half, y - 4.5, 2.2, 'drop ' + F(sg), 'start');
+      sec.label(cx - half, y - 8.2, 2.2, 'edge left ' + F(T - sg), 'start');
+      sec.label(cx - half, y - 11.9, 2.2, 'slot ' + F(rad.slotDepth) + ' deep', 'start');
+      x = cx + half + 11;
+    };
+    const wN = Math.hypot(g.nutRight[0]-g.nutLeft[0], g.nutRight[1]-g.nutLeft[1]);
+    const wE = Math.hypot(g.endRight[0]-g.endLeft[0], g.endRight[1]-g.endLeft[1]);
+    one('AT THE NUT', rad.rNut, wN, rad.thickness);
+    if (Math.abs(rad.rEnd - rad.rNut) > 1e-9 || Math.abs(wE - wN) > 1e-9)
+      one('AT THE FAR END', rad.rEnd, wE, rad.thickness);
+    L.push(sec);
+  }
+  return L.filter(l => !l.empty);
+}
+
+function verify(layers, tol = 1e-4, straightDeg = 8) {
+  const r = { layers: layers.length, polylines: 0, points: 0, texts: 0,
+              zero: 0, dup: 0, broken: 0, shortest: null };
+  const seen = new Map();
+  for (const L of layers) {
+    r.texts += L.texts.length;
+    const ends = new Map();
+    for (const p of L.polys) {
+      r.polylines++; r.points += p.pts.length;
+      const n = p.pts.length, last = p.closed ? n : n - 1;
+      for (let k = 0; k < last; k++) {
+        const a = p.pts[k], b = p.pts[(k+1) % n];
+        const d = Math.hypot(b[0]-a[0], b[1]-a[1]);
+        if (d <= tol) { r.zero++; continue; }
+        if (r.shortest === null || d < r.shortest) r.shortest = d;
+        const ka = a[0].toFixed(4)+','+a[1].toFixed(4), kb = b[0].toFixed(4)+','+b[1].toFixed(4);
+        const key = ka < kb ? ka+'|'+kb : kb+'|'+ka;
+        seen.set(key, (seen.get(key)||0)+1);
+      }
+      if (!p.closed && n >= 2) {
+        for (const [q, nx] of [[p.pts[0],p.pts[1]],[p.pts[n-1],p.pts[n-2]]]) {
+          const kk = q[0].toFixed(4)+','+q[1].toFixed(4);
+          if (!ends.has(kk)) ends.set(kk, []);
+          ends.get(kk).push(Math.atan2(nx[1]-q[1], nx[0]-q[0]));
+        }
+      }
+    }
+    // A BROKEN run is two runs that meet AND carry straight on. Two runs
+    // meeting at an angle is a corner -- a tick touching a scale bar is
+    // not a defect, and the first version of this check wrongly said it was.
+    for (const angs of ends.values())
+      for (let i = 0; i < angs.length; i++)
+        for (let j = i+1; j < angs.length; j++) {
+          let d = Math.abs((angs[i]-angs[j]) * 180 / Math.PI) % 360;
+          if (d > 180) d = 360 - d;
+          if (Math.abs(d - 180) <= straightDeg) r.broken++;
+        }
+  }
+  for (const v of seen.values()) if (v > 1) r.dup += v - 1;
+  r.clean = r.zero === 0 && r.dup === 0 && r.broken === 0;
+  return r;
+}
+
+/* The five writers. Millimetres in, files out, no libraries. */
+const MM = 72 / 25.4;                       // a PDF point is 1/72 inch
+const PAGES = { A4:[210,297], A3:[297,420], Letter:[215.9,279.4],
+                Legal:[215.9,355.6], Tabloid:[279.4,431.8] };
+
+/* THE UNIT A FILE IS WRITTEN IN. Everything upstream of here is in
+   millimetres. U.k is how many millimetres one output unit is worth, so
+   dividing by it converts; U.dxf is the code DXF uses to say which unit
+   its numbers are in; U.svg is what SVG calls it. The DRAWING is the same
+   size either way -- this only changes the numbers used to describe it,
+   so a shop working in inches gets a file in inches. */
+const UNITS = {
+  mm: { k: 1,    dxf: 4, svg: 'mm', name: 'mm', dp: 3 },
+  cm: { k: 10,   dxf: 5, svg: 'cm', name: 'cm', dp: 4 },
+  in: { k: 25.4, dxf: 1, svg: 'in', name: 'in', dp: 4 },
+};
+
+/* ---- DXF, R12. Every CAM package and laser front end reads it, and a
+   POLYLINE in R12 is ONE entity carrying all its vertices. Writing loose
+   LINE entities is what makes an outline arrive broken. */
+function toDXF(layers, U) {
+  U = U || UNITS.mm;
+  const k = U.k, q = v => (v / k).toFixed(6);
+  const o = [];
+  const P = (c, v) => { o.push(String(c)); o.push(String(v)); };
+  const lts = {};
+  for (const L of layers) { const d = STYLE[L.name] && STYLE[L.name][2];
+    if (d) lts['UCG_' + L.name.replace(/-/g,'_')] = d; }
+  const [x0,y0,x1,y1] = bounds(layers);
+  P(0,'SECTION'); P(2,'HEADER');
+  P(9,'$ACADVER'); P(1,'AC1009');
+  P(9,'$INSUNITS'); P(70,U.dxf); P(9,'$MEASUREMENT'); P(70, U.dxf === 1 ? 0 : 1);
+  P(9,'$EXTMIN'); P(10,q(x0)); P(20,q(y0)); P(30,'0.0');
+  P(9,'$EXTMAX'); P(10,q(x1)); P(20,q(y1)); P(30,'0.0');
+  P(0,'ENDSEC');
+  P(0,'SECTION'); P(2,'TABLES');
+  P(0,'TABLE'); P(2,'LTYPE'); P(70, Object.keys(lts).length + 1);
+  P(0,'LTYPE'); P(2,'CONTINUOUS'); P(70,0); P(3,'Solid line'); P(72,65); P(73,0); P(40,'0.0');
+  for (const [nm,d] of Object.entries(lts)) {
+    P(0,'LTYPE'); P(2,nm); P(70,0); P(3, d.join(' ')); P(72,65); P(73,d.length);
+    P(40, (d.reduce((a,b)=>a+b,0)/k).toFixed(6));
+    d.forEach((v,i) => P(49, ((i%2===0 ? v : -v)/k).toFixed(6)));
+  }
+  P(0,'ENDTAB');
+  P(0,'TABLE'); P(2,'LAYER'); P(70, layers.length);
+  for (const L of layers) {
+    const d = STYLE[L.name] && STYLE[L.name][2];
+    P(0,'LAYER'); P(2,L.name); P(70,0);
+    P(62, (DXFCOL[L.name]||7) * (L.on ? 1 : -1));
+    P(6, d ? 'UCG_' + L.name.replace(/-/g,'_') : 'CONTINUOUS');
+  }
+  P(0,'ENDTAB'); P(0,'ENDSEC');
+  P(0,'SECTION'); P(2,'ENTITIES');
+  for (const L of layers) {
+    for (const p of L.polys) {
+      /* A slot line on a radiused board carries a height per point. DXF
+         says that with flag 8 on the POLYLINE and 32 on each VERTEX --
+         a real 3D polyline, which is what a CNC needs to ride the arc.
+         Without heights it stays a flat 2D polyline exactly as before. */
+      const is3d = !!(p.z && p.z.length === p.pts.length);
+      P(0,'POLYLINE'); P(8,L.name); P(66,1);
+      P(70, (p.closed ? 1 : 0) + (is3d ? 8 : 0));
+      P(10,'0.0'); P(20,'0.0'); P(30,'0.0');
+      p.pts.forEach(([x,y], i) => { P(0,'VERTEX'); P(8,L.name);
+        P(10,q(x)); P(20,q(y)); P(30, is3d ? q(p.z[i]) : '0.0');
+        if (is3d) P(70,32); });
+      P(0,'SEQEND'); P(8,L.name);
+    }
+    for (const t of L.texts) {
+      P(0,'TEXT'); P(8,L.name); P(10,q(t.x)); P(20,q(t.y)); P(30,'0.0');
+      P(40,q(t.h)); P(1,t.text);
+      P(72,{start:0,middle:1,end:2}[t.anchor]);
+      P(11,q(t.x)); P(21,q(t.y)); P(31,'0.0');
+    }
+  }
+  P(0,'ENDSEC'); P(0,'EOF');
+  return o.join('\r\n') + '\r\n';
+}
+
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                          .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* ---- SVG. One user unit per millimetre and the mm suffix on width and
+   height, so it opens and prints at 1:1 without being asked. SVG's y
+   grows DOWNWARD, so every y is flipped once, here. */
+function toSVG(layers, margin, title, U) {
+  U = U || UNITS.mm;
+  const k = U.k;
+  margin = margin === undefined ? 10 : margin;
+  let [x0,y0,x1,y1] = bounds(layers);
+  x0-=margin; y0-=margin; x1+=margin; y1+=margin;
+  // One SVG user unit is one OUTPUT unit, and the width and height carry
+  // that unit, so the file opens and prints at 1:1 without being asked.
+  const W = (x1-x0)/k, H = (y1-y0)/k, o = [];
+  o.push('<?xml version="1.0" encoding="UTF-8"?>');
+  o.push(`<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="${W.toFixed(4)}${U.svg}" height="${H.toFixed(4)}${U.svg}" viewBox="0 0 ${W.toFixed(4)} ${H.toFixed(4)}">`);
+  if (title) o.push('<title>'+esc(title)+'</title>');
+  o.push(`<rect x="0" y="0" width="${W.toFixed(4)}" height="${H.toFixed(4)}" fill="#ffffff"/>`);
+  o.push('<g fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round">');
+  for (const L of layers) {
+    const st = STYLE[L.name] || ['#000',0.25,null];
+    let a = ` stroke-width="${(st[1]/k).toFixed(5)}"`;
+    if (st[2]) a += ` stroke-dasharray="${st[2].map(d=>(d/k).toFixed(5)).join(' ')}"`;
+    o.push(`<g id="${esc(L.name)}"${a}${L.on?'':' display="none"'}>`);
+    for (const p of L.polys)
+      o.push(`<${p.closed?'polygon':'polyline'} points="${p.pts.map(q=>((q[0]-x0)/k).toFixed(4)+','+((y1-q[1])/k).toFixed(4)).join(' ')}"/>`);
+    for (const t of L.texts)
+      o.push(`<text x="${((t.x-x0)/k).toFixed(4)}" y="${((y1-t.y+t.h*0.35)/k).toFixed(4)}" font-size="${(t.h/k).toFixed(5)}" font-family="Helvetica,Arial,sans-serif" text-anchor="${t.anchor}" stroke="none" fill="#000000">${esc(t.text)}</text>`);
+    o.push('</g>');
+  }
+  o.push('</g></svg>');
+  return o.join('\n') + '\n';
+}
+
+const pdfStr = s => String(s).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
+
+function pageOps(layers, ox, oy, clip, extra) {
+  const ops = ['0 G','0 g','1 J','1 j'];
+  if (clip) ops.push(`q ${(clip[0]*MM).toFixed(4)} ${(clip[1]*MM).toFixed(4)} ${((clip[2]-clip[0])*MM).toFixed(4)} ${((clip[3]-clip[1])*MM).toFixed(4)} re W n`);
+  for (const L of layers) {
+    if (!L.on) continue;
+    const st = STYLE[L.name] || ['#000',0.25,null];
+    ops.push((st[1]*MM).toFixed(4)+' w');
+    ops.push('['+(st[2]?st[2].map(d=>(d*MM).toFixed(3)).join(' '):'')+'] 0 d');
+    for (const p of L.polys) {
+      p.pts.forEach(([x,y],i)=>ops.push(`${((x-ox)*MM).toFixed(4)} ${((y-oy)*MM).toFixed(4)} ${i?'l':'m'}`));
+      ops.push(p.closed?'s':'S');
+    }
+    ops.push('[] 0 d');
+    for (const t of L.texts) {
+      const size = t.h*MM, w = t.text.length*size*0.52;
+      const tx = (t.x-ox)*MM - (t.anchor==='start'?0:t.anchor==='middle'?w/2:w);
+      ops.push(`BT /F1 ${size.toFixed(4)} Tf ${tx.toFixed(4)} ${((t.y-oy)*MM-size*0.35).toFixed(4)} Td (${pdfStr(t.text)}) Tj ET`);
+    }
+  }
+  if (clip) ops.push('Q');
+  if (extra) ops.push(...extra);
+  return ops.join('\n');
+}
+
+function regMarks(pg) {
+  const m = pg.margin, ops = ['0 G', (0.25*MM).toFixed(4)+' w', '[] 0 d'];
+  for (const [cx,cy] of [[m,m],[pg.pw-m,m],[m,pg.ph-m],[pg.pw-m,pg.ph-m]]) {
+    ops.push(`${((cx-4)*MM).toFixed(4)} ${(cy*MM).toFixed(4)} m ${((cx+4)*MM).toFixed(4)} ${(cy*MM).toFixed(4)} l S`);
+    ops.push(`${(cx*MM).toFixed(4)} ${((cy-4)*MM).toFixed(4)} m ${(cx*MM).toFixed(4)} ${((cy+4)*MM).toFixed(4)} l S`);
+  }
+  const n = (pg.row-1)*pg.cols + pg.col;
+  const lab = `sheet ${n} of ${pg.cols*pg.rows}   (column ${pg.col} of ${pg.cols}, row ${pg.row} of ${pg.rows})   overlap ${pg.overlap} mm   -- line up the crosses`;
+  ops.push(`BT /F1 ${(2.6*MM).toFixed(4)} Tf ${(m*MM).toFixed(4)} ${((m-5.5)*MM).toFixed(4)} Td (${pdfStr(lab)}) Tj ET`);
+  return ops;
+}
+
+function tilePages(x0,y0,x1,y1,page,margin,overlap,landscape) {
+  let [pw,ph] = PAGES[page] || PAGES.A4;
+  if (landscape) { const t = pw; pw = ph; ph = t; }
+  const uw = pw-2*margin, uh = ph-2*margin;
+  const sw = Math.max(1, uw-overlap), sh = Math.max(1, uh-overlap);
+  const cols = Math.max(1, Math.ceil((x1-x0-overlap)/sw));
+  const rows = Math.max(1, Math.ceil((y1-y0-overlap)/sh));
+  const out = [];
+  for (let r=0;r<rows;r++) for (let c=0;c<cols;c++)
+    out.push({col:c+1,row:r+1,cols,rows,x0:x0+c*sw,y0:y0+r*sh,pw,ph,margin,overlap});
+  return out;
+}
+
+/* ---- PDF. Hand written: all it needs is vector paths at a known scale
+   and Helvetica, which every reader has, so nothing is embedded. */
+function toPDF(layers, margin, title, page, landscape, overlap) {
+  margin = margin === undefined ? 10 : margin;
+  overlap = overlap === undefined ? 12 : overlap;
+  let [x0,y0,x1,y1] = bounds(layers);
+  x0-=margin; y0-=margin; x1+=margin; y1+=margin;
+  const pages = [];
+  if (page) {
+    for (const pg of tilePages(x0,y0,x1,y1,page,8,overlap,landscape))
+      pages.push([pg.pw*MM, pg.ph*MM,
+        pageOps(layers, pg.x0-pg.margin, pg.y0-pg.margin,
+                [pg.margin,pg.margin,pg.pw-pg.margin,pg.ph-pg.margin], regMarks(pg))]);
+  } else pages.push([(x1-x0)*MM, (y1-y0)*MM, pageOps(layers,x0,y0)]);
+
+  const n = pages.length, firstPage = 3, fontObj = firstPage + 2*n;
+  const objs = [];
+  objs.push('<< /Type /Catalog /Pages 2 0 R >>');
+  objs.push(`<< /Type /Pages /Kids [${pages.map((_,i)=>(firstPage+i)+' 0 R').join(' ')}] /Count ${n} >>`);
+  pages.forEach((p,i)=>objs.push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${p[0].toFixed(4)} ${p[1].toFixed(4)}] /Contents ${firstPage+n+i} 0 R /Resources << /Font << /F1 ${fontObj} 0 R >> >> >>`));
+  pages.forEach(p=>objs.push(`<< /Length ${p[2].length} >>\nstream\n${p[2]}\nendstream`));
+  objs.push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+  objs.push(`<< /Title (${pdfStr(title||'Fretboard plan')}) /Creator (Urban Custom Guitars) >>`);
+
+  let out = '%PDF-1.4\n%\xe2\xe3\xcf\xd3\n';
+  const offs = [];
+  objs.forEach((b,i)=>{ offs.push(out.length); out += `${i+1} 0 obj\n${b}\nendobj\n`; });
+  const xref = out.length;
+  out += `xref\n0 ${objs.length+1}\n0000000000 65535 f \n`;
+  for (const o of offs) out += String(o).padStart(10,'0') + ' 00000 n \n';
+  out += `trailer\n<< /Size ${objs.length+1} /Root 1 0 R /Info ${objs.length} 0 R >>\nstartxref\n${xref}\n%%EOF\n`;
+  return { text: out, pages: n };
+}
+
+function toCSV(rows, info, U) {
+  U = U || UNITS.mm;
+  const k = U.k, dp = U.dp;
+  const o = [];
+  // The same lines that go on the drawing go at the top of the numbers, so
+  // a sheet of figures on its own still says what board it belongs to.
+  if (info && info.length) {
+    const q = s => '"' + String(s).replace(/"/g, '""') + '"';
+    for (const line of info) o.push(q(line));
+    o.push('');
+  }
+  const u = U.name;
+  o.push(`fret,from nut bass ${u},from nut treble ${u},step bass ${u},step treble ${u}`);
+  for (const r of rows) o.push(`${r[0]},${(r[1]/k).toFixed(dp)},${(r[2]/k).toFixed(dp)},${(r[3]/k).toFixed(dp)},${(r[4]/k).toFixed(dp)}`);
+  return o.join('\n') + '\n';
+}
+
+/* ------------------------------------------------------------------ UI */
+const $ = id => document.getElementById(id);
+
+/* EVERY LENGTH BOX IS HELD IN MILLIMETRES, always, in its data-mm
+   attribute. What the box SHOWS is that number in whatever unit is
+   picked. Typing in a box writes back to data-mm. Nothing downstream ever
+   sees anything but millimetres, so switching units cannot move the
+   geometry by even a rounding error. */
+const LEN_IDS = ['bassScale','trebleScale','nutWidth','nutSeat','extension',
+  'ohNutBass','ohNutTreble','ohBridgeBass','ohBridgeTreble','slotWidth',
+  'inlayDia','bridgeOffset','bridgeSpan','postSpacing','postDia','postSetbackBass',
+  'radiusNut','radiusEnd','thickness','slotDepth','bindingWidth'];
+const PLAIN_IDS = ['perpFret','frets','strings','endExtension'];
+const CHK_IDS = ['slotWidthOn','doubleTwelve','showInlayCentres','showCentreline',
+  'showFretNumbers','showStrings','showBridge','showSaddles','showCheckPoints','showPosts',
+  'showEdges','extendFrets','showBox','showTitleBlock','landscape',
+  'showSection','slotDepthOn'];
+
+let unitKey = 'mm', fanned = false, proportional = false, current = null;
+let compound = false, bound = false;
+const U = () => UNITS[unitKey];
+
+/* Published gauge sets, thinnest string first, in inches. These are the
+   same tables the Fusion add-in carries, so a board set up in one tool
+   spaces its strings the same way in the other. */
+const GAUGE_SETS = {
+  "D'Addario XL": {
+    '7':  [.007,.009,.011,.016,.024,.038], '8':  [.008,.011,.014,.022,.030,.038],
+    '9':  [.009,.011,.016,.024,.032,.042], '10': [.010,.013,.017,.026,.036,.046],
+    '11': [.011,.014,.018,.028,.038,.049], '12': [.012,.016,.020,.032,.042,.054],
+  },
+  'Ernie Ball Slinky': {
+    '7':  [.007,.009,.013,.020,.026,.036], '8':  [.008,.011,.014,.022,.030,.038],
+    '9':  [.009,.011,.016,.024,.032,.042], '10': [.010,.013,.017,.026,.036,.046],
+    '11': [.011,.014,.018,.028,.038,.048], '12': [.012,.016,.024,.032,.044,.056],
+  },
+};
+
+function fillStringSets() {
+  const sel = $('stringSet');
+  const opts = ['<option value="custom">Type my own</option>'];
+  for (const brand of Object.keys(GAUGE_SETS))
+    for (const g of Object.keys(GAUGE_SETS[brand]))
+      opts.push('<option value="' + brand + '|' + g + '">' + brand + ' &middot; ' + g + ' gauge</option>');
+  sel.innerHTML = opts.join('');
+  sel.value = "D'Addario XL|10";
+}
+
+// ---------------------------------------------------------------- units
+function mmOf(id) { return parseFloat($(id).dataset.mm) || 0; }
+const dpNow = () => (unitKey === 'mm' ? 2 : 4);
+function showUnits() {
+  const u = U(), dp = dpNow();
+  for (const id of LEN_IDS) {
+    const el = $(id), mm = parseFloat(el.dataset.mm) || 0;
+    el.value = (mm / u.k).toFixed(dp);
+    el.min = (parseFloat(el.dataset.min) / u.k).toFixed(6);
+    el.max = (parseFloat(el.dataset.max) / u.k).toFixed(6);
+    const st = parseFloat(el.dataset.step) / u.k;
+    el.step = st < 0.0001 ? 0.0001 : Number(st.toPrecision(2));
+  }
+  for (const b of document.querySelectorAll('[data-unit]'))
+    b.setAttribute('aria-pressed', String(b.dataset.unit === unitKey));
+}
+/* ONLY A BOX SOMEONE TYPED IN WRITES BACK. Reading every box on every
+   redraw looked harmless and was not: a box SHOWS a rounded number, so
+   43.00 mm shown as 1.6929 in and read straight back came out 42.9997 mm.
+   Switch units twice and the board had quietly shrunk. Now the millimetre
+   value only changes when a person actually edits that one box, and the
+   rounding on screen never feeds back into the geometry. */
+function noteTyped(el) {
+  if (!el || !el.classList || !el.classList.contains('len')) return;
+  const v = parseFloat(el.value);
+  if (isFinite(v)) el.dataset.mm = String(v * U().k);
+}
+const fmtN = mm => (mm / U().k).toFixed(dpNow());
+const fmt = mm => fmtN(mm) + ' ' + U().name;
+const inches = mm => (mm / 25.4).toFixed(3);
+
+function setUnit(key) {
+  unitKey = key;          // data-mm is already current; nothing to capture
+  showUnits();
+  render();
+}
+
+// ------------------------------------------------------------- overhang
+/* Four overhang numbers underneath, always. The mode decides how many
+   boxes you have to fill in, and the ones you cannot see are kept in step
+   with the ones you can, so switching modes never leaves a stale number
+   quietly driving the drawing. */
+function applyOverhangMode() {
+  const m = $('ohMode').value;
+  const show = (id, on) => { $(id).hidden = !on; };
+  const lab = (id, t) => { $(id).textContent = t; };
+  const set = (id, mm) => { $(id).dataset.mm = String(mm);
+                            $(id).value = (mm / U().k).toFixed(dpNow()); };
+  const nb = mmOf('ohNutBass'), nt = mmOf('ohNutTreble');
+  if (m === 'equal') {
+    show('rowOhNT', false); show('rowOhBB', false); show('rowOhBT', false);
+    lab('labOhNB', 'Overhang, all four');
+    set('ohNutTreble', nb); set('ohBridgeBass', nb); set('ohBridgeTreble', nb);
+  } else if (m === 'ends') {
+    show('rowOhNT', false); show('rowOhBB', true); show('rowOhBT', false);
+    lab('labOhNB', 'At the nut'); lab('labOhBB', 'At the bridge');
+    set('ohNutTreble', nb); set('ohBridgeTreble', mmOf('ohBridgeBass'));
+  } else if (m === 'sides') {
+    show('rowOhNT', true); show('rowOhBB', false); show('rowOhBT', false);
+    lab('labOhNB', 'Bass side'); lab('labOhNT', 'Treble side');
+    set('ohBridgeBass', nb); set('ohBridgeTreble', nt);
+  } else {
+    show('rowOhNT', true); show('rowOhBB', true); show('rowOhBT', true);
+    lab('labOhNB', 'Bass side, at the nut');
+    lab('labOhNT', 'Treble side, at the nut');
+    lab('labOhBB', 'Bass side, at the bridge');
+    lab('labOhBT', 'Treble side, at the bridge');
+  }
+}
+
+// -------------------------------------------------------------- spacing
+const parseGauges = t => (String(t).match(/[0-9]*\.?[0-9]+/g) || []).map(Number).filter(v => v > 0);
+
+function setSpacing(on) {
+  proportional = on;
+  $('spEqual').setAttribute('aria-pressed', String(!on));
+  $('spProp').setAttribute('aria-pressed', String(on));
+  $('rowSet').hidden = !on; $('rowGauges').hidden = !on;
+  $('rowGaugesIn').hidden = !on; $('hintGauges').hidden = !on;
+  $('hintSpacing').textContent = on
+    ? 'Proportional: the gap you can see between any two strings is the same all the way across, '
+      + 'because each string is given room for its own thickness. The outer two still sit exactly '
+      + 'on their overhangs.'
+    : 'Equal: the string centres are spaced evenly. Because a wound low E is much fatter than a '
+      + 'plain high E, the gap you can see comes out wider at the treble end.';
+  render();
+}
+
+function inlayFretsFor(pattern, n) {
+  if (pattern === 'none') return [];
+  if (pattern === 'twelve') return [12, 24].filter(f => f <= n);
+  const out = [];
+  if (pattern === 'odd') { for (let f = 1; f <= n; f++) if (f % 2 === 1) out.push(f); return out; }
+  for (const f of [3,5,7,9,12,15,17,19,21,24]) if (f <= n) out.push(f);
+  return out;
+}
+
+function readForm() {
+  const v = {};
+  for (const id of LEN_IDS) v[id] = mmOf(id);
+  for (const id of PLAIN_IDS) v[id] = parseFloat($(id).value) || 0;
+  for (const id of CHK_IDS) v[id] = $(id).checked;
+  v.frets = Math.max(1, Math.round(v.frets));
+  v.strings = Math.max(1, Math.round(v.strings));
+  v.perpFret = Math.max(0, Math.round(v.perpFret));
+  if (!fanned) v.trebleScale = v.bassScale;
+  v.inlayFrets = inlayFretsFor($('inlayPattern').value, v.frets);
+  v.doubleAt = v.doubleTwelve ? [12, 24] : [];
+  v.pageSize = $('pageSize').value || null;
+
+  /* Gauges are typed thinnest first, which is string 1, the high E, and it
+     sits on the treble side. The solver works bass first, so the list is
+     turned round here rather than anywhere deeper in, and inches become
+     millimetres at the same time. Gauges stay in inches in the box
+     whatever unit the rest of the form is in, because that is how string
+     sets are sold and printed. */
+  const raw = parseGauges($('gauges').value);
+  v.gaugesIn = raw;
+  v.gauges = raw.slice().reverse().map(d => d * 25.4);
+  v.proportional = proportional && v.gauges.length === v.strings;
+  v.gaugeMismatch = proportional && v.gauges.length !== v.strings;
+
+  v.compound = compound;
+  v.bound = bound;
+  if (!compound) v.radiusEnd = v.radiusNut;
+  const bsel = $('bridgeModel');
+  v.bridgeName = bsel.value;
+  v.bridgeTol = parseFloat(bsel.options[bsel.selectedIndex].dataset.tol || '0') * 25.4;
+  v.postFromNut = (fanned ? v.trebleScale : v.bassScale) + v.bridgeOffset;
+  return v;
+}
+
+/* The title block. Everything a person would otherwise have to remember,
+   written on the drawing itself, because a DXF on a machine has no dialog
+   box next to it. Every number is in the unit that was picked. */
+function infoLines(v) {
+  const un = U().name;
+  const word = un === 'mm' ? 'MILLIMETRES' : un === 'cm' ? 'CENTIMETRES' : 'INCHES';
+  const out = ['URBAN CUSTOM GUITARS  -  FRETBOARD PLAN', 'DRAWN 1:1 IN ' + word];
+  if (v.isFan) {
+    out.push('SCALE LENGTH  bass ' + fmtN(v.bassScale) + ' ' + un + '  (' + inches(v.bassScale) + ' in)');
+    out.push('              treble ' + fmtN(v.trebleScale) + ' ' + un + '  (' + inches(v.trebleScale) + ' in)');
+  } else {
+    out.push('SCALE LENGTH  ' + fmtN(v.bassScale) + ' ' + un + '  (' + inches(v.bassScale) + ' in)');
+  }
+  out.push(v.isFan ? '  taken along each outer string, nut to bridge line'
+                   : '  taken on the centre line, square out from the middle of the nut');
+  if (v.isFan) out.push('FRET SQUARE ACROSS THE BOARD  ' + v.perpFret);
+  out.push('FRETS ' + v.frets + '   STRINGS ' + v.strings + '   SAW KERF ' + fmtN(v.slotWidth) + ' ' + un);
+  out.push('BOARD WIDTH  nut ' + fmtN(v.nutWidth) + '   bridge ' + fmtN(v.bridgeWidthOut) + ' ' + un);
+  out.push('STRING SPAN  nut ' + fmtN(v.nutSpanOut) + '   bridge ' + fmtN(v.bridgeSpan) + ' ' + un);
+  out.push('OVERHANG  nut bass ' + fmtN(v.ohNutBass) + '  treble ' + fmtN(v.ohNutTreble));
+  out.push('          bridge bass ' + fmtN(v.ohBridgeBass) + '  treble ' + fmtN(v.ohBridgeTreble));
+  out.push('SPACING  ' + (v.proportional ? 'proportional to the string gauges'
+                                         : 'equal, centre to centre'));
+  if (v.proportional) out.push('  gauges ' + v.gaugesIn.map(d => d.toFixed(3)).join(' ') + ' in');
+  out.push('RADIUS  ' + (v.compound
+    ? fmtN(v.radiusNut) + ' at the nut to ' + fmtN(v.radiusEnd) + ' at the far end, ' + un
+      + '  (' + inches(v.radiusNut) + ' to ' + inches(v.radiusEnd) + ' in)'
+    : fmtN(v.radiusNut) + ' ' + un + ' all the way  (' + inches(v.radiusNut) + ' in)'));
+  out.push('  drop middle to edge  nut ' + fmtN(v.sagNut) + '   far end ' + fmtN(v.sagEnd) + ' ' + un);
+  out.push('THICKNESS ' + fmtN(v.thickness) + '   SLOT DEPTH ' + fmtN(v.slotDepth)
+    + '   EDGE LEFT ' + fmtN(v.edgeLeftMin) + ' ' + un);
+  out.push('BINDING  ' + (v.bound ? fmtN(v.bindingWidth) + ' ' + un + ', slots stop at it'
+                                  : 'none, slots run to the edge'));
+  if (v.bridgeName) out.push('BRIDGE  ' + v.bridgeName);
+  if (v.showPosts && v.postSpacing > 0) {
+    out.push('BRIDGE OFFSET  ' + (v.bridgeOffset >= 0 ? '+' : '') + fmtN(v.bridgeOffset) + ' ' + un
+      + (v.bridgeTol ? '  (+/- ' + fmtN(v.bridgeTol) + ')' : ''));
+    out.push('TREBLE POST  ' + fmtN(v.postFromNut) + ' ' + un + ' from the nut');
+    out.push('BASS POST  ' + fmtN(v.postFromNut + v.postSetbackBass) + ' ' + un + ' from the nut');
+    out.push('POSTS  ' + fmtN(v.postSpacing) + ' apart across, ' + fmtN(v.postDia) + ' holes, ' + un);
+  }
+  return out;
+}
+
+function build() {
+  const v = readForm();
+  const g = solve({ bassScale:v.bassScale, trebleScale:v.trebleScale,
+    nutWidth:v.nutWidth, bridgeSpan:v.bridgeSpan,
+    ohNutBass:v.ohNutBass, ohNutTreble:v.ohNutTreble,
+    ohBridgeBass:v.ohBridgeBass, ohBridgeTreble:v.ohBridgeTreble,
+    frets:v.frets, strings:v.strings, perpFret:v.perpFret,
+    endExtension:v.endExtension, fanned:fanned,
+    proportional:v.proportional, gauges:v.gauges });
+  v.isFan = g.isFan;
+  v.bridgeWidthOut = g.bridgeWidth;
+  v.nutSpanOut = g.nutSpan;
+  /* The two stations a radiused board is defined by are the NUT line and
+     the FAR END of the board, which is where the add-in defines them too.
+     Their widths come off the solved geometry rather than being typed, so
+     the arc drawn is the arc of this board and not a generic one. */
+  v.wNut = Math.hypot(g.nutRight[0]-g.nutLeft[0], g.nutRight[1]-g.nutLeft[1]);
+  v.wEnd = Math.hypot(g.endRight[0]-g.endLeft[0], g.endRight[1]-g.endLeft[1]);
+  v.sagNut = sagOf(v.radiusNut, v.wNut);
+  v.sagEnd = sagOf(v.radiusEnd, v.wEnd);
+  v.edgeLeftMin = Math.min(v.thickness - v.sagNut, v.thickness - v.sagEnd);
+  const layers = buildLayers(g, {
+    nutSeat:v.nutSeat, extension:v.extension, slotWidth:v.slotWidth,
+    slotWidthOn:v.slotWidthOn, showCentreline:v.showCentreline,
+    showFretNumbers:v.showFretNumbers, showStrings:v.showStrings,
+    showBridge:v.showBridge, inlayFrets:v.inlayFrets, doubleAt:v.doubleAt,
+    inlayDia:v.inlayDia, showInlayCentres:v.showInlayCentres,
+    showSaddles:v.showSaddles, showCheckPoints:v.showCheckPoints,
+    showPosts:v.showPosts, postSpacing:v.postSpacing,
+    postDia:v.postDia, postFromNut:v.postFromNut, postSetbackBass:v.postSetbackBass,
+    showEdges:v.showEdges, extendFrets:v.extendFrets, showBox:v.showBox,
+    bound:v.bound, bindingWidth:v.bindingWidth,
+    showSection:v.showSection, slotDepthOn:v.slotDepthOn,
+    radius: { rNut:v.radiusNut, rEnd:v.radiusEnd, thickness:v.thickness,
+              slotDepth:v.slotDepth, wNut:v.wNut, wEnd:v.wEnd },
+    fmt: fmt,
+    info: v.showTitleBlock ? infoLines(v) : null });
+  current = { v, g, layers, rows: fretRows(g), report: verify(layers) };
+  return current;
+}
+
+function previewSVG(layers) {
+  /* The same writer the download uses, with the physical sizing taken off
+     so the browser can scale it, and turned on its side. A board is long
+     and narrow: stood upright in a wide panel it comes out a sliver a few
+     pixels across. Laid along the panel it fills it, which is also how
+     anyone actually looks at a fretboard. The FILE is never rotated --
+     this is the screen only, and the geometry is untouched either way. */
+  let svg = toSVG(layers, 8, '', UNITS.mm);
+  const m = svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
+  svg = svg.replace(/width="[\d.]+mm" height="[\d.]+mm" /, '');
+  if (!m) return svg;
+  const W = parseFloat(m[1]), H = parseFloat(m[2]);
+  return svg
+    .replace(/viewBox="0 0 [\d.]+ [\d.]+"/,
+             'viewBox="0 0 ' + H + ' ' + W + '" preserveAspectRatio="xMidYMid meet"')
+    .replace(/(<rect x="0" y="0"[^>]*\/>)/, '')
+    .replace('<g fill="none"',
+             '<rect x="0" y="0" width="' + H + '" height="' + W + '" fill="#ffffff"/>' +
+             '<g transform="translate(0,' + W + ') rotate(-90)"><g fill="none"')
+    .replace('</g></svg>', '</g></g></svg>');
+}
+
+/* This hint was only ever true of a FANNED board. Measured, 3 mm to 6 mm
+   of overhang at the nut: on a fan the 24th fret moves 0.0278 mm along the
+   board; on a straight board it moves 0.0000, because the frets sit on the
+   centre line and the overhang only decides where the strings sit. So the
+   wording follows the same test everything else follows. */
+function setHints(isFan) {
+  $('hintBridgeSpan').textContent = isFan
+    ? 'On a fanned board this is what sets where the frets land, so it matters more than the board width.'
+    : 'This sets where the outer strings sit at the bridge. It does not move the frets on a straight board.';
+}
+function setTableHeadings(isFan) {
+  $('tableNote').textContent = isFan
+    ? 'Measured along each outer string, from the nut. On a fanned board those are two different numbers.'
+    : 'Measured up the centre line, from the nut. The board is set out square across, so both columns match.';
+  $('thBass').textContent = isFan ? 'Bass, from nut' : 'From nut';
+  $('thTreble').textContent = isFan ? 'Treble, from nut' : 'From nut';
+  $('thStepB').textContent = isFan ? 'Step, bass' : 'Step';
+  $('thStepT').textContent = isFan ? 'Step, treble' : 'Step';
+}
+
+function render() {
+  const { v, layers, rows, report } = build();
+  const u = U(), dp = unitKey === 'mm' ? 3 : 4;
+  setTableHeadings(v.isFan);
+  setHints(v.isFan);
+  $('outBridgeWidth').textContent = fmt(v.bridgeWidthOut);
+  $('hintGauges').textContent = v.gaugeMismatch
+    ? 'That is ' + v.gauges.length + ' gauges for ' + v.strings + ' strings. The spacing has gone '
+      + 'back to equal until the two match.'
+    : 'String 1 is the thinnest, the high E, and it sits on the treble side.';
+
+  const [x0,y0,x1,y1] = bounds(layers);
+  $('sheet').innerHTML = previewSVG(layers);
+  $('dims').textContent = fmtN(x1-x0) + ' × ' + fmtN(y1-y0) + ' ' + u.name + ' on the sheet';
+
+  const ok = report.clean;
+  $('verdict').innerHTML =
+    '<span class="pill ' + (ok ? 'ok' : 'no') + '">' + (ok ? 'Checked ✓ clean' : 'Check failed') + '</span>' +
+    '<span class="stat"><b>' + report.polylines + '</b> unbroken runs</span>' +
+    '<span class="stat"><b>' + report.points + '</b> points</span>' +
+    '<span class="stat">zero length <b>' + report.zero + '</b></span>' +
+    '<span class="stat">duplicated <b>' + report.dup + '</b></span>' +
+    '<span class="stat">split lines <b>' + report.broken + '</b></span>' +
+    '<span class="stat">shortest <b>' + (report.shortest ? fmtN(report.shortest) : '–') + '</b> ' + u.name + '</span>';
+
+  $('tbody').innerHTML = rows.map(r =>
+    '<tr' + (v.inlayFrets.includes(r[0]) ? ' class="mark"' : '') + '><td>' + r[0] + '</td>' +
+    r.slice(1).map(x => '<td class="n">' + (x / u.k).toFixed(dp) + '</td>').join('') + '</tr>').join('');
+
+  $('tileLabel').textContent = v.pageSize ? ('tiled ' + v.pageSize) : 'not tiled';
+
+  /* WHAT THE RADIUS DOES AND DOES NOT DO, said on the page, because the
+     obvious expectation is wrong and a wrong expectation here costs
+     somebody a fretboard. Measured: walking evenly along the curved
+     surface and dropping each point straight down, the widest and
+     narrowest steps in plan differ by 0.0101 mm on a 12 inch radius and
+     0.0276 mm on a 7.25 inch one, and the two ENDS land exactly on the
+     board edges. So the plan line is the same line. What changes is the
+     height the cutter has to follow along it. */
+  $('radNote').textContent =
+    'Drop from the middle to the edge: ' + fmt(v.sagNut) + ' at the nut'
+    + (v.compound || Math.abs(v.wEnd - v.wNut) > 1e-9
+        ? ', ' + fmt(v.sagEnd) + ' at the far end' : '')
+    + '. Seen from straight above, a radius does not move a fret line, so the plan is the '
+    + 'same drawing. What it changes is the depth along the slot, and that goes into the DXF.';
+  const warn = v.edgeLeftMin < v.slotDepth * 1.2 && v.slotDepth > 0;
+  $('radWarn').hidden = !warn;
+  if (warn) $('radWarn').textContent =
+    'Careful: only ' + fmt(v.edgeLeftMin) + ' of wood is left above the flat back at the edge, '
+    + 'and the slot is ' + fmt(v.slotDepth) + ' deep. The slot can break through near the edge. '
+    + 'A flatter radius, a narrower board or a thicker blank fixes it.';
+  $('bindNote').textContent = v.bound
+    ? 'The slots stop ' + fmt(v.bindingWidth) + ' short of each edge, so no slot shows through '
+      + 'the binding. The fret still covers the full width, with its tang nipped back.'
+    : 'The slots run all the way out to the edge of the wood.';
+}
+
+function save(name, text, mime) {
+  const blob = new Blob([text], { type: mime });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+}
+
+function stem() {
+  const v = current.v, un = U().name;
+  const kind = v.isFan ? (fmtN(v.bassScale) + '-' + fmtN(v.trebleScale) + un + ' fan')
+                       : (fmtN(v.bassScale) + un);
+  return 'Fretboard ' + kind + ' ' + v.frets + ' fret ' + v.strings + ' string';
+}
+
+document.querySelectorAll('[data-dl]').forEach(b => b.addEventListener('click', () => {
+  build();
+  const { v, layers, rows } = current, s = stem(), u = U();
+  const title = s + ' — Urban Custom Guitars';
+  switch (b.dataset.dl) {
+    case 'dxf': save(s + '.dxf', toDXF(layers, u), 'application/dxf'); break;
+    case 'svg': save(s + '.svg', toSVG(layers, 10, title, u), 'image/svg+xml'); break;
+    case 'pdf': {
+      /* A PDF is a physical page, so it is always built in millimetres,
+         whatever unit the numbers printed on it are quoted in. 1:1 is 1:1
+         either way, and that is the whole point of the PDF. */
+      const r = toPDF(layers, 10, title);
+      save(s + '.pdf', pdfBlobText(r.text), 'application/pdf'); break;
+    }
+    case 'tiled': {
+      if (!v.pageSize) { alert('Pick a page size under Printing first.'); return; }
+      const r = toPDF(layers, 10, title, v.pageSize, v.landscape);
+      save(s + ' (tiled ' + v.pageSize + ', ' + r.pages + ' sheets).pdf',
+           pdfBlobText(r.text), 'application/pdf'); break;
+    }
+    case 'csv': save(s + '.csv', toCSV(rows, infoLines(v), u), 'text/csv'); break;
+  }
+}));
+
+/* A PDF is bytes, not text. Every character written is in the 0-255 range,
+   so it is turned back into raw bytes here -- handing the string straight
+   to a Blob would UTF-8 encode it and corrupt the byte offsets in the
+   cross-reference table, which is what makes a reader refuse the file. */
+function pdfBlobText(s) {
+  const b = new Uint8Array(s.length);
+  for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i) & 0xff;
+  return b;
+}
+
+/* The bridge list and its offsets are the Fusion add-in's own table, taken
+   straight from BRIDGE_PRESETS so the two tools give the same answer. The
+   offsets came from the same kind of bridge-placement table the StewMac
+   fret calculator uses. */
+function bridgeChanged() {
+  const sel = $('bridgeModel'), op = sel.options[sel.selectedIndex];
+  const offIn = parseFloat(op.dataset.off), tolIn = parseFloat(op.dataset.tol);
+  const off = offIn * 25.4, tol = tolIn * 25.4;
+  $('bridgeOffset').dataset.mm = String(off);
+  $('bridgeOffset').value = (off / U().k).toFixed(4);
+  $('bridgeNote').textContent = 'Offset ' + (off >= 0 ? '+' : '') + fmt(off) + ' ('
+    + (offIn >= 0 ? '+' : '') + offIn.toFixed(4) + ' in)'
+    + (tol ? ', place it to within ' + fmt(tol) + ' (' + tolIn.toFixed(3) + ' in).'
+           : ', no placement tolerance given.');
+  render();
+}
+
+function setRadius(on) {
+  compound = on;
+  $('rSingle').setAttribute('aria-pressed', String(!on));
+  $('rComp').setAttribute('aria-pressed', String(on));
+  $('rowRadEnd').hidden = !on;
+  $('lblRadNut').textContent = on ? 'Radius at the nut' : 'Radius';
+  render();
+}
+function setBound(on) {
+  bound = on;
+  $('bNone').setAttribute('aria-pressed', String(!on));
+  $('bBound').setAttribute('aria-pressed', String(on));
+  $('rowBindW').hidden = !on;
+  render();
+}
+
+function setFan(on) {
+  fanned = on;
+  $('tSingle').setAttribute('aria-pressed', String(!on));
+  $('tFan').setAttribute('aria-pressed', String(on));
+  $('rowTreble').hidden = !on; $('rowPerp').hidden = !on; $('hintPerp').hidden = !on;
+  $('lblBass').textContent = on ? 'Bass scale length' : 'Scale length';
+  $('fanBridgeNote').hidden = !on;
+  render();
+}
+
+$('bridgeModel').addEventListener('change', bridgeChanged);
+$('rSingle').addEventListener('click', () => setRadius(false));
+$('rComp').addEventListener('click', () => setRadius(true));
+$('bNone').addEventListener('click', () => setBound(false));
+$('bBound').addEventListener('click', () => setBound(true));
+$('tSingle').addEventListener('click', () => setFan(false));
+$('tFan').addEventListener('click', () => setFan(true));
+$('spEqual').addEventListener('click', () => setSpacing(false));
+$('spProp').addEventListener('click', () => setSpacing(true));
+for (const b of document.querySelectorAll('[data-unit]'))
+  b.addEventListener('click', () => setUnit(b.dataset.unit));
+$('ohMode').addEventListener('change', () => { applyOverhangMode(); render(); });
+$('stringSet').addEventListener('change', () => {
+  const val = $('stringSet').value;
+  if (val === 'custom') return;
+  const parts = val.split('|');
+  $('gauges').value = GAUGE_SETS[parts[0]][parts[1]].map(d => d.toFixed(3)).join(' ');
+  render();
+});
+$('gauges').addEventListener('input', () => { $('stringSet').value = 'custom'; });
+$('controls').addEventListener('input', e => {
+  // Keep the hidden overhang boxes in step with the visible ones as you type.
+  noteTyped(e.target);
+  if (e.target && e.target.id && e.target.id.indexOf('oh') === 0) applyOverhangMode();
+  render();
+});
+$('controls').addEventListener('change', e => { noteTyped(e.target); render(); });
+$('controls').addEventListener('submit', e => e.preventDefault());
+
+fillStringSets();
+showUnits();
+applyOverhangMode();
+setSpacing(false);
+setRadius(false);
+setBound(false);
+setFan(false);
+bridgeChanged();
+
+</script>
+</body>
+</html>
