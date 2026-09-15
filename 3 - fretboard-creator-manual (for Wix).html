@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fretboard Creator &mdash; Manual</title>
+<meta name="description" content="How to use Fretboard Creator, the Fusion 360 fretboard add-in from Urban Custom Guitars.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlVyYmFuIEN1c3RvbSBHdWl0YXJzIj4KICA8dGl0bGU+VXJiYW4gQ3VzdG9tIEd1aXRhcnM8L3RpdGxlPgogIDwhLS0gVGhlIHNhbWUgbWFyaywgY3V0IGRvd24gdG8gYSBzcXVhcmUgc28gaXQgc3RpbGwgcmVhZHMgYXQgMzIgYW5kIDE2CiAgICAgICBwaXhlbHMuIFRoZSB3aWRlIHNsYWIgaXMgdGhlIHJpZ2h0IHNoYXBlIG9uIGEgcGFnZSBoZWFkZXIgYW5kIHR1cm5zCiAgICAgICBpbnRvIGEgZGFyayBzbWVhciBhcyBhIGZhdmljb24sIHNvIHRoaXMga2VlcHMgdGhlIHBhcnRzIHRoYXQgY2FycnkKICAgICAgIHRoZSBtZWFuaW5nIC0tIGJvbmUgbnV0LCBicmFzcyBmcmV0cywgb25lIHBlYXJsIGRvdCAtLSBhbmQgc3RhbmRzCiAgICAgICB0aGVtIHVwcmlnaHQsIHdoaWNoIGlzIGhvdyBhIGZyZXRib2FyZCBpcyBoZWxkIGFueXdheS4gLS0+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNxLWVib255IiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgICAgc3RvcC1jb2xvcj0iIzNhMzMyZSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjAuMzUiIHN0b3AtY29sb3I9IiMyNDFmMWMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiAgICBzdG9wLWNvbG9yPSIjMTcxNDEyIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJzcS1icmFzcyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiICAgIHN0b3AtY29sb3I9IiNhODdjNTMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIwLjM1IiBzdG9wLWNvbG9yPSIjZjZkNGFjIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMC43MCIgc3RvcC1jb2xvcj0iI2UzYjI4NyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiICAgIHN0b3AtY29sb3I9IiNhODdjNTMiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNxLXBlYXJsIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgICBzdG9wLWNvbG9yPSIjZmJmN2U4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMC41IiBzdG9wLWNvbG9yPSIjZTZkZmM2Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgICBzdG9wLWNvbG9yPSIjY2ZjNmE4Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJzcS1ib25lIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgICBzdG9wLWNvbG9yPSIjYzNiZGE0Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMC40IiBzdG9wLWNvbG9yPSIjZjJlY2Q2Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgICBzdG9wLWNvbG9yPSIjZGVkOGMwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGNsaXBQYXRoIGlkPSJzcS10aWxlIj4KICAgICAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIHJ5PSIxNCIvPgogICAgPC9jbGlwUGF0aD4KICA8L2RlZnM+CgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiByeT0iMTQiIGZpbGw9InVybCgjc3EtZWJvbnkpIi8+CgogIDxnIGNsaXAtcGF0aD0idXJsKCNzcS10aWxlKSI+CiAgICA8IS0tIFRIUkVFIEVMRU1FTlRTLCBOT1QgU0lYLiBUaGUgZmlyc3Qgc3F1YXJlIHZlcnNpb24gY2FycmllZCB0aGUKICAgICAgICAgbnV0IGFuZCB0aHJlZSBmcmV0cywgYW5kIGF0IDMyIHBpeGVscyB0aGF0IHJlYWRzIGFzIHN0cmlwZXMKICAgICAgICAgcmF0aGVyIHRoYW4gYXMgYSBmcmV0Ym9hcmQuIEEgbnV0LCBvbmUgZnJldCBhbmQgb25lIGRvdCBpcyB0aGUKICAgICAgICAgbGVhc3QgdGhhdCBzdGlsbCBzYXlzIHdoYXQgaXQgaXMsIGFuZCBlYWNoIG9uZSBpcyBub3cgYmlnIGVub3VnaAogICAgICAgICB0byBzdXJ2aXZlIGJlaW5nIHNocnVuay4gLS0+CiAgICA8cmVjdCB4PSIwIiB5PSIxMSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjYuNSIgZmlsbD0idXJsKCNzcS1ib25lKSIvPgogICAgPHJlY3QgeD0iMCIgeT0iNDMiIHdpZHRoPSI2NCIgaGVpZ2h0PSI0IiBmaWxsPSJ1cmwoI3NxLWJyYXNzKSIvPgogICAgPGNpcmNsZSBjeD0iMzIiIGN5PSIzMCIgcj0iOC41IiBmaWxsPSJ1cmwoI3NxLXBlYXJsKSIvPgogIDwvZz4KCiAgPHJlY3QgeD0iMC42IiB5PSIwLjYiIHdpZHRoPSI2Mi44IiBoZWlnaHQ9IjYyLjgiIHJ4PSIxMy41IiByeT0iMTMuNSIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMwZjBkMGMiIHN0cm9rZS13aWR0aD0iMS4yIiBvcGFjaXR5PSIwLjYiLz4KPC9zdmc+">
+<style>
+:root{
+  --bg:#eef2f6; --panel:#ffffff; --sunk:#f5f8fa; --line:#dde4ea; --line-2:#bfc9d4;
+  --ink:#171c22; --muted:#5a6775; --accent:#e2721a; --accent-ink:#b0530c;
+  --accent-soft:#fdeedd; --warn-soft:#fdf3e3; --r:6px;
+}
+*{box-sizing:border-box}
+body{margin:0; color:var(--ink); background:var(--bg);
+  font-family:Barlow,"Helvetica Neue","DejaVu Sans",Arial,sans-serif; font-size:16px; line-height:1.62;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.lab{font-family:"Barlow Condensed",Barlow,"DejaVu Sans Condensed",Arial,sans-serif}
+code,.mono,td.n{font-family:"IBM Plex Mono",ui-monospace,"DejaVu Sans Mono",Menlo,Consolas,monospace}
+
+.cover{background:#14161a; color:#fff; padding:56px 40px 48px}
+.cover .m{margin-bottom:26px}
+.cover h1{margin:0; font-size:clamp(32px,5vw,52px); font-weight:700; letter-spacing:.01em;
+  text-transform:uppercase; line-height:.98}
+.cover h1 em{font-style:normal; color:var(--accent)}
+.cover .sub{margin:12px 0 0; color:#9aa5b1; font-size:17px; max-width:60ch}
+.cover .meta{margin-top:26px; font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace; font-size:13px;
+  color:#7d8894; letter-spacing:.04em}
+
+.shell{max-width:1180px; margin:0 auto; padding:0 20px 60px; display:grid;
+  grid-template-columns:236px minmax(0,1fr); gap:34px; align-items:start}
+@media (max-width:900px){ .shell{grid-template-columns:1fr; gap:10px} }
+.shell > *{min-width:0}
+
+nav.toc{position:sticky; top:18px; background:var(--panel); border:1px solid var(--line);
+  border-radius:var(--r); padding:16px 6px 16px 0; margin-top:28px; max-height:88vh; overflow:auto}
+@media (max-width:900px){ nav.toc{position:static; max-height:none} }
+nav.toc ol{list-style:none; margin:0; padding:0; counter-reset:c}
+nav.toc li{margin:0}
+nav.toc li.sep{font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; font-size:11.5px; font-weight:700;
+  letter-spacing:.17em; text-transform:uppercase; color:var(--accent-ink);
+  padding:16px 16px 6px; border-top:1px solid var(--line); margin-top:10px}
+nav.toc a{display:block; padding:6px 16px; color:var(--muted); text-decoration:none;
+  font-size:14.5px; border-left:3px solid transparent}
+nav.toc a:hover{color:var(--ink); background:var(--sunk); border-left-color:var(--accent)}
+
+main{margin-top:28px}
+section{background:var(--panel); border:1px solid var(--line); border-radius:var(--r);
+  padding:26px 30px 30px; margin-bottom:20px}
+h2{margin:0 0 14px; font-size:27px; font-weight:700; letter-spacing:.01em;
+  text-transform:uppercase; line-height:1.06}
+h3{margin:26px 0 8px; font-size:19px; font-weight:600; letter-spacing:.04em;
+  text-transform:uppercase; color:var(--accent-ink)}
+h4{margin:0 0 6px; font-size:16px; font-weight:700; letter-spacing:.03em; text-transform:uppercase}
+p{margin:0 0 13px; max-width:74ch}
+p.lead{font-size:18px; color:#2b333c}
+p.note{background:var(--sunk); border-left:3px solid var(--line-2); padding:11px 14px;
+  border-radius:0 4px 4px 0; max-width:none}
+ul,ol{margin:0 0 13px; padding-left:22px; max-width:74ch}
+li{margin:0 0 6px}
+ol.steps{counter-reset:s; list-style:none; padding-left:0}
+ol.steps > li{position:relative; padding-left:40px; margin-bottom:11px}
+ol.steps > li::before{counter-increment:s; content:counter(s);
+  position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%;
+  background:var(--accent-soft); color:var(--accent-ink); font-weight:700; font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace}
+code{background:var(--sunk); border:1px solid var(--line); border-radius:3px;
+  padding:1px 5px; font-size:13.5px; word-break:break-word}
+
+.callout{background:var(--accent-soft); border:1px solid #f3d3ad; border-radius:5px;
+  padding:14px 17px; margin:18px 0}
+.callout.warn{background:var(--warn-soft); border-color:#eccb92}
+.callout p:last-child{margin-bottom:0}
+
+table{border-collapse:collapse; width:100%; margin:6px 0 16px; font-size:15px}
+table.ref th{width:34%; text-align:left; vertical-align:top; font-weight:600;
+  padding:9px 14px 9px 0; border-bottom:1px solid var(--line); color:var(--ink)}
+table.ref td{vertical-align:top; padding:9px 0; border-bottom:1px solid var(--line);
+  color:#39424c}
+table.files th{text-align:left; padding:8px 14px 8px 0; border-bottom:2px solid var(--ink);
+  font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+  font-size:13px}
+table.files td{padding:9px 14px 9px 0; border-bottom:1px solid var(--line); vertical-align:top}
+table.files td:first-child{font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace; font-size:13.5px; white-space:nowrap}
+
+footer{max-width:1180px; margin:0 auto; padding:22px 20px 50px; color:var(--muted);
+  font-size:13.5px; display:flex; flex-wrap:wrap; gap:10px 22px;
+  justify-content:space-between; align-items:center; border-top:1px solid var(--line-2)}
+
+@media print{
+  body{background:#fff; font-size:10.5pt; line-height:1.5}
+  .shell{display:block; max-width:none; padding:0}
+  nav.toc{display:none}
+  main{margin:0}
+  section{border:0; padding:0 0 6mm; margin:0 0 6mm; break-inside:auto}
+  h2{break-after:avoid; font-size:17pt; border-bottom:2px solid #171c22; padding-bottom:3pt;
+     margin-top:8mm}
+  section:first-of-type h2{margin-top:0}
+  h3{break-after:avoid; font-size:12pt}
+  p,li{orphans:3; widows:3}
+  tr{break-inside:avoid}
+  .cover{break-after:page; min-height:235mm; padding:30mm 20mm}
+  .callout{break-inside:avoid; border:1px solid #ddd}
+  footer{display:none}
+  a{color:inherit; text-decoration:none}
+}
+@page{ size:A4; margin:16mm 15mm 18mm; }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="m"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 232 45" width="300" height="58" role="img" aria-label="Urban Custom Guitars">
+  <title>Urban Custom Guitars</title>
+  <!-- His own mark, redrawn to scale cleanly. Every position is measured
+       off the artwork he supplied: the slab is 232 x 45 with fully rounded
+       ends, the nut sits at 9% across, seven frets run at even 10.6% steps
+       from 18.6% to 82.3%, and three pearl dots sit at 32.5%, 54.1% and
+       75.3%, each 22% of the slab height. -->
+  <defs>
+    <linearGradient id="ucg-ebony" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#3a332e"/>
+      <stop offset="0.30" stop-color="#241f1c"/>
+      <stop offset="0.72" stop-color="#1b1715"/>
+      <stop offset="1"    stop-color="#2c2622"/>
+    </linearGradient>
+    <linearGradient id="ucg-brass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#b98a5e"/>
+      <stop offset="0.38" stop-color="#f6d4ac"/>
+      <stop offset="0.62" stop-color="#e3b287"/>
+      <stop offset="1"    stop-color="#a87c53"/>
+    </linearGradient>
+    <linearGradient id="ucg-pearl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"   stop-color="#fbf7e8"/>
+      <stop offset="0.5" stop-color="#e6dfc6"/>
+      <stop offset="1"   stop-color="#cfc6a8"/>
+    </linearGradient>
+    <linearGradient id="ucg-bone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#f2ecd6"/>
+      <stop offset="0.5" stop-color="#ded8c0"/>
+      <stop offset="1"   stop-color="#c3bda4"/>
+    </linearGradient>
+    <clipPath id="ucg-slab">
+      <rect x="0" y="0" width="300" height="58" rx="22.5" ry="22.5"/>
+    </clipPath>
+  </defs>
+
+  <rect x="0" y="0" width="300" height="58" rx="22.5" ry="22.5" fill="url(#ucg-ebony)"/>
+
+  <g clip-path="url(#ucg-slab)">
+    <!-- grain -->
+    <g stroke="#4a423b" stroke-width="0.5" opacity="0.30">
+      <path d="M0 11 C 60 8, 150 14, 232 10"/>
+      <path d="M0 22 C 70 26, 140 18, 232 23"/>
+      <path d="M0 33 C 55 30, 160 36, 232 31"/>
+    </g>
+
+    <!-- the nut -->
+    <rect x="21" y="0" width="5.2" height="45" fill="url(#ucg-bone)"/>
+
+    <!-- seven frets, even steps, as drawn -->
+    <g fill="url(#ucg-brass)">
+      <rect x="42.6" y="0" width="1.9" height="45"/>
+      <rect x="66.6" y="0" width="1.9" height="45"/>
+      <rect x="91.4" y="0" width="1.9" height="45"/>
+      <rect x="115.6" y="0" width="1.9" height="45"/>
+      <rect x="140.4" y="0" width="1.9" height="45"/>
+      <rect x="165.4" y="0" width="1.9" height="45"/>
+      <rect x="189.6" y="0" width="1.9" height="45"/>
+    </g>
+
+    <!-- three pearl dots, centred between frets -->
+    <g fill="url(#ucg-pearl)">
+      <circle cx="79.8" cy="22.5" r="5"/>
+      <circle cx="128.8" cy="22.5" r="5"/>
+      <circle cx="178.0" cy="22.5" r="5"/>
+    </g>
+  </g>
+
+  <rect x="0.5" y="0.5" width="300" height="58" rx="22" ry="22"
+        fill="none" stroke="#0f0d0c" stroke-width="1" opacity="0.55"/>
+</svg></div>
+  <h1>Fretboard <em>Creator</em></h1>
+  <p class="sub">The complete manual. How to lay out, build and print a guitar
+    fretboard in Autodesk Fusion 360.</p>
+  <div class="meta">URBAN CUSTOM GUITARS &nbsp;&middot;&nbsp; BUILT FOR V4.555
+    &nbsp;&middot;&nbsp; 15 September 2026 &nbsp;&middot;&nbsp; 110 CONTROLS DOCUMENTED</div>
+</header>
+
+<div class="shell">
+  <nav class="toc"><ol><li><a href="#what-it-is">What Fretboard Creator is</a></li>
+<li><a href="#installing">Installing it</a></li>
+<li><a href="#opening-it">Opening it</a></li>
+<li><a href="#first-board">Your first fretboard</a></li>
+<li><a href="#single-scale">A single-scale board, properly</a></li>
+<li><a href="#multiscale">A fanned board</a></li>
+<li><a href="#inlays">Inlays and side markers</a></li>
+<li><a href="#the-2d-plan">The 2D plan, and printing it 1:1</a></li>
+<li><a href="#saving">Saving a design and reusing it</a></li>
+<li><a href="#troubleshooting">When something goes wrong</a></li>
+<li class="sep">Every control</li>
+<li><a href="#ref-designs">Designs</a></li>
+<li><a href="#ref-fretboard-scale">Fretboard &amp; Scale</a></li>
+<li><a href="#ref-nut-bridge">Nut &amp; Bridge</a></li>
+<li><a href="#ref-frets-fret-wire">Frets / Fret Wire</a></li>
+<li><a href="#ref-3d-fretboard">3D Fretboard</a></li>
+<li><a href="#ref-inlays-side-markers">Inlays &amp; Side Markers</a></li>
+<li><a href="#ref-neck">Neck</a></li>
+<li><a href="#ref-2d-plan">2D Plan</a></li>
+<li><a href="#ref-strings">Strings</a></li>
+<li><a href="#plus">What Fretboard Plus adds</a></li></ol></nav>
+  <main>
+    <section id="what-it-is"><h2>What Fretboard Creator is</h2>
+<p class="lead">Fretboard Creator lays out a guitar fretboard inside Autodesk
+Fusion 360. You type the numbers a builder already thinks in &mdash; scale
+length, nut width, how many frets &mdash; and it builds the board, cuts the
+fret slots, sets the inlays and writes you a flat plan you can cut from.</p>
+
+<p>It does the arithmetic that is tedious and unforgiving. Fret positions,
+a fanned layout, where a marker sits in its own cell on a tapered board,
+how deep a slot can go before it breaks through a radiused edge. Those are
+the places a hand-drawn plan goes wrong, and they are the places where being
+out by a fifth of a millimetre is the difference between an instrument that
+plays in tune and firewood.</p>
+
+<h3>What you get out of it</h3>
+<ul>
+  <li><strong>A 3D fretboard</strong> in Fusion: the board, radiused, with
+      slots cut, fret wire fitted, inlays inlaid and side dots in the edge.</li>
+  <li><strong>A 2D plan</strong> as DXF, SVG, PDF and CSV &mdash; the DXF for
+      a CNC or a laser, the PDF to print at full size and lay on the wood.</li>
+  <li><strong>A neck profile</strong>, the shape of the back of the neck.</li>
+  <li><strong>Numbers you can check</strong>: every fret position written out,
+      measured along each outer string.</li>
+</ul>
+
+<div class="callout">
+  <h4>Creator and Plus</h4>
+  <p>This manual is for <strong>Fretboard Creator</strong>. The fretboard and
+  the neck profile are Creator&rsquo;s. <strong>Fretboard Plus</strong> adds the
+  headstock: break angle, volute, the plan outline, tuner holes and the blend
+  into the neck. You will see the Headstock tab in Creator with its controls
+  greyed out, so you can see what is in Plus. Everything else works.</p>
+</div>
+</section>
+<section id="installing"><h2>Installing it</h2>
+<p>Fretboard Creator is a Fusion 360 add-in. An add-in is a program that runs
+inside Fusion and adds a command to it. Installing one means putting a folder
+in the right place and switching it on.</p>
+
+<ol class="steps">
+  <li><strong>Close Fusion 360.</strong> An add-in folder dropped in while
+      Fusion is running is often not noticed until it restarts.</li>
+  <li><strong>Unzip the download.</strong> You should end up with a folder
+      called <code>FretboardCreator</code> with a <code>.py</code> file and a
+      <code>core</code> folder inside it.</li>
+  <li><strong>Put that folder in Fusion&rsquo;s AddIns folder.</strong>
+      <ul>
+        <li>Windows:
+            <code>%AppData%\Autodesk\Autodesk Fusion 360\API\AddIns</code></li>
+        <li>Mac:
+            <code>~/Library/Application Support/Autodesk/Autodesk Fusion 360/API/AddIns</code></li>
+      </ul>
+      Paste that path into the address bar of a file window and press Enter.</li>
+  <li><strong>Start Fusion.</strong></li>
+  <li><strong>Switch the add-in on.</strong> Go to the
+      <em>Utilities</em> tab, then <em>ADD-INS</em>, then <em>Scripts and
+      Add-Ins</em>. Pick the <em>Add-Ins</em> tab in the window that opens,
+      find <em>FretboardCreator</em> in the list, select it and press
+      <em>Run</em>. Tick <em>Run on Startup</em> so you do not have to do this
+      again.</li>
+</ol>
+
+<div class="callout warn">
+  <h4>If it is not in the list</h4>
+  <p>The folder is in the wrong place, or it is nested one level too deep.
+  Inside <code>AddIns</code> you want <code>FretboardCreator</code>, and
+  directly inside that the <code>.py</code> file &mdash; not another folder
+  with the same name inside it.</p>
+</div>
+</section>
+<section id="opening-it"><h2>Opening it</h2>
+<p>Once it is running you will find <strong>Urban Custom Fretboard</strong> on
+the <em>Solid</em> tab of the toolbar, in the <em>Create</em> panel. Click it
+and the dialog opens.</p>
+
+<p>Start from a <strong>new, empty design</strong>. The add-in builds its own
+components and its own named parameters, and an empty document keeps that
+tidy and easy to undo.</p>
+
+<h3>How the dialog is laid out</h3>
+<p>Everything is in one window, split into tabs across the top. You do not have
+to visit them all. The defaults are a working 25.5 inch, 22 fret, 6 string board
+&mdash; press OK on a fresh dialog and you get a real fretboard.</p>
+
+<p><strong>Designs</strong> sits above the tabs, collapsed. That is where you
+save a set of numbers under a name and load them back later.</p>
+
+<p>Every field has help on it. Hover over a field name and Fusion shows you
+what that number means. The same words are in the reference chapter of this
+manual, because both come from the same place.</p>
+</section>
+<section id="first-board"><h2>Your first fretboard</h2>
+<p>Five minutes, start to finish. This makes a plain 25.5 inch board so you can
+see the shape of the process before changing anything.</p>
+
+<ol class="steps">
+  <li><strong>New design.</strong> File, New Design.</li>
+  <li><strong>Open the add-in.</strong> Solid tab, Create panel, Urban Custom
+      Fretboard.</li>
+  <li><strong>Set your units.</strong> First tab, first control. Millimetres or
+      inches &mdash; every length box in the dialog follows it.</li>
+  <li><strong>Look at the Fretboard &amp; Scale tab and change nothing.</strong>
+      Scale length 25.5 in, 22 frets, 6 strings, nut width 1.69 in.</li>
+  <li><strong>Press OK.</strong></li>
+</ol>
+
+<p>It will take a little while &mdash; a full build with frets, inlays and the
+neck is a few minutes, and Fusion will look busy while it works. When it
+finishes you have a fretboard in the browser tree on the left, under
+<em>Fretboard</em>, with the frets and inlays in their own components.</p>
+
+<h3>Now change one thing</h3>
+<p>Reopen the add-in. It remembers every setting from last time. Change the
+scale length to 24.75 in and press OK again. The whole board rebuilds to the
+new scale. That is the way to work with it: change a number, rebuild, look.</p>
+
+<div class="callout">
+  <h4>If something does not look right</h4>
+  <p>Undo works normally. Ctrl+Z, or drag the timeline marker at the bottom of
+  the screen back before the build.</p>
+</div>
+</section>
+<section id="single-scale"><h2>A single-scale board, properly</h2>
+<p>Now the same board with the numbers set deliberately. Work down the tabs in
+order &mdash; they are in the order you would think about a board.</p>
+
+<h3>Fretboard &amp; Scale</h3>
+<p>Set the <strong>scale length</strong> first, because every fret position
+comes off that one number. Then the fret count, the string count and the nut
+width.</p>
+
+<p class="note"><strong>Where the scale length is measured from.</strong>
+On a single-scale board it is measured on the centre line, square out from the
+middle of the nut. That is the traditional definition and it is what the add-in
+uses. The outer strings splay out toward the bridge, so each one is in fact
+slightly longer than the scale length &mdash; which is part of why a guitar
+needs intonating at the saddle.</p>
+
+<p>Under <strong>String Layout</strong> you set how far the outer strings sit
+in from the edge, at the nut and at the bridge. This is the overhang, and it
+is what stops the low E rolling off the edge when you bend. Three millimetres
+is a common starting point. The two <em>auto</em> boxes are worked out for you
+and shown rather than typed.</p>
+
+<h3>Nut &amp; Bridge</h3>
+<p>Pick the nut style &mdash; it fills in a standard thickness &mdash; and set
+how far the board runs on behind the nut. If you are fitting a bought nut, turn
+<em>Generate 3D Nut</em> off.</p>
+
+<p>The bridge type sets where the post or mounting holes are drawn, measured
+from the nut. Those offsets come from the same kind of bridge-placement table
+the StewMac fret calculator uses.</p>
+
+<h3>Frets / Fret Wire</h3>
+<p>Pick a fret wire by name and the crown and tang sizes fill in. Leave the slot
+width on auto and it comes out as the tang width plus a few thousandths, so the
+tang grips.</p>
+
+<h3>3D Fretboard</h3>
+<p>Thickness, radius and binding. Set the radius here. A smaller number is a
+rounder board. Tick <em>Compound Radius</em> and the board flattens out as it
+goes up the neck, which is what most modern necks do.</p>
+
+<div class="callout warn">
+  <h4>Radius, thickness and slot depth pull against each other</h4>
+  <p>A radiused board is thinner at the edges than in the middle, and the
+  rounder the radius the bigger that difference. Make it too round on a wide
+  board and the fret slot can break through near the edge. The add-in checks
+  and warns you before it happens &mdash; if you see that message, use a flatter
+  radius, a narrower board or a thicker blank.</p>
+</div>
+</section>
+<section id="multiscale"><h2>A fanned board</h2>
+<p>A fanned board &mdash; multiscale &mdash; gives the bass strings a longer
+speaking length than the treble ones, so the low strings get more tension and
+the high ones stay comfortable. The frets fan out instead of running square
+across.</p>
+
+<ol class="steps">
+  <li>On <strong>Fretboard &amp; Scale</strong>, set <em>Scale Type</em> to
+      <strong>Multiscale</strong>.</li>
+  <li>Two scale length boxes appear. Set the bass side &mdash; the longer one
+      &mdash; and the treble side.</li>
+  <li>Choose the <strong>perpendicular reference</strong>: which line runs
+      square across the neck. The nut, the bridge, or a fret you pick.</li>
+</ol>
+
+<p>The perpendicular fret is the one that decides how the fan feels. Pick a low
+number and the fan leans back toward the nut; pick a higher one, around the 7th
+to the 9th, and the fan is shared more evenly between the two ends. Somewhere
+between the 5th and the 9th is the usual choice.</p>
+
+<p class="note"><strong>Where the scale length is measured from, on a fan.</strong>
+On a fanned board the two scale lengths are measured along the two outer
+strings, each from its own nut point to its own bridge point &mdash; not up the
+centre line. That is the convention the trade uses and it is what the add-in
+does. If you type the <em>same</em> number into both boxes, the board is not
+fanned at all, and the add-in treats it as a straight board and measures it the
+straight way.</p>
+</section>
+<section id="inlays"><h2>Inlays and side markers</h2>
+<p>Face inlays go on the playing surface. Side dots go in the edge where you
+can see them while you play. They are set independently.</p>
+
+<h3>Which frets get a marker</h3>
+<p>The usual pattern is 3, 5, 7, 9, 12, 15, 17, 19, 21 and 24, doubled at the
+12th and 24th. Pick a pattern, or type your own fret list. In a custom list you
+can add a letter after a number to say where the marker sits: <code>b</code> for
+the bass side, <code>t</code> for the treble side, <code>d</code> for a double.
+So <code>1b, 3, 5t, 12d</code> is a bass-side marker at the 1st, a centred one
+at the 3rd, a treble-side one at the 5th and a pair at the 12th.</p>
+
+<h3>Shape</h3>
+<p>There is a set of shapes beyond the plain dot &mdash; blocks, trapezoids,
+shark fins, half moons and more. Some are sized to the fret cell they sit in,
+so they keep their proportions as the cells get shorter up the neck.</p>
+
+<h3>Side dots</h3>
+<p>Diameter and how far into the edge they are set. They are placed in the
+middle of the cell before each marked fret, on the board&rsquo;s real edge, which
+matters on a fanned board where the fret lines are not square across.</p>
+
+<div class="callout">
+  <h4>The add-in checks its own inlay work</h4>
+  <p>After it cuts the inlays it asks the board whether there is still solid
+  wood where each inlay sits. If there is, no pocket was cut, and it tells you
+  which one by name rather than leaving you to spot it. It also writes the
+  report onto the document, so it is still there after you have clicked the
+  message away.</p>
+</div>
+</section>
+<section id="the-2d-plan"><h2>The 2D plan, and printing it 1:1</h2>
+<p>The 2D Plan tab writes the board out flat, as files you can cut or print
+from. Tick <em>Export a 2D plan</em> and choose a folder.</p>
+
+<table class="files">
+  <thead><tr><th>File</th><th>What it is for</th></tr></thead>
+  <tbody>
+    <tr><td>DXF</td><td>CNC and laser. Every fret slot is one unbroken line, and
+        everything sits on a named layer so you can switch off what a job does
+        not need.</td></tr>
+    <tr><td>SVG</td><td>Opens in almost any drawing program at full size.</td></tr>
+    <tr><td>PDF</td><td>One sheet, drawn at full size.</td></tr>
+    <tr><td>PDF, tiled</td><td>The same drawing broken across printer pages,
+        overlapped, with a cross in each corner to line the sheets up on.</td></tr>
+    <tr><td>CSV</td><td>Every fret position as numbers, measured along both
+        outer strings.</td></tr>
+  </tbody>
+</table>
+
+<h3>Printing it and proving it came out right</h3>
+<p>A printer told to <em>fit to page</em> will quietly shrink the drawing, and a
+shrunk fret plan is worse than no fret plan. So:</p>
+<ol class="steps">
+  <li>Print at <strong>100%</strong> or <em>Actual size</em>. Never <em>Fit</em>
+      or <em>Shrink to fit</em>.</li>
+  <li>The sheet carries a <strong>100&nbsp;mm bar and a 4&nbsp;inch bar</strong>.
+      Put a rule on them. If they measure right, the print is right.</li>
+  <li>If you printed the tiled version, line the sheets up on the crosses and
+      tape them.</li>
+</ol>
+
+<p>If you only want the plan and not the 3D board, tick <em>Only the 2D
+plan</em>. It is much faster.</p>
+</section>
+<section id="saving"><h2>Saving a design and reusing it</h2>
+<p>Open the <strong>Designs</strong> group above the tabs. Type a name in
+<em>Save as</em>, tick <em>Save this design when I press OK</em>, and the whole
+set of numbers is filed under that name.</p>
+
+<p><em>Save these settings now</em> files them without generating anything,
+which is useful when you have set a board up and want to keep it before you
+commit to a build.</p>
+
+<p>To bring one back, pick it from <em>Load a saved design</em>. Reusing a name
+overwrites what was saved under it.</p>
+
+<h3>Model presets</h3>
+<p>The <em>Preset</em> control on the first tab fills the whole dialog with a
+known instrument&rsquo;s numbers. Pick one and every other field is set and locked
+so nothing drifts out of step. Switch back to <em>Custom</em> to unlock them
+again &mdash; the values stay where the preset put them, so a preset is also a
+good starting point for something of your own.</p>
+</section>
+<section id="troubleshooting"><h2>When something goes wrong</h2>
+<h3>The build stops with a message</h3>
+<p>Read it. The add-in names the step that failed and why. Most of them are a
+number that cannot work: a radius too small for the board width, a slot deeper
+than the wood at the edge, a scale length too short for the string spread.</p>
+
+<h3>It says some inlays could not be placed</h3>
+<p>That is the add-in telling you, by name, which markers it could not cut
+cleanly. Everything that did work is still built. Usually the marker is too big
+for the cell it was asked to sit in, or it is sitting on the very edge.</p>
+
+<h3>A fret end round-over failed</h3>
+<p>The round-over radius is bigger than the fret end can take. Reduce it. The
+add-in already tries progressively smaller radii before giving up, so if it
+failed the number is a long way out.</p>
+
+<h3>The board rebuilt but looks wrong</h3>
+<p>Undo, reopen the add-in, and check the tab you changed last. Every setting is
+remembered between runs, so a number you changed three builds ago is still
+there.</p>
+
+<h3>Nothing happens when you press OK</h3>
+<p>Check the timeline at the bottom of the screen. A full build takes a few
+minutes and Fusion does not always make it obvious that it is working.</p>
+</section>
+    <section id="reference">
+      <h2>Every control</h2>
+      <p>Every control in the dialog, tab by tab, in the order you meet them.
+      The words are the add-in&rsquo;s own &mdash; this list and the help you get
+      when you hover over a field come from the same place, so they cannot
+      disagree with each other or fall behind the software.</p>
+      <h2 id="ref-designs">Designs</h2>
+<table class="ref"><tbody>
+<tr><th scope="row">Save as</th><td>The name this design is filed under when 'Save this design' is ticked. Reusing a name overwrites the design saved under it.</td></tr>
+<tr><th scope="row">Save this design when I press OK</th><td>Stores every setting in this dialog under the name in 'Save as' when you press OK, so you can bring it all back later.</td></tr>
+<tr><th scope="row">Save these settings now (no generate)</th><td>Writes the current settings to a design file straight away and leaves this window open. Nothing is generated and your model is not touched.</td></tr>
+<tr><th scope="row">Load a saved design</th><td>Loads one of your saved designs and fills every field in this dialog from it.</td></tr>
+</tbody></table>
+<h2 id="ref-fretboard-scale">Fretboard &amp; Scale</h2>
+<h3>Units</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Unit System</th><td>Switches every length field in this dialog between millimetres and inches. It changes how numbers are shown and typed, not the size of anything already built.</td></tr>
+</tbody></table>
+<h3>Guitar Model Preset</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Preset</th><td>Fills the dialog with a known instrument's numbers -- scale length, nut width, fret count and nut style. Choose Custom to start from nothing.</td></tr>
+</tbody></table>
+<h3>Fretboard</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Number of Frets</th><td>How many frets are laid out, counting up from the nut. The board carries on past the last one by the Extension Past Last Fret setting.</td></tr>
+<tr><th scope="row">Number of Strings</th><td>How many strings the layout is spaced for. Sets the string positions at nut and bridge, and how many slots the nut gets.</td></tr>
+<tr><th scope="row">Nut Width</th><td>Width of the fretboard across the nut line -- the whole board, edge to edge, not the string spacing.</td></tr>
+<tr><th scope="row">Extension Past Last Fret (%)</th><td>How far the board runs past the last fret, as a percentage of the gap to where the next fret would have fallen. 100% reaches that next fret's position.</td></tr>
+</tbody></table>
+<h3>Scale Length</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Scale Type</th><td>Single Scale gives every string the same speaking length. Multiscale (fanned frets) gives the bass and treble sides different lengths.</td></tr>
+<tr><th scope="row">Scale Length</th><td>Nut to bridge -- the speaking length of the open string. All fret spacing is derived from this one number.</td></tr>
+<tr><th scope="row">Treble-Side Scale Length</th><td>Speaking length on the TREBLE side of a multiscale neck, nut to bridge. Usually the shorter of the two.</td></tr>
+<tr><th scope="row">Bass-Side Scale Length</th><td>Speaking length on the BASS side of a multiscale neck, nut to bridge. Usually the longer of the two.</td></tr>
+<tr><th scope="row">Perpendicular Reference</th><td>Which reference runs square across the neck on a multiscale layout: the nut, the bridge, or a fret you pick.</td></tr>
+<tr><th scope="row">Perpendicular Fret Number</th><td>The fret that sits square across the neck. Frets ahead of it fan one way, frets behind it the other.</td></tr>
+</tbody></table>
+<h3>String Layout</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Nut High E String → Edge</th><td>Centre of the high E string to the edge of the board at the nut, on the treble side.</td></tr>
+<tr><th scope="row">Nut Low E String → Edge</th><td>Centre of the low E string to the edge of the board at the nut. This is what stops the outer string falling off the edge.</td></tr>
+<tr><th scope="row">Nut Outer-String Span (C-C, auto)</th><td>Centre-to-centre span of the two outer strings at the nut. Worked out from the nut width less both edge clearances, so it is shown rather than typed.</td></tr>
+<tr><th scope="row">Bridge Outer-String Span (C-C)</th><td>Centre-to-centre span of the two outer strings at the bridge. This comes off your bridge hardware, so it is typed in rather than derived.</td></tr>
+<tr><th scope="row">Bridge High E String → Edge</th><td>Centre of the high E string to the projected edge of the board where it reaches the bridge.</td></tr>
+<tr><th scope="row">Bridge Low E String → Edge</th><td>Centre of the low E string to the projected edge of the board where it reaches the bridge.</td></tr>
+<tr><th scope="row">Bridge Width (projected, auto)</th><td>How wide the board would be if it carried on to the bridge. Worked out from the bridge string span and both clearances, so it is shown rather than typed.</td></tr>
+</tbody></table>
+<h2 id="ref-nut-bridge">Nut &amp; Bridge</h2>
+<h3>Nut / Nut Seat</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Nut Style / Preset</th><td>Picks a standard nut thickness -- bolt-on style at 0.125 in, set-neck style at 0.250 in -- or Custom to type your own.</td></tr>
+<tr><th scope="row">Fretboard Extension Behind Nut</th><td>How far the board runs past the BACK face of the nut, toward the headstock. Set it to zero and the board ends flush with the back of the nut.</td></tr>
+<tr><th scope="row">Nut Width / Thickness</th><td>The nut's own front-to-back thickness, measured along the neck -- not the string-spacing width. The board is pocketed this far for the nut to sit in.</td></tr>
+<tr><th scope="row">Nut Slot Depth (into Board)</th><td>How deep the nut pocket is cut into the board, down from the crown of the playing surface. It will not cut past the underside of the board.</td></tr>
+<tr><th scope="row">Add Zero Fret (at Nut Line)</th><td>Puts a fret right on the nut line so the open strings ride on fret wire, leaving the nut to do nothing but space them. The nut moves back behind it.</td></tr>
+<tr><th scope="row">Zero Fret Centerline → Nut Clearance</th><td>Centre of the zero fret back to the front face of the nut. Only used when a zero fret is fitted.</td></tr>
+<tr><th scope="row">Generate 3D Nut (with String Slots)</th><td>Builds the nut as a solid body with a slot cut for each string. Turn it off if you are fitting a bought nut.</td></tr>
+<tr><th scope="row">Nut Top Surface</th><td>Whether the top of the nut follows the fretboard radius or stays flat across.</td></tr>
+</tbody></table>
+<h3>Bridge</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Bridge Type</th><td>The kind of bridge this layout is aimed at. Sets which hole or post pattern gets drawn.</td></tr>
+<tr><th scope="row">Post / Mount Hole Diameter</th><td>Diameter of the bridge post or mounting holes.</td></tr>
+</tbody></table>
+<h2 id="ref-frets-fret-wire">Frets / Fret Wire</h2>
+<h3>Frets / Fret Slots</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Cut Fret Slots</th><td>Cuts the fret slots into the board. Turn it off for a slotless board or if you saw your own.</td></tr>
+<tr><th scope="row">Generate Fret Wire</th><td>Builds the fret wire itself as solid bodies sitting in the slots.</td></tr>
+<tr><th scope="row">Fret Wire Preset</th><td>Picks a real fret wire by name and fills in its crown and tang sizes. Choose Custom to type your own.</td></tr>
+<tr><th scope="row">Round Over Fret Ends</th><td>Rounds over each fret end where it meets the edge of the board, so nothing catches your hand.</td></tr>
+<tr><th scope="row">Fret Slot Width (auto = Tang + 0.003 in)</th><td>Width of the saw kerf. Left on auto it is the tang width plus a few thousandths so the tang grips.</td></tr>
+<tr><th scope="row">Fret Slot Depth</th><td>How deep the slots are sawn, measured from the playing surface. Must clear the tang.</td></tr>
+<tr><th scope="row">Fret Tang Width</th><td>Width of the fret wire's tang -- the barbed part that goes into the slot.</td></tr>
+<tr><th scope="row">Fret Crown Width</th><td>Width of the fret crown, the part your finger touches.</td></tr>
+<tr><th scope="row">Fret Crown Height</th><td>Height of the fret crown above the board. Taller wire means more room before you bottom out on the board.</td></tr>
+<tr><th scope="row">Fret End Round Radius</th><td>Radius of that round-over on the fret ends.</td></tr>
+</tbody></table>
+<h2 id="ref-3d-fretboard">3D Fretboard</h2>
+<table class="ref"><tbody>
+<tr><th scope="row">Generate 3D Fretboard</th><td>Builds the fretboard as a solid body. With this off you get the flat 2D layout only.</td></tr>
+<tr><th scope="row">Fretboard Thickness</th><td>Thickness of the board on the centre line, measured under the crown of the radius -- so the edges are thinner than this.</td></tr>
+<tr><th scope="row">Nut Radius</th><td>The radius the playing surface is curved to at the nut. A smaller number is a rounder board.</td></tr>
+<tr><th scope="row">Compound Radius</th><td>Lets the radius flatten out along the board: rounder at the nut, flatter up at the last fret.</td></tr>
+<tr><th scope="row">End Radius</th><td>The radius at the far end of the board when Compound Radius is on. Normally a larger number -- flatter -- than the nut radius.</td></tr>
+<tr><th scope="row">Round Fretboard End Corners</th><td>Rounds off the two corners at the far end of the board.</td></tr>
+<tr><th scope="row">Fretboard End Round Radius</th><td>Radius of those two rounded corners at the end of the board.</td></tr>
+<tr><th scope="row">Finished Appearance (cosmetic edge rolls)</th><td>Rolls the board edges very slightly so the model looks like a finished board rather than a sawn blank. Cosmetic only.</td></tr>
+<tr><th scope="row">Edge Roll Radius</th><td>How big that cosmetic edge roll is. Keep it small -- it is a broken edge, not a round-over.</td></tr>
+<tr><th scope="row">Fretboard Binding (white strip, both sides + far end)</th><td>Adds a binding strip down both edges of the board.</td></tr>
+<tr><th scope="row">Binding Width (1 to 3 mm)</th><td>How wide the binding strip is, measured in from each edge of the board.</td></tr>
+<tr><th scope="row">Fret Style</th><td>Whether the fret slots run right out to the edge of the board, or stop short of it so the fret ends are hidden.</td></tr>
+<tr><th scope="row">Fret Slot End Margin (1 to 3 mm)</th><td>On an unbound board with hidden fret ends, how far short of each edge the slots and tangs stop.</td></tr>
+</tbody></table>
+<h2 id="ref-inlays-side-markers">Inlays &amp; Side Markers</h2>
+<h3>Face Inlays</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Generate Face Inlays</th><td>Cuts inlay pockets into the face of the board, and builds a plug for each one.</td></tr>
+<tr><th scope="row">Inlay Shape</th><td>The shape of the face markers -- dot, block, diamond and so on.</td></tr>
+<tr><th scope="row">Edge Marker Side</th><td>Which edge of the board the half-moon or edge-block markers sit on: bass, treble, both, or alternating up the neck.</td></tr>
+<tr><th scope="row">Edge Marker Meets</th><td>On a bound board, whether the edge marker stops at the binding or cuts through it to the edge of the board.</td></tr>
+<tr><th scope="row">Include Fret 1 Marker</th><td>Adds a marker at the first fret as well. Some instruments have one, most do not.</td></tr>
+<tr><th scope="row">Cluster 12th/24th Markers to One Side (vs. Split)</th><td>Moves both markers of a doubled fret over toward one edge instead of straddling the centre line.</td></tr>
+<tr><th scope="row">Position Split Markers Between Strings (vs. Fixed Position)</th><td>Lines the two markers of a doubled fret up with the gaps between strings, so they are not hidden under a string.</td></tr>
+<tr><th scope="row">Marker Pattern</th><td>Which frets get face markers. Choose Custom to type your own list.</td></tr>
+<tr><th scope="row">Split Marker Gap (edge to edge)</th><td>Clear space between the two markers of a doubled fret, measured edge to edge rather than centre to centre.</td></tr>
+<tr><th scope="row">Custom Fret List (e.g. 1b, 3, 5t, 12d)</th><td>Which frets get markers, typed as a list. Add b, t or d after a number for bass side, treble side or a double marker -- for example 1b, 3, 5t, 12d.</td></tr>
+<tr><th scope="row">Dot / Star Diameter (point-to-point)</th><td>Size of a dot or star marker, measured point to point.</td></tr>
+<tr><th scope="row">Marker Size Scale (%)</th><td>Scales every marker shape that is sized automatically -- trapezoid, rectangle, shark fin, full block, the vine and all the polygon shapes. 100 leaves them exactly as calculated. Round Dot and Star ignore it, because they take a real size from the Dot / Star Diameter field instead. Each shape stops at its own limit, so going over 100 will not push a marker into a fret or over the edge.</td></tr>
+<tr><th scope="row">Pocket Depth</th><td>How deep the inlay pocket is cut into the face of the board.</td></tr>
+</tbody></table>
+<h3>Side Dots</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Generate Side Dots</th><td>Builds the side position dots along the edge of the board.</td></tr>
+<tr><th scope="row">Double Markers at 12th/24th Fret</th><td>Puts two markers at the 12th and 24th frets instead of one, the usual octave convention.</td></tr>
+<tr><th scope="row">Side Dot Diameter</th><td>Diameter of the side dots.</td></tr>
+<tr><th scope="row">Side Dot Inset Depth</th><td>How far the side dots are set into the edge of the board.</td></tr>
+</tbody></table>
+<h2 id="ref-neck">Neck</h2>
+<table class="ref"><tbody>
+<tr><th scope="row">Generate Neck</th><td>Builds the neck under the fretboard. Everything else on this tab describes its shape.</td></tr>
+<tr><th scope="row">Neck Profile</th><td>The back shape of the neck -- C, D, V and so on. Choose Custom to shape it yourself with the fields below.</td></tr>
+<tr><th scope="row">Back Shape</th><td>How full or flat the back of the neck is between the shoulders, on a custom profile.</td></tr>
+<tr><th scope="row">Spine Radius</th><td>The radius rounding the ridge down the centre of the neck back. Only the V profiles are sharp enough for it to bite -- a rounder profile is already flatter than anything typed here, and is left alone. Thickness is held exactly either way: the V underneath is cut deeper by whatever the rounding takes off. Not applied when the apex is offset to one side.</td></tr>
+<tr><th scope="row">Shoulder Fullness</th><td>How full the shoulders are where the back of the neck turns up toward the fretboard edge.</td></tr>
+<tr><th scope="row">Thickness at Fret 1</th><td>Thickness of the neck at the first fret, fretboard top to the back of the neck.</td></tr>
+<tr><th scope="row">Thickness at Fret 12</th><td>Thickness of the neck at the twelfth fret. Larger than the first-fret figure gives the usual taper.</td></tr>
+<tr><th scope="row">Fret 1 - off centre by</th><td>Shifts the thickest part of the back of the neck off the centre line at the first fret, for an asymmetric carve. Zero is symmetric.</td></tr>
+<tr><th scope="row">Fret 12 - off centre by</th><td>The same off-centre shift at the twelfth fret. It blends between the two along the neck.</td></tr>
+</tbody></table>
+<h2 id="ref-2d-plan">2D Plan</h2>
+<table class="ref"><tbody>
+<tr><th scope="row">Export a 2D plan (DXF, SVG and PDF)</th><td>Writes the fretboard out as flat 2D files as well as building it in 3D: a DXF for CAM, an SVG, a PDF, and a CSV of the fret positions.</td></tr>
+<tr><th scope="row">Only the 2D plan -- skip the 3D build</th><td>Writes the 2D files and stops, without building the 3D board. Much faster when all you want is a plan to cut from or print.</td></tr>
+<tr><th scope="row">Also open the DXF in this document</th><td>Also brings the DXF straight into this document as one sketch, so you can look at the drawing and measure on it without going near the Insert menu. Off by default on purpose: with it off a plan-only run writes files and touches nothing in your document, which is the whole point of a plan-only run. The files are written either way.</td></tr>
+<tr><th scope="row">Turn the slot-width layer ON in the file</th><td>Turns the slot-width layer on inside the file, so each slot is drawn as its two real edges rather than only a centreline. The centreline is always written either way.</td></tr>
+<tr><th scope="row">Slot lines carry cutting depth (3D DXF)</th><td>Breaks each fret slot line into steps and gives every point the height of the slot bottom above the flat back of the board, written into the DXF as a real 3D polyline. This is the cut line a CNC needs to follow the radius. It does not move anything on the plan.</td></tr>
+<tr><th scope="row">Write the files in</th><td>Which unit the DXF, SVG and CSV are written in. The drawing is the same size either way -- this changes the numbers used to describe it, so a shop working in inches gets an inch file. The PDF still prints 1 to 1.</td></tr>
+<tr><th scope="row">Also tile a PDF for printing on</th><td>Also writes a second PDF broken across printer pages of this size, with an overlap and a cross in each corner to line the sheets up on. A long board will not fit one sheet, and a printer told to fit it will shrink it.</td></tr>
+<tr><th scope="row">Tile the pages landscape</th><td>Turns the tiled printing pages on their side. A long board usually needs fewer sheets that way.</td></tr>
+<tr><th scope="row">Fret slots run the full width of the board</th><td>How far each fret slot runs across the board. On -- the normal setting -- a slot runs the full width, out to the binding on a bound board or to the edge of the wood on an unbound one. Off, it stops at the outer two strings, which is all a fret has to cover. Neither setting moves a fret; they only change how long each line is.</td></tr>
+<tr><th scope="row">Folder</th><td>Where the 2D files are written. The folder is made if it is not already there.</td></tr>
+</tbody></table>
+<h3>What to draw</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Binding line</th><td>Draws the binding as its own line, the line the fret slots stop on. Turning it off only hides the line -- the slots still stop where the binding really is, because that is a property of the board and not a drawing choice.</td></tr>
+<tr><th scope="row">Centre line</th><td>The board's own centre line, from the back of the board to the far end. Handy for lining a blank up on a bed or a jig.</td></tr>
+<tr><th scope="row">Fret numbers</th><td>Writes the number of each fret beside its slot, off the treble edge. Text, not geometry -- a cutter ignores it, a printed template does not.</td></tr>
+<tr><th scope="row">String lines</th><td>A line for each string, nut to bridge. Shows where the strings actually sit over the board, which is what decides whether a fret is long enough.</td></tr>
+<tr><th scope="row">Bridge line</th><td>The line across the board at the bridge. On a fanned board it is not square to the centre line, which is worth seeing.</td></tr>
+<tr><th scope="row">Saddle marks</th><td>A small cross where each string crosses the bridge line. That crossing is the point the scale length is measured TO, so it is the point to measure to when checking the drawing.</td></tr>
+<tr><th scope="row">Check points</th><td>A small cross on each of the two outer strings at the nut, at every fret, and at the bridge -- the points a drawing is checked at. The centre of each cross is a real vertex, so it arrives in CAD as a point you can snap to. Measure between two of them and nut-to-12th and 12th-to-bridge come out equal, because they are. Measuring to the end of a fret slot instead lands at the edge of the wood, which on a fanned board is several millimetres along the fret from where the string crosses it.</td></tr>
+<tr><th scope="row">Bridge post holes</th><td>The bridge mounting post positions, at the same coordinates the 3D sketch drills them at. Left off a fanned board that is not bridge-perpendicular, because such a board has no single line a bridge can mount flush to.</td></tr>
+<tr><th scope="row">Inlay outlines</th><td>The outline of every face marker, from the same shape makers the 3D build uses, so the drawing and the model cannot disagree about a shape.</td></tr>
+<tr><th scope="row">Inlay centre crosses</th><td>A cross at the middle of each marker, for finding a drill centre or setting a laser up. The outlines are unaffected.</td></tr>
+<tr><th scope="row">Cross sections of the board</th><td>Draws the end of the board at full size, at the nut and -- on a compound board -- at the far end, with the arc, the flat back, the drop from the middle to the edge and the slot depth all written on. This is the one thing a flat plan cannot otherwise show, because from directly above the curve is edge on and invisible.</td></tr>
+<tr><th scope="row">Title block, fret table and scale bars</th><td>The paperwork beside the drawing: what the board IS, the fret positions as numbers, and a 100 mm and a 4 inch bar to measure so you can prove the print came out 1 to 1. Turn it off for a bare geometry file.</td></tr>
+<tr><th scope="row">Border round the sheet</th><td>One rectangle round everything on the sheet, so a print has a known outer edge to register and trim to.</td></tr>
+</tbody></table>
+<h2 id="ref-strings">Strings</h2>
+<table class="ref"><tbody>
+<tr><th scope="row">Generate Strings</th><td>Draws the strings themselves, so you can see the action and check nothing fouls.</td></tr>
+<tr><th scope="row">String Brand</th><td>Which manufacturer's string set the gauges are taken from.</td></tr>
+<tr><th scope="row">String Gauge</th><td>Which set from that brand. Sets the diameter of each string, which is what the nut slots are cut to.</td></tr>
+<tr><th scope="row">Target Height Above Fret 1</th><td>Target clearance from the top of the first fret up to the bottom of the string.</td></tr>
+<tr><th scope="row">Target Height Above Fret 12</th><td>Target clearance from the top of the twelfth fret up to the bottom of the string.</td></tr>
+</tbody></table>
+    </section>
+    <section id="plus">
+      <h2>What Fretboard Plus adds</h2>
+      <p>The Headstock tab is visible in Fretboard Creator with every
+control greyed out, so you can see what Fretboard Plus adds. There are
+43 controls on it. They are listed here for reference; they do nothing
+in Creator.</p>
+<table class="ref"><tbody><tr><th scope="row">Generate Headstock</th><td>Builds the headstock on the end of the neck. Everything else on this tab describes its shape.</td></tr>
+<tr><th scope="row">Show plan preview</th><td>Draws the headstock outline as a flat sketch so you can check the shape before committing to the solid.</td></tr>
+<tr><th scope="row">Headstock Shape</th><td>Which headstock this is: Custom, Paddle, or the flat bolt-on style. The shape you pick decides which fields below apply.</td></tr>
+<tr><th scope="row">Break Angle (0-20 deg)</th><td>How far the headstock tips back from the plane of the fretboard. Zero is a flat, bolt-on style headstock.</td></tr>
+<tr><th scope="row">Volute Across the Width</th><td>How far the volute carries across the headstock. Swept holds its full depth right out to the edges of the paddle, putting the most mass at the break angle. Blended lets it ease away as it leaves the neck, for a lighter, rounder transition. Structural either way -- Swept is the stronger, Blended the slimmer.</td></tr>
+<tr><th scope="row">Headstock Break Hinge</th><td>Which line the headstock folds about. Square across the neck keeps the headstock face straight and untwisted, and is how every build before V4.433 cut it. Follows the nut line hinges on the board's own end, so on a multiscale the break runs parallel to the raked nut -- the headstock is then cocked to match the fan. Identical on a straight scale, where the two lines are the same line.</td></tr>
+<tr><th scope="row">Neck Blank Depth</th><td>Flat bolt-on headstock only: how deep the neck blank runs below the fretboard glue line. The headstock back sits flush with this.</td></tr>
+<tr><th scope="row">Back Runout Radius</th><td>Flat bolt-on headstock only: radius of the arc carrying the blank back up to meet the carved back of the neck.</td></tr>
+<tr><th scope="row">Volute Nose Radius</th><td>Radius of the nose arc on the centre line at the neck end of a paddle bolt-on headstock.</td></tr>
+<tr><th scope="row">Face Drop</th><td>Flat bolt-on headstock only: how far the headstock face sits below the underside of the fretboard.</td></tr>
+<tr><th scope="row">Scoop Radius</th><td>Flat bolt-on headstock only: radius of the scoop sweeping from the end of the fretboard down onto the headstock face.</td></tr>
+<tr><th scope="row">Neck Profile Stops Short of Nut By</th><td>How far short of the nut the carved profile stops, leaving the last stretch to run out into the headstock.</td></tr>
+<tr><th scope="row">Headstock Thickness</th><td>Thickness of the headstock, front face to back face.</td></tr>
+<tr><th scope="row">Volute Depth (min follows the neck profile)</th><td>How deep the volute sits below the break plane, at the point where the fretboard ends.</td></tr>
+<tr><th scope="row">Volute Blend Radius</th><td>Radius of the lower volute arc, where it leaves the back of the headstock and sweeps into the back of the neck.</td></tr>
+<tr><th scope="row">Blank Width (internal — the outline trims this)</th><td>Width of the blank the headstock outline is cut from. It only needs to be wider than the widest part of your outline.</td></tr>
+<tr><th scope="row">Length (1-15 in)</th><td>Length of the headstock along its centre line, measured from the end of the fretboard.</td></tr>
+<tr><th scope="row">Shoulder Radius (treble side)</th><td>Radius of the shoulder arc leaving the end of the fretboard, on the treble side.</td></tr>
+<tr><th scope="row">Shoulder Radius (bass side)</th><td>Radius of the shoulder arc leaving the end of the fretboard, on the bass side.</td></tr>
+<tr><th scope="row">Widest Point From Centerline (treble side)</th><td>How far the headstock reaches out from the centre line at its widest point, treble side.</td></tr>
+<tr><th scope="row">Widest Point From Centerline (bass side)</th><td>How far the headstock reaches out from the centre line at its widest point, bass side.</td></tr>
+<tr><th scope="row">Side Angle, Treble Side (in toward centerline)</th><td>The angle the treble side runs in toward the centre line as it goes back to the tip. Zero runs parallel.</td></tr>
+<tr><th scope="row">Side Angle, Bass Side (in toward centerline)</th><td>The angle the bass side runs in toward the centre line as it goes back to the tip. Zero runs parallel.</td></tr>
+<tr><th scope="row">Corner Radius (treble side)</th><td>Radius rounding the treble corner, where the shoulder meets the side.</td></tr>
+<tr><th scope="row">Corner Radius (bass side)</th><td>Radius rounding the bass corner, where the shoulder meets the side.</td></tr>
+<tr><th scope="row">Tip Corner Radius (treble side)</th><td>Radius rounding the treble tip corner, where the side runs into the end of the headstock.</td></tr>
+<tr><th scope="row">Tip Corner Radius (bass side)</th><td>Radius rounding the bass tip corner, where the side runs into the end of the headstock.</td></tr>
+<tr><th scope="row">Taper Radius (treble side)</th><td>Radius of the long taper sweeping from the widest point on the treble side back in toward the tip.</td></tr>
+<tr><th scope="row">Taper Radius (bass side)</th><td>Radius of the long taper sweeping from the widest point on the bass side back in toward the tip.</td></tr>
+<tr><th scope="row">Nose Radius (across the end)</th><td>Radius of the arc across the very end of the headstock, tangent to both tip corners.</td></tr>
+<tr><th scope="row">Throat Notch Radius (at the neck)</th><td>Radius of the small notch on the centre line where the headstock meets the neck.</td></tr>
+<tr><th scope="row">Show Rebuild button on the Solid tab</th><td>Puts a Rebuild button on the toolbar so you can regenerate without reopening this dialog.</td></tr>
+<tr><th scope="row">Show reference planes after generating</th><td>Leaves the construction planes visible after generating, instead of hiding them.</td></tr>
+<tr><th scope="row">Heel Bolt Hole Diameter (pilot hole)</th><td>Diameter of the heel bolt pilot holes.</td></tr>
+<tr><th scope="row">Heel Bolt Hole Depth (pilot hole)</th><td>How deep the heel bolt pilot holes are drilled.</td></tr>
+<tr><th scope="row">Heel Bolt Hole Spacing (along centerline)</th><td>Centre-to-centre spacing between the two rows of bolt holes, along the neck.</td></tr>
+<tr><th scope="row">Heel Bolt Hole Spacing (across width)</th><td>Centre-to-centre spacing of the two bolt holes across the width of the neck.</td></tr>
+<tr><th scope="row">Heel Bolt Hole Row 1 Offset From Nut (along centerline, derived)</th><td>Nut to the first row of bolt holes, measured along the neck centre line.</td></tr>
+<tr><th scope="row">Heel End Offset From Nut (along centerline)</th><td>Nut to the butt end of the heel, along the centre line. This is what sets where the neck stops.</td></tr>
+<tr><th scope="row">Heel Width (at butt end)</th><td>Width of the heel at the butt end, where it goes into the body pocket.</td></tr>
+<tr><th scope="row">Heel Thickness (fretboard top to heel back)</th><td>Total thickness at the butt, fretboard top surface down to the back of the heel.</td></tr>
+<tr><th scope="row">Heel Back Flat Length (from butt)</th><td>How much of the heel back is flat, measured forward from the butt before the contour starts.</td></tr>
+<tr><th scope="row">Heel Contour Tip Reach (from butt)</th><td>How far forward the heel contour reaches on the back of the neck, measured from the butt.</td></tr></tbody></table>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <span>Urban Custom Guitars &middot; Fretboard Creator manual</span>
+  <span>Built from V4.555 on 15 September 2026</span>
+</footer>
+
+</body>
+</html>

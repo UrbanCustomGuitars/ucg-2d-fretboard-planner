@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fretboard Plan Generator &mdash; Tutorial</title>
+<meta name="description" content="How to use the Urban Custom Guitars Fretboard Plan Generator: set a board out, read the drawing, and print or cut from the files.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlVyYmFuIEN1c3RvbSBHdWl0YXJzIj4KICA8dGl0bGU+VXJiYW4gQ3VzdG9tIEd1aXRhcnM8L3RpdGxlPgogIDwhLS0gVGhlIHNhbWUgbWFyaywgY3V0IGRvd24gdG8gYSBzcXVhcmUgc28gaXQgc3RpbGwgcmVhZHMgYXQgMzIgYW5kIDE2CiAgICAgICBwaXhlbHMuIFRoZSB3aWRlIHNsYWIgaXMgdGhlIHJpZ2h0IHNoYXBlIG9uIGEgcGFnZSBoZWFkZXIgYW5kIHR1cm5zCiAgICAgICBpbnRvIGEgZGFyayBzbWVhciBhcyBhIGZhdmljb24sIHNvIHRoaXMga2VlcHMgdGhlIHBhcnRzIHRoYXQgY2FycnkKICAgICAgIHRoZSBtZWFuaW5nIC0tIGJvbmUgbnV0LCBicmFzcyBmcmV0cywgb25lIHBlYXJsIGRvdCAtLSBhbmQgc3RhbmRzCiAgICAgICB0aGVtIHVwcmlnaHQsIHdoaWNoIGlzIGhvdyBhIGZyZXRib2FyZCBpcyBoZWxkIGFueXdheS4gLS0+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNxLWVib255IiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgICAgc3RvcC1jb2xvcj0iIzNhMzMyZSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjAuMzUiIHN0b3AtY29sb3I9IiMyNDFmMWMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiAgICBzdG9wLWNvbG9yPSIjMTcxNDEyIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJzcS1icmFzcyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiICAgIHN0b3AtY29sb3I9IiNhODdjNTMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIwLjM1IiBzdG9wLWNvbG9yPSIjZjZkNGFjIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMC43MCIgc3RvcC1jb2xvcj0iI2UzYjI4NyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiICAgIHN0b3AtY29sb3I9IiNhODdjNTMiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNxLXBlYXJsIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgICBzdG9wLWNvbG9yPSIjZmJmN2U4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMC41IiBzdG9wLWNvbG9yPSIjZTZkZmM2Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgICBzdG9wLWNvbG9yPSIjY2ZjNmE4Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJzcS1ib25lIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgICBzdG9wLWNvbG9yPSIjYzNiZGE0Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMC40IiBzdG9wLWNvbG9yPSIjZjJlY2Q2Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgICBzdG9wLWNvbG9yPSIjZGVkOGMwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGNsaXBQYXRoIGlkPSJzcS10aWxlIj4KICAgICAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIHJ5PSIxNCIvPgogICAgPC9jbGlwUGF0aD4KICA8L2RlZnM+CgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiByeT0iMTQiIGZpbGw9InVybCgjc3EtZWJvbnkpIi8+CgogIDxnIGNsaXAtcGF0aD0idXJsKCNzcS10aWxlKSI+CiAgICA8IS0tIFRIUkVFIEVMRU1FTlRTLCBOT1QgU0lYLiBUaGUgZmlyc3Qgc3F1YXJlIHZlcnNpb24gY2FycmllZCB0aGUKICAgICAgICAgbnV0IGFuZCB0aHJlZSBmcmV0cywgYW5kIGF0IDMyIHBpeGVscyB0aGF0IHJlYWRzIGFzIHN0cmlwZXMKICAgICAgICAgcmF0aGVyIHRoYW4gYXMgYSBmcmV0Ym9hcmQuIEEgbnV0LCBvbmUgZnJldCBhbmQgb25lIGRvdCBpcyB0aGUKICAgICAgICAgbGVhc3QgdGhhdCBzdGlsbCBzYXlzIHdoYXQgaXQgaXMsIGFuZCBlYWNoIG9uZSBpcyBub3cgYmlnIGVub3VnaAogICAgICAgICB0byBzdXJ2aXZlIGJlaW5nIHNocnVuay4gLS0+CiAgICA8cmVjdCB4PSIwIiB5PSIxMSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjYuNSIgZmlsbD0idXJsKCNzcS1ib25lKSIvPgogICAgPHJlY3QgeD0iMCIgeT0iNDMiIHdpZHRoPSI2NCIgaGVpZ2h0PSI0IiBmaWxsPSJ1cmwoI3NxLWJyYXNzKSIvPgogICAgPGNpcmNsZSBjeD0iMzIiIGN5PSIzMCIgcj0iOC41IiBmaWxsPSJ1cmwoI3NxLXBlYXJsKSIvPgogIDwvZz4KCiAgPHJlY3QgeD0iMC42IiB5PSIwLjYiIHdpZHRoPSI2Mi44IiBoZWlnaHQ9IjYyLjgiIHJ4PSIxMy41IiByeT0iMTMuNSIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMwZjBkMGMiIHN0cm9rZS13aWR0aD0iMS4yIiBvcGFjaXR5PSIwLjYiLz4KPC9zdmc+">
+<style>
+:root{
+  --bg:#eef2f6; --panel:#ffffff; --sunk:#f5f8fa; --line:#dde4ea; --line-2:#bfc9d4;
+  --ink:#171c22; --muted:#5a6775; --accent:#e2721a; --accent-ink:#b0530c;
+  --accent-soft:#fdeedd; --warn-soft:#fdf3e3; --r:6px;
+}
+*{box-sizing:border-box}
+body{margin:0; color:var(--ink); background:var(--bg);
+  font-family:Barlow,"Helvetica Neue","DejaVu Sans",Arial,sans-serif; font-size:16px; line-height:1.62;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.lab{font-family:"Barlow Condensed",Barlow,"DejaVu Sans Condensed",Arial,sans-serif}
+code,.mono,td.n{font-family:"IBM Plex Mono",ui-monospace,"DejaVu Sans Mono",Menlo,Consolas,monospace}
+
+.cover{background:#14161a; color:#fff; padding:56px 40px 48px}
+.cover .m{margin-bottom:26px}
+.cover h1{margin:0; font-size:clamp(32px,5vw,52px); font-weight:700; letter-spacing:.01em;
+  text-transform:uppercase; line-height:.98}
+.cover h1 em{font-style:normal; color:var(--accent)}
+.cover .sub{margin:12px 0 0; color:#9aa5b1; font-size:17px; max-width:60ch}
+.cover .meta{margin-top:26px; font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace; font-size:13px;
+  color:#7d8894; letter-spacing:.04em}
+
+.shell{max-width:1180px; margin:0 auto; padding:0 20px 60px; display:grid;
+  grid-template-columns:236px minmax(0,1fr); gap:34px; align-items:start}
+@media (max-width:900px){ .shell{grid-template-columns:1fr; gap:10px} }
+.shell > *{min-width:0}
+
+nav.toc{position:sticky; top:18px; background:var(--panel); border:1px solid var(--line);
+  border-radius:var(--r); padding:16px 6px 16px 0; margin-top:28px; max-height:88vh; overflow:auto}
+@media (max-width:900px){ nav.toc{position:static; max-height:none} }
+nav.toc ol{list-style:none; margin:0; padding:0; counter-reset:c}
+nav.toc li{margin:0}
+nav.toc li.sep{font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; font-size:11.5px; font-weight:700;
+  letter-spacing:.17em; text-transform:uppercase; color:var(--accent-ink);
+  padding:16px 16px 6px; border-top:1px solid var(--line); margin-top:10px}
+nav.toc a{display:block; padding:6px 16px; color:var(--muted); text-decoration:none;
+  font-size:14.5px; border-left:3px solid transparent}
+nav.toc a:hover{color:var(--ink); background:var(--sunk); border-left-color:var(--accent)}
+
+main{margin-top:28px}
+section{background:var(--panel); border:1px solid var(--line); border-radius:var(--r);
+  padding:26px 30px 30px; margin-bottom:20px}
+h2{margin:0 0 14px; font-size:27px; font-weight:700; letter-spacing:.01em;
+  text-transform:uppercase; line-height:1.06}
+h3{margin:26px 0 8px; font-size:19px; font-weight:600; letter-spacing:.04em;
+  text-transform:uppercase; color:var(--accent-ink)}
+h4{margin:0 0 6px; font-size:16px; font-weight:700; letter-spacing:.03em; text-transform:uppercase}
+p{margin:0 0 13px; max-width:74ch}
+p.lead{font-size:18px; color:#2b333c}
+p.note{background:var(--sunk); border-left:3px solid var(--line-2); padding:11px 14px;
+  border-radius:0 4px 4px 0; max-width:none}
+ul,ol{margin:0 0 13px; padding-left:22px; max-width:74ch}
+li{margin:0 0 6px}
+ol.steps{counter-reset:s; list-style:none; padding-left:0}
+ol.steps > li{position:relative; padding-left:40px; margin-bottom:11px}
+ol.steps > li::before{counter-increment:s; content:counter(s);
+  position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%;
+  background:var(--accent-soft); color:var(--accent-ink); font-weight:700; font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace}
+code{background:var(--sunk); border:1px solid var(--line); border-radius:3px;
+  padding:1px 5px; font-size:13.5px; word-break:break-word}
+
+.callout{background:var(--accent-soft); border:1px solid #f3d3ad; border-radius:5px;
+  padding:14px 17px; margin:18px 0}
+.callout.warn{background:var(--warn-soft); border-color:#eccb92}
+.callout p:last-child{margin-bottom:0}
+
+table{border-collapse:collapse; width:100%; margin:6px 0 16px; font-size:15px}
+table.ref th{width:34%; text-align:left; vertical-align:top; font-weight:600;
+  padding:9px 14px 9px 0; border-bottom:1px solid var(--line); color:var(--ink)}
+table.ref td{vertical-align:top; padding:9px 0; border-bottom:1px solid var(--line);
+  color:#39424c}
+table.files th{text-align:left; padding:8px 14px 8px 0; border-bottom:2px solid var(--ink);
+  font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+  font-size:13px}
+table.files td{padding:9px 14px 9px 0; border-bottom:1px solid var(--line); vertical-align:top}
+table.files td:first-child{font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace; font-size:13.5px; white-space:nowrap}
+
+footer{max-width:1180px; margin:0 auto; padding:22px 20px 50px; color:var(--muted);
+  font-size:13.5px; display:flex; flex-wrap:wrap; gap:10px 22px;
+  justify-content:space-between; align-items:center; border-top:1px solid var(--line-2)}
+
+@media print{
+  body{background:#fff; font-size:10.5pt; line-height:1.5}
+  .shell{display:block; max-width:none; padding:0}
+  nav.toc{display:none}
+  main{margin:0}
+  section{border:0; padding:0 0 6mm; margin:0 0 6mm; break-inside:auto}
+  h2{break-after:avoid; font-size:17pt; border-bottom:2px solid #171c22; padding-bottom:3pt;
+     margin-top:8mm}
+  section:first-of-type h2{margin-top:0}
+  h3{break-after:avoid; font-size:12pt}
+  p,li{orphans:3; widows:3}
+  tr{break-inside:avoid}
+  .cover{break-after:page; min-height:235mm; padding:30mm 20mm}
+  .callout{break-inside:avoid; border:1px solid #ddd}
+  footer{display:none}
+  a{color:inherit; text-decoration:none}
+}
+@page{ size:A4; margin:16mm 15mm 18mm; }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="m"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 232 45" width="300" height="58" role="img" aria-label="Urban Custom Guitars">
+  <title>Urban Custom Guitars</title>
+  <!-- His own mark, redrawn to scale cleanly. Every position is measured
+       off the artwork he supplied: the slab is 232 x 45 with fully rounded
+       ends, the nut sits at 9% across, seven frets run at even 10.6% steps
+       from 18.6% to 82.3%, and three pearl dots sit at 32.5%, 54.1% and
+       75.3%, each 22% of the slab height. -->
+  <defs>
+    <linearGradient id="ucg-ebony" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#3a332e"/>
+      <stop offset="0.30" stop-color="#241f1c"/>
+      <stop offset="0.72" stop-color="#1b1715"/>
+      <stop offset="1"    stop-color="#2c2622"/>
+    </linearGradient>
+    <linearGradient id="ucg-brass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#b98a5e"/>
+      <stop offset="0.38" stop-color="#f6d4ac"/>
+      <stop offset="0.62" stop-color="#e3b287"/>
+      <stop offset="1"    stop-color="#a87c53"/>
+    </linearGradient>
+    <linearGradient id="ucg-pearl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"   stop-color="#fbf7e8"/>
+      <stop offset="0.5" stop-color="#e6dfc6"/>
+      <stop offset="1"   stop-color="#cfc6a8"/>
+    </linearGradient>
+    <linearGradient id="ucg-bone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#f2ecd6"/>
+      <stop offset="0.5" stop-color="#ded8c0"/>
+      <stop offset="1"   stop-color="#c3bda4"/>
+    </linearGradient>
+    <clipPath id="ucg-slab">
+      <rect x="0" y="0" width="300" height="58" rx="22.5" ry="22.5"/>
+    </clipPath>
+  </defs>
+
+  <rect x="0" y="0" width="300" height="58" rx="22.5" ry="22.5" fill="url(#ucg-ebony)"/>
+
+  <g clip-path="url(#ucg-slab)">
+    <!-- grain -->
+    <g stroke="#4a423b" stroke-width="0.5" opacity="0.30">
+      <path d="M0 11 C 60 8, 150 14, 232 10"/>
+      <path d="M0 22 C 70 26, 140 18, 232 23"/>
+      <path d="M0 33 C 55 30, 160 36, 232 31"/>
+    </g>
+
+    <!-- the nut -->
+    <rect x="21" y="0" width="5.2" height="45" fill="url(#ucg-bone)"/>
+
+    <!-- seven frets, even steps, as drawn -->
+    <g fill="url(#ucg-brass)">
+      <rect x="42.6" y="0" width="1.9" height="45"/>
+      <rect x="66.6" y="0" width="1.9" height="45"/>
+      <rect x="91.4" y="0" width="1.9" height="45"/>
+      <rect x="115.6" y="0" width="1.9" height="45"/>
+      <rect x="140.4" y="0" width="1.9" height="45"/>
+      <rect x="165.4" y="0" width="1.9" height="45"/>
+      <rect x="189.6" y="0" width="1.9" height="45"/>
+    </g>
+
+    <!-- three pearl dots, centred between frets -->
+    <g fill="url(#ucg-pearl)">
+      <circle cx="79.8" cy="22.5" r="5"/>
+      <circle cx="128.8" cy="22.5" r="5"/>
+      <circle cx="178.0" cy="22.5" r="5"/>
+    </g>
+  </g>
+
+  <rect x="0.5" y="0.5" width="300" height="58" rx="22" ry="22"
+        fill="none" stroke="#0f0d0c" stroke-width="1" opacity="0.55"/>
+</svg></div>
+  <h1>Fretboard <em>Plan</em> Generator</h1>
+  <p class="sub">The tutorial. How to set a guitar fretboard out flat, read
+    the drawing, and take away files you can print from or cut from.</p>
+  <div class="meta">URBAN CUSTOM GUITARS &nbsp;&middot;&nbsp; 15 September 2026
+    &nbsp;&middot;&nbsp; 59 CONTROLS DOCUMENTED</div>
+</header>
+
+<div class="shell">
+  <nav class="toc"><ol><li><a href="#what-it-is">What this is</a></li>
+<li><a href="#first-board">Your first board</a></li>
+<li><a href="#where-measured">Where the scale length is measured from</a></li>
+<li><a href="#radius">Radius, and the cut line a machine needs</a></li>
+<li><a href="#binding-and-slots">Binding, and how far a slot runs</a></li>
+<li><a href="#bridge">The bridge and its posts</a></li>
+<li><a href="#printing">Printing it at full size</a></li>
+<li><a href="#same-answer">Does it agree with the add-in?</a></li>
+<li class="sep">Every control</li>
+<li><a href="#ref-units">Units</a></li>
+<li><a href="#ref-scale">Scale</a></li>
+<li><a href="#ref-board">Board</a></li>
+<li><a href="#ref-overhang">Overhang</a></li>
+<li><a href="#ref-string-spacing">String spacing</a></li>
+<li><a href="#ref-radius">Radius</a></li>
+<li><a href="#ref-binding">Binding</a></li>
+<li><a href="#ref-slots">Slots</a></li>
+<li><a href="#ref-inlays">Inlays</a></li>
+<li><a href="#ref-bridge">Bridge</a></li>
+<li><a href="#ref-what-to-draw">What to draw</a></li>
+<li><a href="#ref-printing">Printing</a></li></ol></nav>
+  <main>
+    <section id="what-it-is"><h2>What this is</h2>
+<p class="lead">The Fretboard Plan Generator sets a guitar fretboard out flat
+and gives you files you can cut from. It runs in your browser. Nothing is
+uploaded and nothing is stored &mdash; the drawing is worked out on your own
+machine as you type.</p>
+
+<p>It is the same arithmetic as the Urban Custom Guitars Fusion 360 add-in,
+and deliberately so. If you set both tools to the same board they put every
+fret in the same place, because the rules they follow were written once and
+checked against each other. The difference is what you get at the end: the
+add-in builds a solid model in Fusion, this page gives you a flat plan.</p>
+
+<h3>What comes out</h3>
+<table class="files"><thead><tr><th>File</th><th>What it is for</th></tr></thead>
+<tbody>
+<tr><td>DXF</td><td>The one to send to a machine. Real layers, real line
+types, and every fret slot as ONE unbroken line. Written in whichever unit you
+chose.</td></tr>
+<tr><td>SVG</td><td>For any drawing program, or for looking at. Same
+geometry.</td></tr>
+<tr><td>PDF</td><td>One long sheet at 1 to 1. What you print if you have a
+plotter.</td></tr>
+<tr><td>PDF, tiled</td><td>The same drawing broken across printer pages, with
+an overlap and registration crosses. What you print on an ordinary
+printer.</td></tr>
+<tr><td>CSV</td><td>The fret positions as numbers, for a jig, a spreadsheet or
+a post-processor.</td></tr>
+</tbody></table>
+
+<div class="callout"><p><strong>Every file is checked before you get it.</strong>
+The page counts zero-length segments, segments drawn twice, and runs that
+should have been one line but came out in pieces. Those three are what make a
+downloaded file useless: a cutter turns a zero-length segment into a dwell,
+and a doubled segment makes a machine cut the same line again. The counts are
+shown under the drawing.</p></div>
+</section>
+<section id="first-board"><h2>Your first board</h2>
+<p>The page opens on a working board, so you can see what it does before you
+change anything. Draw your own like this.</p>
+
+<ol class="steps">
+<li><strong>Pick your unit.</strong> Millimetres, centimetres or inches, at
+the top. Everything on the page and everything in the files follows it.
+Changing it converts what is already typed rather than reinterpreting it, so
+nothing moves.</li>
+<li><strong>Set the scale length.</strong> Under Scale. On a single scale
+board this is measured up the centre line, square from the nut.</li>
+<li><strong>Set the board.</strong> Frets, strings, and the width of the wood
+at the nut.</li>
+<li><strong>Set the overhang.</strong> How far the outer strings sit in from
+the edge of the wood. This, not a typed bridge width, is what decides how wide
+the board is at the far end.</li>
+<li><strong>Look at the drawing.</strong> It redraws as you type. The size of
+the sheet is shown above it.</li>
+<li><strong>Download.</strong> The buttons are under the drawing. Take the DXF
+for a machine, the tiled PDF to print.</li>
+</ol>
+
+<div class="callout warn"><p><strong>Before you cut anything from a print,
+measure the scale bars.</strong> There is a 100&nbsp;mm bar and a 4&nbsp;inch
+bar on the sheet. If they do not measure what they say they are, the print did
+not come out at 1 to 1 and every fret on it is in the wrong place. This is
+nearly always a printer set to &ldquo;fit to page&rdquo;.</p></div>
+</section>
+<section id="where-measured"><h2>Where the scale length is measured from</h2>
+<p>This is the one thing worth being exact about, because the two kinds of
+board are measured differently and a drawing that does not say which it is
+leaves you guessing.</p>
+
+<h3>A single scale board</h3>
+<p>The scale length is measured <strong>up the centre line, square from the
+nut</strong>. Every fret runs square across. This is the number every fret
+table in the trade prints, and the number you would mark out.</p>
+
+<h3>A fanned board</h3>
+<p>The two scale lengths are measured <strong>along the two outer
+strings</strong> &mdash; the bass one along the bass string, the treble one
+along the treble string. Not up the centre line, and not square to anything.
+The frets are set out on the STRINGS, which is why the string span and the
+overhang change where the fret lines land.</p>
+
+<div class="callout"><p><strong>A fan with two equal scale lengths is a
+straight board.</strong> Set both to the same number and the page treats it
+exactly as a single scale board, measured up the centre line. It is not
+approximately the same &mdash; it is the same, to the last decimal place.</p></div>
+
+<p>Whichever it is, the sheet says so. The title block carries a line that
+reads either <em>up the centre line from the nut</em> or <em>along each outer
+string</em>, so a drawing on a bench cannot be misread.</p>
+</section>
+<section id="radius"><h2>Radius, and the cut line a machine needs</h2>
+<p>A fretboard is curved across its width, and that curve is the reason a flat
+plan is not the whole story. Two things on this page deal with it.</p>
+
+<h3>Cross sections</h3>
+<p>Turn on <strong>Cross sections, true size</strong> and the end of the board
+is drawn beside the plan at full size: the arc, the flat back, the drop from
+the middle to the edge, and the slot depth, all written on. From directly
+above, the curve runs the same way a fret line does, so it is edge on and
+invisible &mdash; the section is the only place you can see it or measure it.</p>
+
+<h3>Slot lines that carry depth</h3>
+<p>Turn on <strong>Slot lines carry depth</strong> and each fret slot in the
+DXF stops being a flat line. It is broken into steps, and every point carries
+the height of the slot BOTTOM above the flat back of the board. That is the
+line a cutter actually has to follow to keep a constant slot depth across a
+radiused board, and it is the one thing a flat plan could never give a
+machinist.</p>
+
+<p>It changes nothing you can see in the plan view: the extra points sit on
+the same straight line between the same two ends.</p>
+
+<h3>Compound radius</h3>
+<p>A compound board is rounder at the nut and flatter at the far end. The
+surface between the two is a straight blend of the two end arcs, which is how
+a compound board is really made. It is worth being exact about this: blending
+two arcs does not give a third arc, so the section part way along is not a
+circle and the page does not pretend it is.</p>
+</section>
+<section id="binding-and-slots"><h2>Binding, and how far a slot runs</h2>
+<p>Three settings decide how long each fret slot line is. None of them moves a
+fret.</p>
+
+<ul>
+<li><strong>An unbound board</strong> &mdash; the slot runs out to the edge of
+the wood.</li>
+<li><strong>A bound board</strong> &mdash; the slot stops at the binding. A
+slot run out through the binding shows as a line in it, and the fret tang has
+to be nipped back anyway.</li>
+<li><strong>Frets not run out to the edge</strong> &mdash; the slot stops at
+the outer two strings, which is all a fret has to cover.</li>
+</ul>
+
+<p class="note">Worth saying again because it is the thing people expect to be
+wrong: setting a binding does not move a fret. It shortens the line. On a
+647.70&nbsp;mm board a 2&nbsp;mm binding takes the twelfth fret slot from
+50.5000&nbsp;mm long to 46.4997&nbsp;mm, and the fret itself moves
+0.000000000&nbsp;mm.</p>
+</section>
+<section id="bridge"><h2>The bridge and its posts</h2>
+<p>Pick your bridge from the list and the page works out where it mounts and
+where its posts go. The offsets and the post layout are the same figures the
+Fusion add-in uses, so the two tools cannot disagree about where the hardware
+lands.</p>
+
+<ul>
+<li><strong>The bridge line</strong> is where the strings cross at their
+speaking end.</li>
+<li><strong>Each string at the bridge</strong> puts a small cross where each
+string crosses that line. That crossing is the point the scale length is
+measured TO, so it is the point to measure to when you check the
+drawing.</li>
+<li><strong>Bridge post holes</strong> are drawn as circles with a cross
+through them. The treble post sits at half the post spacing; the bass post
+moves straight back by its own setback and keeps the same spacing across,
+which is what the hardware needs.</li>
+</ul>
+
+<div class="callout warn"><p><strong>On a fanned board, treat the post holes as
+a starting point.</strong> Unless the fret that runs square across is the one
+at the bridge, no single line runs square for a bridge to sit flush on. The
+page still draws them, off the treble scale, but check them against your
+hardware before you drill.</p></div>
+</section>
+<section id="printing"><h2>Printing it at full size</h2>
+<p>A fretboard is longer than any sheet an ordinary printer takes, so the page
+writes two PDFs: one long sheet, and one broken across pages of whatever size
+you pick.</p>
+
+<ol class="steps">
+<li>Pick your paper size under Printing. Landscape usually needs fewer
+sheets for a long board.</li>
+<li>Print the tiled PDF <strong>at 100 per cent</strong>. Not &ldquo;fit to
+page&rdquo;, not &ldquo;shrink to fit&rdquo;. Those are what make a print come
+out at 97 per cent and put every fret in the wrong place.</li>
+<li><strong>Measure the two scale bars.</strong> 100&nbsp;mm and 4 inches.
+If they are not exact, stop and fix the printer.</li>
+<li>Lay the sheets over each other &mdash; not butted edge to edge &mdash; and
+line them up on the registration crosses. The sheets deliberately overlap, so
+the same strip of drawing appears on both.</li>
+</ol>
+</section>
+<section id="same-answer"><h2>Does it agree with the add-in?</h2>
+<p>It should, and where it has been measured it does. Both tools were built
+from one set of rules rather than written twice, and the numbers below were
+taken off real boards rather than assumed.</p>
+
+<ul>
+<li>A single scale board of 647.70&nbsp;mm measures 647.7000 from the nut to
+the bridge up the board. The twelfth fret lands at 323.8500 and the twenty
+second at 465.9453. Every fret is square to within 0.</li>
+<li>A fan with two equal scale lengths comes out identical to a single scale
+board: 0.000 difference across 24 frets.</li>
+<li>A radius does not move a fret line in plan. Walking the curved surface and
+dropping each point straight down, the widest and narrowest steps differ by
+0.0101&nbsp;mm at a 12 inch radius and 0.0276&nbsp;mm at 7.25 inches, and the
+ends land exactly on the board edges.</li>
+<li>Proportional spacing on a six string set gives a visible gap of
+6.7904&nbsp;mm everywhere, with the outer strings held on their
+marks.</li>
+</ul>
+
+<p class="note">If you find the two tools disagreeing about a board, that is
+worth reporting rather than working around. Send the settings you used to
+<code>urbancustomguitars@yahoo.com</code>.</p>
+</section>
+    <section id="reference">
+      <h2>Every control</h2>
+      <p>Every control on the page, group by group, in the order you meet them.
+      The words are the page&rsquo;s own &mdash; this list and the help you get
+      when you hover over a field come from the same place, so they cannot
+      disagree with each other or fall behind the tool.</p>
+      <h3 id="ref-units">Units</h3>
+<p class="note">Every box below, the numbers on the drawing, and the DXF, SVG and CSV all change to match. The board itself is the same size either way, and the PDF still prints 1:1. String gauges stay in inches, which is how they are sold.</p>
+<table class="ref"><tbody>
+<tr><th scope="row">mm</th><td>Work in millimetres. Every box on the page, and every number in the files you download, is in this unit. Changing it converts what is already typed rather than reinterpreting it.</td></tr>
+<tr><th scope="row">cm</th><td>Work in centimetres. Same board, different numbers.</td></tr>
+<tr><th scope="row">inches</th><td>Work in inches. Same board, different numbers. The PDF still prints at 1 to 1 either way.</td></tr>
+</tbody></table>
+<h3 id="ref-scale">Scale</h3>
+<p class="note">0 puts the nut square. The higher the number, the further back the fan leans.</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Single</th><td>One scale length for the whole board. Every fret runs square across it.</td></tr>
+<tr><th scope="row">Fanned</th><td>A fanned, or multiscale, board: a different scale length for the bass and treble sides, so the frets run at an angle. Setting both scale lengths the same gives a straight board again.</td></tr>
+<tr><th scope="row">Scale length</th><td>On a single scale board this is THE scale length, measured up the centre line square from the nut. On a fanned board it is the bass side, measured along the bass outer string.</td></tr>
+<tr><th scope="row">Treble scale length</th><td>The treble side scale length, measured along the treble outer string. Usually the shorter of the two.</td></tr>
+<tr><th scope="row">Fret square to the board</th><td>Which fret runs square across a fanned board. Everything behind it leans one way and everything in front of it leans the other. 0 is the nut; put it at the bridge by choosing the fret past the last one.</td></tr>
+</tbody></table>
+<h3 id="ref-board">Board</h3>
+<p class="note">Worked out from the string span at the bridge plus both overhangs, so it is shown rather than typed.</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Frets</th><td>How many frets are laid out. The board itself carries on past the last one by the amount set under Past the last fret.</td></tr>
+<tr><th scope="row">Strings</th><td>How many strings. This sets how many string lines are drawn and how the spacing is divided up.</td></tr>
+<tr><th scope="row">Width at the nut</th><td>The full width of the wood at the nut, edge to edge. Not the string span -- the strings sit inside this by the overhang.</td></tr>
+<tr><th scope="row">Nut seat, front to back</th><td>How far back from the string contact edge the nut seat is cut. The board keeps its nut width across this part; it does not taper.</td></tr>
+<tr><th scope="row">Board behind the nut</th><td>How much board there is behind the back of the nut seat. Also at the nut width, and also not tapered.</td></tr>
+<tr><th scope="row">Past the last fret</th><td>How far the board runs past the last fret, as a percentage of the way to where the next fret would be. 50 is the traditional halfway point.</td></tr>
+</tbody></table>
+<h3 id="ref-overhang">Overhang</h3>
+<p class="note">Overhang is the distance from the CENTRE of an outer string to the edge of the board. It is what stops that string sliding off. On a fanned board it is measured square across the neck, not along the slanted string.</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Set it as</th><td>How the distance from the outer strings to the edge of the wood is set: one number used everywhere, one per end, or all four corners on their own.</td></tr>
+<tr><th scope="row">Overhang</th><td>Bass side, at the nut: from the middle of the outer string to the edge of the wood.</td></tr>
+<tr><th scope="row">Treble side, at the nut</th><td>Treble side, at the nut: from the middle of the outer string to the edge of the wood.</td></tr>
+<tr><th scope="row">Bass side, at the bridge</th><td>Bass side, at the bridge. Usually a little more than at the nut, because the hand moves further off the neck up there.</td></tr>
+<tr><th scope="row">Treble side, at the bridge</th><td>Treble side, at the bridge.</td></tr>
+</tbody></table>
+<h3 id="ref-string-spacing">String spacing</h3>
+<p class="note">&amp;mdash;</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Equal</th><td>Equal gaps between string CENTRES. Simple, and what most fret calculators do.</td></tr>
+<tr><th scope="row">Proportional</th><td>Equal gaps between the strings themselves, so a thick string gets more room than a thin one. The visible space between any two strings comes out the same all the way across, which is what the hand actually feels.</td></tr>
+<tr><th scope="row">String set</th><td>A standard gauge set, thinnest first. Only used for proportional spacing, and only to work out how thick each string is.</td></tr>
+<tr><th scope="row">Gauges, inches, thinnest first</th><td>Your own gauges in inches, thinnest first, separated by commas -- for a set that is not in the list.</td></tr>
+</tbody></table>
+<h3 id="ref-radius">Radius</h3>
+<p class="note">&amp;mdash;</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Single</th><td>One radius across the whole board.</td></tr>
+<tr><th scope="row">Compound</th><td>A compound radius: rounder at the nut, flatter at the far end. The surface between them is a straight blend of the two end arcs, which is how a compound board is really made -- blending two arcs does not give a third arc.</td></tr>
+<tr><th scope="row">Radius</th><td>The radius of the arc across the board at the nut. A smaller number is a rounder board.</td></tr>
+<tr><th scope="row">Radius at the far end</th><td>The radius at the far end of the board. Normally a larger number -- flatter -- than the nut radius.</td></tr>
+<tr><th scope="row">Board thickness</th><td>Board thickness at the middle, measured from the flat back up to the top of the arc. The edges sit lower by the drop.</td></tr>
+<tr><th scope="row">Fret slot depth</th><td>How deep the fret slots are cut, measured down from the board surface. This is what the depth-carrying slot lines are worked out from.</td></tr>
+</tbody></table>
+<h3 id="ref-binding">Binding</h3>
+<p class="note">&amp;mdash;</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Unbound</th><td>No binding. Fret slots run out to the edge of the wood.</td></tr>
+<tr><th scope="row">Bound</th><td>Bound board. Fret slots stop at the binding, because a slot run out through the binding shows as a line in it and the tang has to be nipped back anyway.</td></tr>
+<tr><th scope="row">Binding width</th><td>How wide the binding strip is, measured in from each edge. It does not move a fret -- only how far each slot line runs.</td></tr>
+</tbody></table>
+<h3 id="ref-slots">Slots</h3>
+<p class="note">The centreline is always drawn, one unbroken line per slot. The kerf goes on its own layer.</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Saw kerf</th><td>The width of the cut your saw or cutter makes. Drawn as the slot's two real edges, either side of the centre line.</td></tr>
+<tr><th scope="row">Draw the kerf, not just the centreline</th><td>Turn the slot-width layer on in the files. The centre line is always written either way.</td></tr>
+</tbody></table>
+<h3 id="ref-inlays">Inlays</h3>
+<table class="ref"><tbody>
+<tr><th scope="row">Pattern</th><td>Which frets get a face marker. Traditional is the usual set; the others are the common variations.</td></tr>
+<tr><th scope="row">Dot diameter</th><td>The diameter of each face marker dot.</td></tr>
+<tr><th scope="row">Two dots at 12 and 24</th><td>Two dots at the twelfth and twenty fourth frets instead of one, set either side of the centre line.</td></tr>
+<tr><th scope="row">Centre crosses</th><td>A small cross at the middle of each marker, for finding a drill centre or setting a laser up.</td></tr>
+</tbody></table>
+<h3 id="ref-bridge">Bridge</h3>
+<p class="note">&amp;mdash;</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Bridge type</th><td>Which bridge. The offset and the post layout come from the same figures the Fusion add-in uses, so the two tools cannot disagree about where the hardware goes.</td></tr>
+<tr><th scope="row">Bridge offset from the scale length</th><td>How far past the scale length the bridge actually mounts. Comes from the bridge you picked; change it if your hardware measures differently.</td></tr>
+<tr><th scope="row">Outer string to outer string, at the bridge</th><td>Outer string to outer string at the bridge, centre to centre. The board width at the bridge is this plus the two overhangs.</td></tr>
+<tr><th scope="row">Post spacing, across the board</th><td>Across the board, centre to centre, between the two mounting posts. This does not change when the bass post moves back.</td></tr>
+<tr><th scope="row">Post or mount hole diameter</th><td>The diameter of the post or mount hole, drawn as a circle with a cross through it.</td></tr>
+<tr><th scope="row">Bass post, further back than the treble</th><td>How much further from the nut the bass post sits than the treble one. It moves straight back; the spacing across the board stays the same.</td></tr>
+</tbody></table>
+<h3 id="ref-what-to-draw">What to draw</h3>
+<p class="note">These only change what gets drawn and what goes in the files. Not one of them moves a fret. Turning the frets off the edge shortens the lines to the outer strings; it does not move them.</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Board edges</th><td>The outline of the board itself.</td></tr>
+<tr><th scope="row">Run the frets out to the edge</th><td>On, a fret slot runs the full width -- to the binding on a bound board, or to the edge of the wood on an unbound one. Off, it stops at the outer two strings, which is all a fret has to cover. Neither setting moves a fret.</td></tr>
+<tr><th scope="row">Centre line</th><td>The board's own centre line, for lining a blank up on a bed or a jig.</td></tr>
+<tr><th scope="row">Fret numbers</th><td>The number of each fret, written beside its slot off the treble edge.</td></tr>
+<tr><th scope="row">Strings, out to the bridge</th><td>A line for each string, nut to bridge. Shows where the strings really sit over the board.</td></tr>
+<tr><th scope="row">Bridge line</th><td>The line across the board at the bridge. On a fanned board it is not square to the centre line, which is worth seeing.</td></tr>
+<tr><th scope="row">Each string at the bridge</th><td>A small cross where each string crosses the bridge line. That crossing is the point the scale length is measured TO.</td></tr>
+<tr><th scope="row">Check points, on the two outer strings</th><td>A small cross on each of the two outer strings at the nut, at every fret, and at the bridge -- the points a drawing is checked at. The centre of each cross is a real vertex, so it arrives in CAD as a point you can snap to. Measure between two of them and nut-to-12th and 12th-to-bridge come out equal, because they are. Measuring to the end of a fret slot instead lands at the edge of the wood, which on a fanned board is several millimetres along the fret from where the string crosses it.</td></tr>
+<tr><th scope="row">Bridge post holes</th><td>The bridge mounting post positions, drawn as circles with a cross through them.</td></tr>
+<tr><th scope="row">Cross sections, true size</th><td>The end of the board drawn at full size, with the arc, the flat back, the drop from the middle to the edge and the slot depth all written on. This is the one thing a flat plan cannot otherwise show, because from directly above the curve is edge on and invisible.</td></tr>
+<tr><th scope="row">Slot lines carry depth (3D DXF)</th><td>Break each slot line into steps and give every point the height of the slot bottom above the flat back, written into the DXF as a real 3D polyline. This is the cut line a CNC needs to follow the radius. It changes nothing in the plan view.</td></tr>
+<tr><th scope="row">Box round the whole drawing</th><td>One rectangle round everything on the sheet, so a print has a known outer edge to register and trim to.</td></tr>
+<tr><th scope="row">Title block with the numbers</th><td>The paperwork beside the drawing: what the board is, the fret positions as numbers, and a 100 mm and a 4 inch bar to measure so you can prove the print came out 1 to 1.</td></tr>
+</tbody></table>
+<h3 id="ref-printing">Printing</h3>
+<p class="note">A long board will not fit one sheet, and a printer told to fit it will shrink it. The tiled file overlaps the sheets and puts a cross in each corner to line them up on.</p>
+<table class="ref"><tbody>
+<tr><th scope="row">Tile the PDF onto</th><td>Also write a second PDF broken across printer pages of this size, with an overlap and a cross in each corner to line the sheets up on. A long board will not fit one sheet, and a printer told to fit it will shrink it.</td></tr>
+<tr><th scope="row">Landscape</th><td>Turn the tiled pages on their side. A long board usually needs fewer sheets that way.</td></tr>
+</tbody></table>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <span>Urban Custom Guitars &middot; Fretboard Plan Generator tutorial</span>
+  <span>Built on 15 September 2026 from the live page</span>
+</footer>
+
+</body>
+</html>
