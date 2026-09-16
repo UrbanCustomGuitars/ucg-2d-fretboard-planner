@@ -17,6 +17,7 @@
      whatever device opens it, so the page looks the same everywhere. */
   --bg:#eef2f6; --panel:#ffffff; --sunk:#f5f8fa; --line:#dde4ea; --line-2:#bfc9d4;
   --ink:#171c22; --muted:#5a6775; --accent:#e2721a; --accent-ink:#b0530c;
+  
   --accent-soft:#fdeedd; --good:#17835a; --bad:#c33a2d; --paper:#ffffff;
   --good-soft:#e4f4ec; --bad-soft:#fdeceb;
   --shadow:0 1px 2px rgba(20,28,38,.07),0 10px 26px rgba(20,28,38,.08);
@@ -40,7 +41,8 @@ header{display:flex; flex-wrap:wrap; gap:16px 24px; align-items:flex-end;
 h1{margin:0; font-size:clamp(26px,3.6vw,40px); font-weight:700; letter-spacing:.005em;
   text-transform:uppercase; line-height:.98; text-wrap:balance}
 h1 em{font-style:normal; color:var(--accent)}
-.sub{margin:6px 0 0; color:var(--muted); max-width:62ch; font-size:15px}
+.sub{margin:6px 0 0; color:var(--muted); max-width:62ch; font-size:15px}.brand{display:none!important}.planner-site-nav{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}.creator-banner{display:block;width:min(390px,48vw);height:auto}.site-menu{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:7px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.site-menu:hover{background:var(--accent);border-color:var(--accent);color:#fff}@media (max-width:560px){.planner-site-nav{width:100%;justify-content:space-between}.creator-banner{width:min(310px,72vw)}.site-menu{min-height:32px;padding:6px 13px}}
+
 .brand{display:flex; flex-direction:column; align-items:flex-end; gap:9px}
 .brand svg{display:block}
 .brandtext{font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; font-size:13px; letter-spacing:.16em;
@@ -224,6 +226,10 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
         fill="none" stroke="#0f0d0c" stroke-width="1" opacity="0.55"/>
 </svg>
     <div class="brandtext">Urban Custom Guitars<br>Drawn 1:1</div>
+  </div>
+  <div class="planner-site-nav">
+    <img class="creator-banner" src="banner_creator_4x.png" alt="Fretboard Creator — Urban Custom Guitars">
+    <a class="site-menu" href="https://www.urbancustomguitars.com/" aria-label="Return to the Urban Custom Guitars menu">Menu</a>
   </div>
 </header>
 
