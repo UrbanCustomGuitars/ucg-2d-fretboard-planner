@@ -17,7 +17,6 @@
      whatever device opens it, so the page looks the same everywhere. */
   --bg:#eef2f6; --panel:#ffffff; --sunk:#f5f8fa; --line:#dde4ea; --line-2:#bfc9d4;
   --ink:#171c22; --muted:#5a6775; --accent:#e2721a; --accent-ink:#b0530c;
-  
   --accent-soft:#fdeedd; --good:#17835a; --bad:#c33a2d; --paper:#ffffff;
   --good-soft:#e4f4ec; --bad-soft:#fdeceb;
   --shadow:0 1px 2px rgba(20,28,38,.07),0 10px 26px rgba(20,28,38,.08);
@@ -41,8 +40,7 @@ header{display:flex; flex-wrap:wrap; gap:16px 24px; align-items:flex-end;
 h1{margin:0; font-size:clamp(26px,3.6vw,40px); font-weight:700; letter-spacing:.005em;
   text-transform:uppercase; line-height:.98; text-wrap:balance}
 h1 em{font-style:normal; color:var(--accent)}
-.sub{margin:6px 0 0; color:var(--muted); max-width:62ch; font-size:15px}.brand{display:none!important}.planner-site-nav{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}.creator-banner{display:block;width:min(390px,48vw);height:auto}.site-menu{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:7px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.site-menu:hover{background:var(--accent);border-color:var(--accent);color:#fff}@media (max-width:560px){.planner-site-nav{width:100%;justify-content:space-between}.creator-banner{width:min(310px,72vw)}.site-menu{min-height:32px;padding:6px 13px}}
-
+.sub{margin:6px 0 0; color:var(--muted); max-width:62ch; font-size:15px}
 .brand{display:flex; flex-direction:column; align-items:flex-end; gap:9px}
 .brand svg{display:block}
 .brandtext{font-family:"Barlow Condensed","DejaVu Sans Condensed",Arial,sans-serif; font-size:13px; letter-spacing:.16em;
@@ -186,11 +184,20 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
       <stop offset="1"   stop-color="#c3bda4"/>
     </linearGradient>
     <clipPath id="hdr-ucg-slab">
-      <rect x="0" y="0" width="188" height="36" rx="22.5" ry="22.5"/>
+      <rect x="0" y="0" width="232" height="45" rx="22.5" ry="22.5"/>
     </clipPath>
   </defs>
 
-  <rect x="0" y="0" width="188" height="36" rx="22.5" ry="22.5" fill="url(#hdr-ucg-ebony)"/>
+  <!-- THE SLAB IS THE WHOLE viewBox. It was drawn 188 x 36, which are the
+       SVG's own width and height attributes, not its viewBox units -- so
+       the wood filled 81% of the width and 80% of the height, the thin
+       outline stuck out past it on the right and underneath, the seventh
+       fret at x 189.6 fell outside the slab and was never drawn at all,
+       the nut and every fret were cut off 9 units short at the bottom,
+       and the dots at cy 22.5 sat 62.5% down a 36 tall slab instead of
+       halfway. Every other coordinate in this mark was already written in
+       232 x 45, so correcting these two rectangles puts all of it right. -->
+  <rect x="0" y="0" width="232" height="45" rx="22.5" ry="22.5" fill="url(#hdr-ucg-ebony)"/>
 
   <g clip-path="url(#hdr-ucg-slab)">
     <!-- grain -->
@@ -226,10 +233,6 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
         fill="none" stroke="#0f0d0c" stroke-width="1" opacity="0.55"/>
 </svg>
     <div class="brandtext">Urban Custom Guitars<br>Drawn 1:1</div>
-  </div>
-  <div class="planner-site-nav">
-    <img class="creator-banner" src="banner_creator_4x.png" alt="Fretboard Creator — Urban Custom Guitars">
-    <a class="site-menu" href="https://www.urbancustomguitars.com/" aria-label="Return to the Urban Custom Guitars menu">Menu</a>
   </div>
 </header>
 
@@ -269,8 +272,20 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
         <input class="num len" type="number" id="nutWidth" value="43.00" data-mm="43" data-min="10" data-max="120" data-step="0.05" title="The full width of the wood at the nut, edge to edge. Not the string span -- the strings sit inside this by the overhang."></div>
       <div class="row"><span class="lab">Width at the bridge</span>
         <span class="num mono" id="outBridgeWidth">&mdash;</span></div>
-      <div class="hint">Worked out from the string span at the bridge plus both overhangs, so it
-        is shown rather than typed.</div>
+      <div class="hint" id="hintBridgeWidth">&mdash;</div>
+      <div class="row"><label class="lab" for="taperMode">Taper set by</label>
+        <select id="taperMode" title="Which two widths the edges of the wood run between. Nut and bridge is the electric way. Nut and the fret at the body is the acoustic way: the board is quoted at the nut and at the fret where the neck meets the body, and carries on past that fret in the same straight line.">
+          <option value="bridge" selected>Nut and bridge</option>
+          <option value="body">Nut and the fret at the body</option>
+        </select></div>
+      <div class="hint" id="hintTaper">&mdash;</div>
+      <div class="row" id="rowBodyFret" hidden><label class="lab" for="bodyFret">Fret the body starts at</label>
+        <input class="num" type="number" id="bodyFret" value="14" step="1" min="1" max="36" title="The fret the edge of the body lands at. 14 on most steel string flat tops, 12 on a smaller bodied or a classical one."></div>
+      <div class="row" id="rowBodyWidth" hidden><label class="lab" for="bodyWidth">Width at that fret</label>
+        <input class="num len" type="number" id="bodyWidth" value="54.00" data-mm="54" data-min="10" data-max="140" data-step="0.05" title="The full width of the wood at that fret, edge to edge, typed the same way as the nut width above. The string to string figure is worked out from the overhangs and shown under it."></div>
+      <div class="row" id="rowBodySpan" hidden><span class="lab">String to string there</span>
+        <span class="num mono" id="outBodySpan">&mdash;</span></div>
+      <div class="hint" id="warnBody" hidden></div>
       <div class="row"><label class="lab" for="nutSeat">Nut seat, front to back</label>
         <input class="num len" type="number" id="nutSeat" value="3.175" data-mm="3.175" data-min="0" data-max="30" data-step="0.005" title="How far back from the string contact edge the nut seat is cut. The board keeps its nut width across this part; it does not taper."></div>
       <div class="row"><label class="lab" for="extension">Board behind the nut</label>
@@ -280,6 +295,41 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
       <div class="hint">Per cent of the way to where the next fret would have fallen. 50 is the usual halfway point.</div>
     </fieldset>
 
+    <fieldset>
+      <legend>Bridge</legend>
+      <div class="row"><label class="lab" for="bridgeModel">Bridge type</label>
+        <select id="bridgeModel" title="Which bridge. The offset and the post layout come from the same figures the Fusion add-in uses, so the two tools cannot disagree about where the hardware goes.">
+          <option value="Bolt-On Single Cut" data-off="0.250" data-tol="0.030">Bolt-On Single Cut</option>
+          <option value="Bolt-On Double Cut Non-Tremolo" data-off="-0.250" data-tol="0.030">Bolt-On Double Cut Non-Tremolo</option>
+          <option value="Bolt-On Double Cut Vintage Tremolo" data-off="-0.250" data-tol="0.030">Bolt-On Double Cut Vintage Tremolo</option>
+          <option value="Floyd Rose Original" data-off="-0.500" data-tol="0">Floyd Rose Original</option>
+          <option value="Floyd Rose II / Schaller Floyd Rose" data-off="-0.563" data-tol="0">Floyd Rose II / Schaller Floyd Rose</option>
+          <option value="Two-Post Adjustable" data-off="0.0625" data-tol="0.030" selected>Two-Post Adjustable</option>
+          <option value="Combo bridge/tailpiece" data-off="0.0625" data-tol="0.030">Combo bridge/tailpiece</option>
+          <option value="Schaller non-tremolo roller" data-off="0.843" data-tol="0">Schaller non-tremolo roller</option>
+          <option value="Hipshot hardtail" data-off="0.625" data-tol="0">Hipshot hardtail</option>
+          <option value="Top-loading hardtail" data-off="0.750" data-tol="0">Top-loading hardtail</option>
+        </select></div>
+      <div class="hint" id="bridgeNote">&mdash;</div>
+      <div class="row"><label class="lab" for="bridgeOffset">Bridge offset from the scale length</label>
+        <input class="num len" type="number" id="bridgeOffset" value="1.5875" data-mm="1.5875" data-min="-40" data-max="40" data-step="0.0001" title="How far past the scale length the bridge actually mounts. Comes from the bridge you picked; change it if your hardware measures differently."></div>
+      <div class="hint">Picking a bridge type fills this in. Plus is further from the nut.
+        The post sits at scale length plus this.</div>
+      <div class="row"><label class="lab" for="bridgeSpan">Outer string to outer string, at the bridge</label>
+        <input class="num len" type="number" id="bridgeSpan" value="50.00" data-mm="50" data-min="5" data-max="140" data-step="0.01" title="Outer string to outer string at the bridge, centre to centre. The board width at the bridge is this plus the two overhangs."></div>
+      <div class="hint" id="hintBridgeSpan">&mdash;</div>
+      <div class="row"><label class="lab" for="postSpacing">Post spacing, across the board</label>
+        <input class="num len" type="number" id="postSpacing" value="73.66" data-mm="73.66" data-min="0" data-max="200" data-step="0.01" title="Across the board, centre to centre, between the two mounting posts. This does not change when the bass post moves back."></div>
+      <div class="row"><label class="lab" for="postDia">Post or mount hole diameter</label>
+        <input class="num len" type="number" id="postDia" value="6.35" data-mm="6.35" data-min="0" data-max="40" data-step="0.05" title="The diameter of the post or mount hole, drawn as a circle with a cross through it."></div>
+      <div class="row"><label class="lab" for="postSetbackBass">Bass post, further back than the treble</label>
+        <input class="num len" type="number" id="postSetbackBass" value="2.38125" data-mm="2.38125" data-min="-30" data-max="60" data-step="0.0001" title="How much further from the nut the bass post sits than the treble one. It moves straight back; the spacing across the board stays the same."></div>
+      <div class="hint">1.59 to 3.18 mm (0.0625 to 0.125 in) is the usual range.
+        Check the post spacing against the hardware in your hand before you drill.</div>
+      <div class="hint" id="fanBridgeNote" hidden>On a fanned board the posts are set off the TREBLE
+        scale. Unless your perpendicular point is at the bridge, no single line runs square across
+        for the bridge to sit flush on, so treat these holes as a starting point.</div>
+    </fieldset>
     <fieldset>
       <legend>Overhang</legend>
       <div class="row"><label class="lab" for="ohMode">Set it as</label>
@@ -368,41 +418,6 @@ footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
       </div>
     </fieldset>
 
-    <fieldset>
-      <legend>Bridge</legend>
-      <div class="row"><label class="lab" for="bridgeModel">Bridge type</label>
-        <select id="bridgeModel" title="Which bridge. The offset and the post layout come from the same figures the Fusion add-in uses, so the two tools cannot disagree about where the hardware goes.">
-          <option value="Bolt-On Single Cut" data-off="0.250" data-tol="0.030">Bolt-On Single Cut</option>
-          <option value="Bolt-On Double Cut Non-Tremolo" data-off="-0.250" data-tol="0.030">Bolt-On Double Cut Non-Tremolo</option>
-          <option value="Bolt-On Double Cut Vintage Tremolo" data-off="-0.250" data-tol="0.030">Bolt-On Double Cut Vintage Tremolo</option>
-          <option value="Floyd Rose Original" data-off="-0.500" data-tol="0">Floyd Rose Original</option>
-          <option value="Floyd Rose II / Schaller Floyd Rose" data-off="-0.563" data-tol="0">Floyd Rose II / Schaller Floyd Rose</option>
-          <option value="Two-Post Adjustable" data-off="0.0625" data-tol="0.030" selected>Two-Post Adjustable</option>
-          <option value="Combo bridge/tailpiece" data-off="0.0625" data-tol="0.030">Combo bridge/tailpiece</option>
-          <option value="Schaller non-tremolo roller" data-off="0.843" data-tol="0">Schaller non-tremolo roller</option>
-          <option value="Hipshot hardtail" data-off="0.625" data-tol="0">Hipshot hardtail</option>
-          <option value="Top-loading hardtail" data-off="0.750" data-tol="0">Top-loading hardtail</option>
-        </select></div>
-      <div class="hint" id="bridgeNote">&mdash;</div>
-      <div class="row"><label class="lab" for="bridgeOffset">Bridge offset from the scale length</label>
-        <input class="num len" type="number" id="bridgeOffset" value="1.5875" data-mm="1.5875" data-min="-40" data-max="40" data-step="0.0001" title="How far past the scale length the bridge actually mounts. Comes from the bridge you picked; change it if your hardware measures differently."></div>
-      <div class="hint">Picking a bridge type fills this in. Plus is further from the nut.
-        The post sits at scale length plus this.</div>
-      <div class="row"><label class="lab" for="bridgeSpan">Outer string to outer string, at the bridge</label>
-        <input class="num len" type="number" id="bridgeSpan" value="50.00" data-mm="50" data-min="5" data-max="140" data-step="0.01" title="Outer string to outer string at the bridge, centre to centre. The board width at the bridge is this plus the two overhangs."></div>
-      <div class="hint" id="hintBridgeSpan">&mdash;</div>
-      <div class="row"><label class="lab" for="postSpacing">Post spacing, across the board</label>
-        <input class="num len" type="number" id="postSpacing" value="73.66" data-mm="73.66" data-min="0" data-max="200" data-step="0.01" title="Across the board, centre to centre, between the two mounting posts. This does not change when the bass post moves back."></div>
-      <div class="row"><label class="lab" for="postDia">Post or mount hole diameter</label>
-        <input class="num len" type="number" id="postDia" value="6.35" data-mm="6.35" data-min="0" data-max="40" data-step="0.05" title="The diameter of the post or mount hole, drawn as a circle with a cross through it."></div>
-      <div class="row"><label class="lab" for="postSetbackBass">Bass post, further back than the treble</label>
-        <input class="num len" type="number" id="postSetbackBass" value="2.38125" data-mm="2.38125" data-min="-30" data-max="60" data-step="0.0001" title="How much further from the nut the bass post sits than the treble one. It moves straight back; the spacing across the board stays the same."></div>
-      <div class="hint">1.59 to 3.18 mm (0.0625 to 0.125 in) is the usual range.
-        Check the post spacing against the hardware in your hand before you drill.</div>
-      <div class="hint" id="fanBridgeNote" hidden>On a fanned board the posts are set off the TREBLE
-        scale. Unless your perpendicular point is at the bridge, no single line runs square across
-        for the bridge to sit flush on, so treat these holes as a starting point.</div>
-    </fieldset>
 
     <fieldset>
       <legend>What to draw</legend>
@@ -610,8 +625,50 @@ function solve(o) {
   // moving the board.
   const nutLeft = [-nw / 2, yAtX(bassNut, trebleNut, -nw / 2)];
   const nutRight = [nw / 2, yAtX(bassNut, trebleNut, nw / 2)];
-  const bridgeLeft = [-bw / 2, yAtX(bassBridge, trebleBridge, -bw / 2)];
-  const bridgeRight = [bw / 2, yAtX(bassBridge, trebleBridge, bw / 2)];
+  let bridgeLeft = [-bw / 2, yAtX(bassBridge, trebleBridge, -bw / 2)];
+  let bridgeRight = [bw / 2, yAtX(bassBridge, trebleBridge, bw / 2)];
+
+  /* THE ACOUSTIC TAPER. An electric board is quoted nut to bridge, and
+     that is what this page did. An acoustic board is not: it is quoted at
+     the nut and at the fret where the neck meets the body, usually the
+     14th on a steel string flat top and the 12th on a smaller bodied or a
+     classical one, and it carries on past that fret in the same straight
+     line to wherever the board ends.
+
+     So in this mode the two edge lines are drawn through the nut width
+     and the width at that fret, and then run on until they meet the
+     bridge line. The width at the bridge stops being typed and becomes
+     the number that falls out of the taper.
+
+     WHAT THIS DOES NOT TOUCH: the strings. The bridge string points come
+     out of the span and the DIFFERENCE between the two bridge overhangs,
+
+         bbx =  bw/2 - ohBB  =  span/2 + (ohBT - ohBB)/2
+         tbx = -bw/2 + ohBT  = -span/2 + (ohBT - ohBB)/2
+
+     so bbx - tbx is exactly the span whatever the board width is. The
+     saddle span on an acoustic is hardware and has nothing to do with the
+     shape of the wood, which is why the two belong apart. No string, no
+     fret and no scale length moves when this mode is picked; only the two
+     edge lines do. */
+  let bodySpan = 0, bodyUsed = false;
+  const bodyN = Math.max(1, Math.round(o.bodyFret || 0));
+  if (o.taperMode === 'body' && o.bodyWidth > 0) {
+    const jf = fracAt(bodyN);
+    const jb = [bnx + (bbx - bnx) * jf, bny + (bby - bny) * jf];
+    const jt = [tnx + (tbx - tnx) * jf, tny + (tby - tny) * jf];
+    bodySpan = Math.abs(jb[0] - jt[0]);
+    const hw = o.bodyWidth / 2;
+    const jRight = [hw, yAtX(jb, jt, hw)];
+    const jLeft = [-hw, yAtX(jb, jt, -hw)];
+    const br = lineIntersection(nutRight, jRight, bassBridge, trebleBridge);
+    const bl = lineIntersection(nutLeft, jLeft, bassBridge, trebleBridge);
+    // Only taken if both lines really meet the bridge line. A pair that
+    // somehow came out parallel leaves the board exactly as it was rather
+    // than dropping an edge.
+    if (br && bl) { bridgeRight = br; bridgeLeft = bl; bodyUsed = true; }
+  }
+  const bwOut = bodyUsed ? Math.abs(bridgeRight[0] - bridgeLeft[0]) : bw;
   const leftEdge = [nutLeft, bridgeLeft], rightEdge = [nutRight, bridgeRight];
 
   const nF = o.frets;
@@ -651,7 +708,8 @@ function solve(o) {
   }
   return { nutLeft, nutRight, bridgeLeft, bridgeRight, leftEdge, rightEdge,
            endLeft, endRight, strings, frets, bassNut, trebleNut,
-           bassBridge, trebleBridge, o, isFan, bridgeWidth: bw,
+           bassBridge, trebleBridge, o, isFan, bridgeWidth: bwOut,
+           bodySpan, bodyUsed, bodyFretN: bodyN,
            nutSpan: Math.abs(tnx - bnx), proportional: !!dias };
 }
 
@@ -1344,11 +1402,11 @@ const $ = id => document.getElementById(id);
    picked. Typing in a box writes back to data-mm. Nothing downstream ever
    sees anything but millimetres, so switching units cannot move the
    geometry by even a rounding error. */
-const LEN_IDS = ['bassScale','trebleScale','nutWidth','nutSeat','extension',
+const LEN_IDS = ['bassScale','trebleScale','nutWidth','bodyWidth','nutSeat','extension',
   'ohNutBass','ohNutTreble','ohBridgeBass','ohBridgeTreble','slotWidth',
   'inlayDia','bridgeOffset','bridgeSpan','postSpacing','postDia','postSetbackBass',
   'radiusNut','radiusEnd','thickness','slotDepth','bindingWidth'];
-const PLAIN_IDS = ['perpFret','frets','strings','endExtension'];
+const PLAIN_IDS = ['perpFret','frets','strings','endExtension','bodyFret'];
 const CHK_IDS = ['slotWidthOn','doubleTwelve','showInlayCentres','showCentreline',
   'showFretNumbers','showStrings','showBridge','showSaddles','showCheckPoints','showPosts',
   'showEdges','extendFrets','showBox','showTitleBlock','landscape',
@@ -1426,6 +1484,32 @@ function setUnit(key) {
    boxes you have to fill in, and the ones you cannot see are kept in step
    with the ones you can, so switching modes never leaves a stale number
    quietly driving the drawing. */
+/* WHICH BOXES THE TAPER MODE PUTS ON SCREEN. The acoustic boxes are
+   hidden in the electric mode rather than greyed, because a number that
+   cannot be edited but can still be read is read as though it mattered.
+   The wording on the bridge width line changes with the mode as well:
+   in one mode that number is worked out from the span and the overhangs,
+   and in the other it is worked out from the taper, and saying so is the
+   difference between a readout and a riddle. */
+function applyTaperMode() {
+  const body = $('taperMode').value === 'body';
+  $('rowBodyFret').hidden = !body;
+  $('rowBodyWidth').hidden = !body;
+  $('rowBodySpan').hidden = !body;
+  $('hintTaper').textContent = body
+    ? 'The acoustic way. The edges run in one straight line from the nut width '
+      + 'through the width at that fret, and carry on past it to the end of the '
+      + 'board. The bridge span still sets where the strings land; it stops '
+      + 'setting the shape of the wood.'
+    : 'The electric way. The edges run from the nut width to the board width at '
+      + 'the bridge, which is the bridge span plus the two overhangs.';
+  $('hintBridgeWidth').textContent = body
+    ? 'Worked out by running the taper on from the body fret to the bridge line, '
+      + 'so it is shown rather than typed.'
+    : 'Worked out from the string span at the bridge plus both overhangs, so it '
+      + 'is shown rather than typed.';
+}
+
 function applyOverhangMode() {
   const m = $('ohMode').value;
   const show = (id, on) => { $(id).hidden = !on; };
@@ -1513,6 +1597,8 @@ function readForm() {
   v.bridgeName = bsel.value;
   v.bridgeTol = parseFloat(bsel.options[bsel.selectedIndex].dataset.tol || '0') * 25.4;
   v.postFromNut = (fanned ? v.trebleScale : v.bassScale) + v.bridgeOffset;
+  v.taperMode = $('taperMode').value;
+  v.bodyFret = Math.max(1, Math.round(v.bodyFret));
   return v;
 }
 
@@ -1534,6 +1620,9 @@ function infoLines(v) {
   if (v.isFan) out.push('FRET SQUARE ACROSS THE BOARD  ' + v.perpFret);
   out.push('FRETS ' + v.frets + '   STRINGS ' + v.strings + '   SAW KERF ' + fmtN(v.slotWidth) + ' ' + un);
   out.push('BOARD WIDTH  nut ' + fmtN(v.nutWidth) + '   bridge ' + fmtN(v.bridgeWidthOut) + ' ' + un);
+  if (v.bodyUsed)
+    out.push('TAPER  set by the nut and fret ' + v.bodyFret + ', ' + fmtN(v.bodyWidth)
+      + ' ' + un + ' wide there');
   out.push('STRING SPAN  nut ' + fmtN(v.nutSpanOut) + '   bridge ' + fmtN(v.bridgeSpan) + ' ' + un);
   out.push('OVERHANG  nut bass ' + fmtN(v.ohNutBass) + '  treble ' + fmtN(v.ohNutTreble));
   out.push('          bridge bass ' + fmtN(v.ohBridgeBass) + '  treble ' + fmtN(v.ohBridgeTreble));
@@ -1564,6 +1653,7 @@ function build() {
   const v = readForm();
   const g = solve({ bassScale:v.bassScale, trebleScale:v.trebleScale,
     nutWidth:v.nutWidth, bridgeSpan:v.bridgeSpan,
+    taperMode:v.taperMode, bodyFret:v.bodyFret, bodyWidth:v.bodyWidth,
     ohNutBass:v.ohNutBass, ohNutTreble:v.ohNutTreble,
     ohBridgeBass:v.ohBridgeBass, ohBridgeTreble:v.ohBridgeTreble,
     frets:v.frets, strings:v.strings, perpFret:v.perpFret,
@@ -1571,6 +1661,8 @@ function build() {
     proportional:v.proportional, gauges:v.gauges });
   v.isFan = g.isFan;
   v.bridgeWidthOut = g.bridgeWidth;
+  v.bodySpanOut = g.bodySpan;
+  v.bodyUsed = g.bodyUsed;
   v.nutSpanOut = g.nutSpan;
   /* The two stations a radiused board is defined by are the NUT line and
      the FAR END of the board, which is where the add-in defines them too.
@@ -1649,6 +1741,20 @@ function render() {
   setTableHeadings(v.isFan);
   setHints(v.isFan);
   $('outBridgeWidth').textContent = fmt(v.bridgeWidthOut);
+  $('outBodySpan').textContent = v.bodyUsed ? fmt(v.bodySpanOut) : '\u2014';
+  /* A board narrower at that fret than the strings are wide there would
+     put the outer strings on or over the edge. Said out loud with both
+     numbers rather than quietly drawn, because the drawing alone looks
+     plausible right up until the board is cut. */
+  const wb = $('warnBody');
+  if (v.bodyUsed && v.bodyWidth <= v.bodySpanOut + 1e-9) {
+    wb.hidden = false;
+    wb.textContent = 'That width is ' + fmt(v.bodyWidth) + ' and the strings are '
+      + fmt(v.bodySpanOut) + ' apart at that fret, so the outer strings sit on or '
+      + 'over the edge of the wood. Widen it, or reduce the overhangs.';
+  } else {
+    wb.hidden = true;
+  }
   $('hintGauges').textContent = v.gaugeMismatch
     ? 'That is ' + v.gauges.length + ' gauges for ' + v.strings + ' strings. The spacing has gone '
       + 'back to equal until the two match.'
@@ -1805,6 +1911,7 @@ $('spProp').addEventListener('click', () => setSpacing(true));
 for (const b of document.querySelectorAll('[data-unit]'))
   b.addEventListener('click', () => setUnit(b.dataset.unit));
 $('ohMode').addEventListener('change', () => { applyOverhangMode(); render(); });
+$('taperMode').addEventListener('change', () => { applyTaperMode(); render(); });
 $('stringSet').addEventListener('change', () => {
   const val = $('stringSet').value;
   if (val === 'custom') return;
@@ -1824,6 +1931,7 @@ $('controls').addEventListener('submit', e => e.preventDefault());
 
 fillStringSets();
 showUnits();
+applyTaperMode();
 applyOverhangMode();
 setSpacing(false);
 setRadius(false);
